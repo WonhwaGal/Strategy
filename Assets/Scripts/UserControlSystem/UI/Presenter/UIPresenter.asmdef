@@ -1,8 +1,11 @@
 {
-    "name": "Core",
+    "name": "UIPresenter",
     "rootNamespace": "",
     "references": [
-        "GUID:f912bfc98aa74ef43b9bb8b9556c5b69"
+        "GUID:6b81488dfc9a3274a9b9a5c96ec8e135",
+        "GUID:3f38bcab7e95aac47a3dfda7b7bb4df2",
+        "GUID:f912bfc98aa74ef43b9bb8b9556c5b69",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

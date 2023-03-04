@@ -1,5 +1,5 @@
 {
-    "name": "Core",
+    "name": "UIModel",
     "rootNamespace": "",
     "references": [
         "GUID:f912bfc98aa74ef43b9bb8b9556c5b69"

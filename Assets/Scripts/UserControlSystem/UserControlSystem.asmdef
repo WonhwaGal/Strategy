@@ -2,7 +2,8 @@
     "name": "UserControlSystem",
     "rootNamespace": "",
     "references": [
-        "GUID:e249b45553ab37a4b80eac9d8eb904c1"
+        "GUID:f912bfc98aa74ef43b9bb8b9556c5b69",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
