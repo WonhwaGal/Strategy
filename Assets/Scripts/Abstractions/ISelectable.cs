@@ -1,10 +1,14 @@
 using UnityEngine;
 
-public interface ISelectable
+namespace Abstractions
 {
-    float Health { get; }
-    float MaxHealth { get; }
-    Sprite Icon { get; }
-    void UpdateSelection(bool b);
+    public interface ISelectable
+    {
+        float Health { get; }
+        float MaxHealth { get; }
+        Sprite Icon { get; }
+        void UpdateSelection(bool b);
+    }
 }
+
 
