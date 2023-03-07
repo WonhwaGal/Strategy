@@ -3,7 +3,7 @@ using Abstractions;
 using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
 
-public class Unit : CommandExecutorBase<ICommand>, ISelectable
+public sealed class UnitAttack : CommandExecutorBase<IAttackCommand>, ISelectable
 {
     public float Health => _health;
     public float MaxHealth => _maxHealth;
@@ -14,10 +14,11 @@ public class Unit : CommandExecutorBase<ICommand>, ISelectable
     [SerializeField] private float _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
 
-    private float _health = 1000;
+    private float _health = 500;
 
     private void Awake()
     {
+        CommandType = CommandExecuterType.Attack;
         _outline.enabled = false;
     }
 
@@ -26,8 +27,8 @@ public class Unit : CommandExecutorBase<ICommand>, ISelectable
         _outline.enabled = b;
     }
 
-    public override void ExecuteSpecificCommand(ICommand command)
+    public override void ExecuteSpecificCommand(IAttackCommand command)
     {
-        throw new System.NotImplementedException();
+        
     }
 }

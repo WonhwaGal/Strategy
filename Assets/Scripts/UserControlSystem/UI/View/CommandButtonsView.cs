@@ -1,10 +1,10 @@
-using Abstractions.Commands;
-using Abstractions.Commands.CommandsInterfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Abstractions.Commands;
+using System.Collections.Generic;
+using Abstractions.Commands.CommandsInterfaces;
 
 
 namespace UserControlSystem.UI.View
@@ -12,6 +12,7 @@ namespace UserControlSystem.UI.View
     public class CommandButtonsView : MonoBehaviour
     {
         public Action<ICommandExecutor> OnClick;
+
         [SerializeField] private GameObject _attackButton;
         [SerializeField] private GameObject _moveButton;
         [SerializeField] private GameObject _patrolButton;

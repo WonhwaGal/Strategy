@@ -1,12 +1,13 @@
+using Utils;
 using System;
-using System.Collections.Generic;
+using UnityEngine;
 using Abstractions;
 using Abstractions.Commands;
-using Abstractions.Commands.CommandsInterfaces;
-using UnityEngine;
-using UserControlSystem.CommandsRealization;
 using UserControlSystem.UI.View;
-using Utils;
+using System.Collections.Generic;
+using UserControlSystem.CommandsRealization;
+using Abstractions.Commands.CommandsInterfaces;
+
 
 namespace UserControlSystem.UI.Presenter
 {
@@ -33,25 +34,59 @@ namespace UserControlSystem.UI.Presenter
 
             _currentSelectable = selectable;
             _view.Clear();
+            
             if (selectable != null)
             {
                 var commandExecutors = new List<ICommandExecutor>();
                 commandExecutors.AddRange((selectable as Component).GetComponentsInParent<ICommandExecutor>());
-                _view.MakeLayout(commandExecutors);
+                _view.MakeLayout(commandExecutors);     // problematic line
             }
         }
 
         private void onButtonClick(ICommandExecutor commandExecutor)
         {
-            var unitProducer = commandExecutor as CommandExecutorBase<IProduceUnitCommand>;
-            if (unitProducer != null)
+            switch (commandExecutor.CommandType)
             {
-                unitProducer.ExecuteSpecificCommand(_context.Inject(new ProduceUnitCommand()));
-                return;
-            }
-            throw new
-            ApplicationException($"{nameof(CommandButtonsPresenter)}.{nameof(onButtonClick)}: " +
+                case CommandExecuterType.ProduceUnit:
+                    var unitProducer = commandExecutor as CommandExecutorBase<IProduceUnitCommand>;
+                    if (unitProducer != null)
+                    {
+                        unitProducer.ExecuteSpecificCommand(_context.Inject(new ProduceUnitCommandHeir()));
+                    }
+                    return;
+                case CommandExecuterType.Move:
+                    var moveExecuter = commandExecutor as CommandExecutorBase<IMoveCommand>;
+                    if (moveExecuter != null)
+                    {
+                        Debug.Log("Executing Move");
+                    }
+                    return;
+                case CommandExecuterType.Attack:
+                    var atackExecuter = commandExecutor as CommandExecutorBase<IAttackCommand>;
+                    if (atackExecuter != null)
+                    {
+                        Debug.Log("Executing Attack");
+                    }
+                    return;
+                case CommandExecuterType.Patrol:
+                    var patrolExecuter = commandExecutor as CommandExecutorBase<IPatrolCommand>;
+                    if (patrolExecuter != null)
+                    {
+                        Debug.Log("Executing Patrol");
+                    }
+                    return;
+                case CommandExecuterType.Stop:
+                    var holdpositionExecuter = commandExecutor as CommandExecutorBase<IStopCommand>;
+                    if (holdpositionExecuter != null)
+                    {
+                        Debug.Log("Executing HoldPosition");
+                    }
+                    return;
+                default:
+                    throw new
+                    ApplicationException($"{nameof(CommandButtonsPresenter)}.{nameof(onButtonClick)}: " +
                              $" Unknown type of commands executor: { commandExecutor.GetType().FullName }!");
+            }
         }
     }
 

@@ -8,7 +8,11 @@ namespace Utils
         private static readonly Type _injectAssetAttributeType = typeof(InjectAssetAttribute);
         public static T Inject<T>(this AssetsContext context, T target)
         {
-            var targetType = target.GetType();
+            #region Changed Code
+            var givenType = target.GetType();
+            var targetType = givenType.BaseType;
+            #endregion
+
             var allFields = targetType.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             for (int i = 0; i < allFields.Length; i++)
             {

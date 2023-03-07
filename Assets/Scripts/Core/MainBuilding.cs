@@ -10,7 +10,6 @@ public sealed class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISe
     public float MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
 
-
     [SerializeField] private Transform _unitsParent;
     [SerializeField] private Outline _outline;
 
@@ -22,6 +21,7 @@ public sealed class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISe
 
     private void Awake()
     {
+        CommandType = CommandExecuterType.ProduceUnit;
         _outline.enabled = false;
     }
 
