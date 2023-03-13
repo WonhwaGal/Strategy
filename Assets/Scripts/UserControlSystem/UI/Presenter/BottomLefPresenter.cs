@@ -1,4 +1,5 @@
 using TMPro;
+using Zenject;
 using Abstractions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,8 @@ namespace UserControlSystem.UI.Presenter
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _sliderBackground;
         [SerializeField] private Image _sliderFillImage;
-        [SerializeField] private SelectableValue _selectedValue;
+        [Inject] private SelectableValue _selectedValue;
+
         private void Start()
         {
             _selectedValue.OnSelected += onSelected;

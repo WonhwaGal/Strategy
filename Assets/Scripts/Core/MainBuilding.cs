@@ -21,7 +21,6 @@ public sealed class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISe
 
     private void Awake()
     {
-        CommandType = CommandExecuterType.ProduceUnit;
         _outline.enabled = false;
     }
 
