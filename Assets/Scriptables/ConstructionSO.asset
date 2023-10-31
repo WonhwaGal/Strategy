@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb5cba52d1401204499e20df470f5f04, type: 3}
+  m_Name: ConstructionSO
+  m_EditorClassIdentifier: 
+  ConstructionLevels:
+  - Name: Level 1
+    Level: 1
+    BuildingList:
+    - Name: Castle
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
+      <PrefabType>k__BackingField: 1
+      QueueOrder: 1
+      Defense: 100
+      TotalUpgradeStages: 3
+    - Name: House
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 161b15b4b7f8b9f4d9a60a2b40edd13d, type: 3}
+      <PrefabType>k__BackingField: 2
+      QueueOrder: 2
+      Defense: 20
+      TotalUpgradeStages: 1
