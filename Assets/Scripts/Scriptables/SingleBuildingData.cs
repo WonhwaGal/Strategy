@@ -4,11 +4,12 @@ using UnityEngine;
 [Serializable]
 public class SingleBuildingData : ISpawnable
 {
-    public string Name;
-    [field: SerializeField] public Transform Transform { get; set; }
-    [field: SerializeField] public PrefabType PrefabType { get; set; }
-
-    public int QueueOrder;
-    public int Defense;
-    public int TotalUpgradeStages;
+    [SerializeField] private string Name;
+    [field: SerializeField] public Transform Transform { get; private set; }
+    [field: SerializeField] public PrefabType PrefabType { get; private set; }
+    [field: SerializeField] public int Defense { get; private set; }
+    [field: SerializeField] public bool AutoVisible { get; private set; }
+    [field: SerializeField] public int ID { get; private set; }
+    [field: SerializeField] public int ActivatedBy { get; private set; }
+    [field: SerializeField] public int TotalUpgradeStages { get; private set; }
 }

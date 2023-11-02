@@ -19,12 +19,56 @@ MonoBehaviour:
     - Name: Castle
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
       <PrefabType>k__BackingField: 1
-      QueueOrder: 1
-      Defense: 100
-      TotalUpgradeStages: 3
+      <Defense>k__BackingField: 100
+      <AutoVisible>k__BackingField: 1
+      <ID>k__BackingField: 1
+      <ActivatedBy>k__BackingField: 0
+      <TotalUpgradeStages>k__BackingField: 0
     - Name: House
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 161b15b4b7f8b9f4d9a60a2b40edd13d, type: 3}
       <PrefabType>k__BackingField: 2
-      QueueOrder: 2
-      Defense: 20
-      TotalUpgradeStages: 1
+      <Defense>k__BackingField: 20
+      <AutoVisible>k__BackingField: 0
+      <ID>k__BackingField: 2
+      <ActivatedBy>k__BackingField: 1
+      <TotalUpgradeStages>k__BackingField: 0
+    - Name: Tower
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 5aec09464eee4a247aaadb0b1669bf9c, type: 3}
+      <PrefabType>k__BackingField: 3
+      <Defense>k__BackingField: 50
+      <AutoVisible>k__BackingField: 0
+      <ID>k__BackingField: 3
+      <ActivatedBy>k__BackingField: 1
+      <TotalUpgradeStages>k__BackingField: 0
+    - Name: Mill
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 2ba028353d8d8684ab4f5c44611d48be, type: 3}
+      <PrefabType>k__BackingField: 4
+      <Defense>k__BackingField: 30
+      <AutoVisible>k__BackingField: 0
+      <ID>k__BackingField: 4
+      <ActivatedBy>k__BackingField: 1
+      <TotalUpgradeStages>k__BackingField: 0
+    - Name: House_2
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: c866d8f3737859c43a50014ea312e0ff, type: 3}
+      <PrefabType>k__BackingField: 2
+      <Defense>k__BackingField: 30
+      <AutoVisible>k__BackingField: 0
+      <ID>k__BackingField: 5
+      <ActivatedBy>k__BackingField: 2
+      <TotalUpgradeStages>k__BackingField: 0
+    - Name: House_3
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: da04f1db0f2ac0946b8dd1efc12eeacd, type: 3}
+      <PrefabType>k__BackingField: 2
+      <Defense>k__BackingField: 30
+      <AutoVisible>k__BackingField: 0
+      <ID>k__BackingField: 6
+      <ActivatedBy>k__BackingField: 5
+      <TotalUpgradeStages>k__BackingField: 0
+    - Name: Tower_2
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: b35f0bf675daa8b43b17e3b9ffce4828, type: 3}
+      <PrefabType>k__BackingField: 3
+      <Defense>k__BackingField: 50
+      <AutoVisible>k__BackingField: 0
+      <ID>k__BackingField: 7
+      <ActivatedBy>k__BackingField: 3
+      <TotalUpgradeStages>k__BackingField: 0

@@ -8,7 +8,7 @@ namespace Code.Units
         private readonly IInputService _input;
         private Vector3 _targetPos;
 
-        public PlayerMovementStrategy() => _input = new KeyboardInput();
+        public PlayerMovementStrategy() => _input = ServiceLocator.Container.RequestFor<IInputService>();
 
         public void Execute(UnitModel model, UnitView view)
         {

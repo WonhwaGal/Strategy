@@ -2,14 +2,22 @@
 
 public class ConstructionModel : IDisposable
 {
-    public event Action OnDestroyed;
-    private readonly int QueueOrder;
-    private readonly int Defense;
+    private readonly int _id;
+    private readonly int _activatedBy;
+    private readonly int _defense;
 
-    public ConstructionModel(int queueOrder, int defense)
+    public int ID => _id;
+    public int ActivatedBy => _activatedBy;
+    public bool AutoVisible { get; private set; }
+
+    public event Action OnDestroyed;
+
+    public ConstructionModel(SingleBuildingData data)
     {
-        QueueOrder = queueOrder;
-        Defense = defense;
+        _id = data.ID;
+        _activatedBy = data.ActivatedBy;
+        _defense = data.Defense;
+        AutoVisible = data.AutoVisible;
     }
 
     public void Dispose()

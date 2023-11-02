@@ -1,20 +1,10 @@
-using Code.Units;
-using System.Collections.Generic;
+﻿using Code.Units;
 using UnityEngine;
 
 namespace Code.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = nameof(UnitPrefabs), menuName = "Construction/UnitPrefabs")]
-    public class UnitPrefabs : ScriptableObject
+    [CreateAssetMenu(fileName = "UnitPrefabs", menuName = "Construction/UnitPrefabs")]
+    public class UnitPrefabs : PrefabSO<UnitView>
     {
-        public List<PrefabData> UnitsPrefabs;
-
-        [System.Serializable]
-        public class PrefabData
-        {
-            public string Name;
-            public PrefabType Type;
-            public UnitView Prefab;
-        }
     }
 }
