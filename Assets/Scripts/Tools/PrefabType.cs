@@ -4,5 +4,7 @@ public enum PrefabType
     None = 0,
     Castle = 1,
     House = 2,
-    Player = 3,
+    Tower = 3,
+    Mill = 4,
+    Player = 25,
 }

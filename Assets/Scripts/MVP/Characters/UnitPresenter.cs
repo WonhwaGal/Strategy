@@ -2,7 +2,7 @@ using System;
 
 namespace Code.Units
 {
-    public class UnitPresenter : IDisposable
+    public abstract class UnitPresenter : IDisposable
     {
         protected readonly UnitView _view;
         protected readonly UnitModel _model;

@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63d4bb741a5f5fa449a9c618a7661ce5, type: 3}
+  m_Script: {fileID: 11500000, guid: d4145437a3e4c624dbc6d28b883a177c, type: 3}
   m_Name: UnitPrefabs
   m_EditorClassIdentifier: 
-  UnitsPrefabs:
+  _prefabs:
   - Name: Player
-    Type: 3
-    Prefab: {fileID: 6393258279016263082, guid: cb8fc6e22b4ccba49965bdc0bbaeb99d, type: 3}
+    Type: 25
+    Prefab: {fileID: -264269600797050580, guid: cb8fc6e22b4ccba49965bdc0bbaeb99d, type: 3}
