@@ -11,6 +11,7 @@ namespace Code.Construction
     {
         private readonly ConstructionSO _constructionSO;
         private readonly Pool<ConstructionView> _pool;
+        private readonly PresenterRegistry _registry;
         private int _choosenConstructionID;
 
         public event Action<int, BuildActionType> OnNotifyConnections;
@@ -20,29 +21,22 @@ namespace Code.Construction
         {
             _constructionSO = constructionSO;
             _pool = new ConstructionPool<ConstructionView>(prefabs);
+            _registry = new PresenterRegistry(_pool);
         }
 
-        public void StartLevel(int lvlNumber)
-        {
-            List<SingleBuildingData> buildings = _constructionSO.FindBuildingsOfLevel(lvlNumber);
-            CreatePresenters(buildings);
-        }
+        public void StartLevel(int lvlNumber) 
+            => CreatePresenters(_constructionSO.FindBuildingsOfLevel(lvlNumber));
 
         private void CreatePresenters(List<SingleBuildingData> buildings)
         {
             for (int i = 0; i < buildings.Count; i++)
             {
-                ConstructionView buildingView = _pool.Spawn(buildings[i]);
-                var model = new ConstructionModel(buildings[i]);
-                var strategy = AssignStrategy(buildings[i].CommonData.PrefabType);
-
-                var presenter = new ConstructionPresenter(buildingView, model, strategy);
+                var presenter = _registry.CreatePresenter(buildings[i]);
                 presenter.OnDestroyObj += DestroyBuilding;
                 presenter.OnShowConnections += NotifyConnections;
                 OnNotifyConnections += presenter.CheckConnection;
             }
         }
-        private IConstructionStrategy AssignStrategy(PrefabType type) => new TestStrategy();
 
         private void NotifyConnections(int senderID, BuildActionType action)
         {

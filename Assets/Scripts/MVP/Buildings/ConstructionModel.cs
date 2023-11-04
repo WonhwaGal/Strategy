@@ -3,8 +3,8 @@ using System;
 
 public class ConstructionModel : IDisposable
 {
-    private readonly int _id;
-    private readonly int _activatedBy;
+    private int _id;
+    private int _activatedBy;
     private int _defense;
 
     public int ID => _id;
@@ -25,10 +25,24 @@ public class ConstructionModel : IDisposable
 
     public ConstructionModel(SingleBuildingData data)
     {
-        _id = data.ID;
-        _activatedBy = data.ActivatedBy;
-        _defense = data.CommonData.Defense;
-        AutoVisible = data.AutoVisible;
+        _id = data.UniqueInfo.ID;
+        _activatedBy = data.UniqueInfo.ActivatedBy;
+        _defense = data.CommonInfo.Defense;
+        AutoVisible = data.UniqueInfo.AutoVisible;
+    }
+
+    public void AssignUniqueValues(int id, int activatedby, bool isAutoVis)
+    {
+        _id = id;
+        _activatedBy = activatedby;
+        AutoVisible = isAutoVis;
+    }
+
+    public ConstructionModel Clone(int id, int actBy, bool auto)
+    {
+        var model = this.MemberwiseClone() as ConstructionModel;
+        model.AssignUniqueValues(id, actBy, auto);
+        return model;
     }
 
     public void Dispose()

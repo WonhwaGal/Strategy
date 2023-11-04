@@ -3,6 +3,6 @@ using UnityEngine;
 
 public interface ISpawnable
 {
-    public BuildingCommonData CommonData { get; }
+    public BuildingCommonData CommonInfo { get; }
     public Transform Transform { get; }
 }

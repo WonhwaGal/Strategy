@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 
-public class TestStrategy : IConstructionStrategy
+namespace Code.Strategy
 {
-    public void Execute(ConstructionModel model)
+    public class TestStrategy : IConstructionStrategy
     {
-        Debug.Log("executing strategy");
+        public void Execute(ConstructionModel model)
+        {
+            Debug.Log("executing strategy");
+        }
+
+        public object Clone() => new TestStrategy();
     }
 }

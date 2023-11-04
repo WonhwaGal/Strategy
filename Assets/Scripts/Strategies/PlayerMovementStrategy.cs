@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using Code.Input;
+using Code.Units;
 
-namespace Code.Units
+namespace Code.Strategy
 {
     public class PlayerMovementStrategy : IUnitStrategy
     {

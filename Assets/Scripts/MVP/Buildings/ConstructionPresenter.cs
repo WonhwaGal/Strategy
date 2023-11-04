@@ -1,4 +1,7 @@
+using Code.Strategy;
 using System;
+using UnityEngine;
+using static Code.ScriptableObjects.SingleBuildingData;
 
 namespace Code.Construction
 {
@@ -20,6 +23,7 @@ namespace Code.Construction
             View.OnTriggerAction += ShowConnectedObjects;
             if (Model.AutoVisible)
                 View.ShowCurrentStage(1);
+            Debug.Log($"created presenter for id {Model.ID}, activated by {Model.ActivatedBy} and auto {Model.AutoVisible}");
         }
 
         private void ShowConnectedObjects(BuildActionType action) => OnShowConnections?.Invoke(Model.ID, action);
@@ -38,6 +42,13 @@ namespace Code.Construction
             Model.OnDestroyed -= DestroyObject;
             View.OnTriggerAction -= ShowConnectedObjects;
             OnDestroyObj?.Invoke(this);
+        }
+
+        public ConstructionPresenter Clone(ConstructionView view, UniqueData data)
+        {
+            var model = Model.Clone(data.ID, data.ActivatedBy, data.AutoVisible);
+            var strategy = BuiltStrategy.Clone() as IConstructionStrategy;
+            return new ConstructionPresenter(view, model, strategy);
         }
 
         public void Dispose()

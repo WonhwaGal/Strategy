@@ -1,4 +1,9 @@
-﻿public interface IConstructionStrategy
+﻿using System;
+
+namespace Code.Strategy
 {
-    void Execute(ConstructionModel model);
+    public interface IConstructionStrategy : ICloneable
+    {
+        void Execute(ConstructionModel model);
+    }
 }
