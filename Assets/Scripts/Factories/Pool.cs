@@ -13,10 +13,10 @@ namespace Code.Factories
         public T Spawn(ISpawnable spawnData)
         {
             T result = null;
-            PrefabType type = spawnData.PrefabType;
+            PrefabType type = spawnData.CommonData.PrefabType;
 
             if (_inactiveObjects.ContainsKey(type) && _inactiveObjects[type].Count > 0)
-                result = _inactiveObjects[spawnData.PrefabType].Pop();
+                result = _inactiveObjects[spawnData.CommonData.PrefabType].Pop();
             else if(_factories.ContainsKey(type))
                 result = _factories[type].Create();
 
@@ -30,8 +30,6 @@ namespace Code.Factories
         protected virtual void OnSpawn(T prefab, ISpawnable spawnObj) { }
         protected virtual void OnDespawn() { }
 
-        public void Dispose()
-        {
-        }
+        public virtual void Dispose() { }
     }
 }

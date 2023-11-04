@@ -10,7 +10,8 @@ public class UnitService : IService
 
     public void CreatePlayer()
     {
-        var playerView = GameObject.Instantiate(_unitPrefabs.FindPrefab(PrefabType.Player), Vector3.zero, Quaternion.identity);
+        var playerView = GameObject.Instantiate(
+            _unitPrefabs.FindPrefab(PrefabType.Player), Vector3.zero, Quaternion.identity);
         var model = new UnitModel(hp: 100, speed: playerView.Speed);
         new PlayerPresenter(playerView, model, new PlayerMovementStrategy());
     }

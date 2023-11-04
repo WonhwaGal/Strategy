@@ -21,11 +21,14 @@ namespace Code.Factories
         {
             prefab.transform.position = spawnData.Transform.position;
             prefab.transform.rotation = spawnData.Transform.rotation;
-            prefab.transform.SetParent(_factories[spawnData.PrefabType].RootTransform);
+            prefab.transform.SetParent(_factories[spawnData.CommonData.PrefabType].RootTransform);
         }
 
-        protected override void OnDespawn()
+        protected override void OnDespawn() { }
+
+        public override void Dispose()
         {
+            base.Dispose();
         }
     }
 }

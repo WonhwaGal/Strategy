@@ -15,6 +15,11 @@ public sealed class ServiceLocator
         return HolderFor<TService>.ServiceInstance;
     }
 
+    public TService RegisterAndAssign<TService>(TService someService) where TService : IService
+    {
+        return HolderFor<TService>.ServiceInstance = someService;
+    }
+
     private static class HolderFor<TService> where TService : IService
     {
         public static TService ServiceInstance;

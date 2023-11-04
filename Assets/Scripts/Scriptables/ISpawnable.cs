@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Code.ScriptableObjects;
+using UnityEngine;
 
 public interface ISpawnable
 {
-    public PrefabType PrefabType { get; }
+    public BuildingCommonData CommonData { get; }
     public Transform Transform { get; }
 }

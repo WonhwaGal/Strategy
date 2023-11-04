@@ -9,8 +9,8 @@ namespace Code.Construction
 {
     public sealed class ConstructionService : IService
     {
-        private readonly ConstructionSO ConstructionSO;
-        private readonly Pool<ConstructionView> Pool;
+        private readonly ConstructionSO _constructionSO;
+        private readonly Pool<ConstructionView> _pool;
         private int _choosenConstructionID;
 
         public event Action<int, BuildActionType> OnNotifyConnections;
@@ -18,31 +18,23 @@ namespace Code.Construction
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
         {
-            ConstructionSO = constructionSO;
-            Pool = new ConstructionPool<ConstructionView>(prefabs);
+            _constructionSO = constructionSO;
+            _pool = new ConstructionPool<ConstructionView>(prefabs);
         }
 
         public void StartLevel(int lvlNumber)
         {
-            List<SingleBuildingData> buildings;
-            for(int i = 0; i < ConstructionSO.ConstructionLevels.Count; i++)
-            {
-                if(ConstructionSO.ConstructionLevels[i].Level == lvlNumber)
-                {
-                    buildings = ConstructionSO.ConstructionLevels[i].BuildingList;
-                    CreatePresenters(buildings);
-                    return;
-                }
-            }
+            List<SingleBuildingData> buildings = _constructionSO.FindBuildingsOfLevel(lvlNumber);
+            CreatePresenters(buildings);
         }
 
         private void CreatePresenters(List<SingleBuildingData> buildings)
         {
             for (int i = 0; i < buildings.Count; i++)
             {
-                ConstructionView buildingView = Pool.Spawn(buildings[i]);
+                ConstructionView buildingView = _pool.Spawn(buildings[i]);
                 var model = new ConstructionModel(buildings[i]);
-                var strategy = AssignStrategy(buildings[i].PrefabType);
+                var strategy = AssignStrategy(buildings[i].CommonData.PrefabType);
 
                 var presenter = new ConstructionPresenter(buildingView, model, strategy);
                 presenter.OnDestroyObj += DestroyBuilding;

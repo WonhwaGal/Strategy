@@ -7,7 +7,18 @@ namespace Code.ScriptableObjects
     [CreateAssetMenu(fileName = nameof(ConstructionSO), menuName = "Construction/ConstructionSO")]
     public class ConstructionSO : ScriptableObject
     {
-        public List<ConstructionLevel> ConstructionLevels = new();
+        [SerializeField] private List<ConstructionLevel> _constructionLevels;
+
+        public List<SingleBuildingData> FindBuildingsOfLevel(int lvlNumber)
+        {
+            var lvl = _constructionLevels.Find(x => x.Level == lvlNumber);
+            if (lvl != null)
+                return lvl.BuildingList;
+            else
+                Debug.LogError($"{name} : level #{lvl.Level} is not found");
+            
+            return null;
+        }
 
         [Serializable]
         public class ConstructionLevel

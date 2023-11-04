@@ -12,63 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5cba52d1401204499e20df470f5f04, type: 3}
   m_Name: ConstructionSO
   m_EditorClassIdentifier: 
-  ConstructionLevels:
-  - Name: Level 1
+  _constructionLevels:
+  - Name: Level_1
     Level: 1
     BuildingList:
     - Name: Castle
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
-      <PrefabType>k__BackingField: 1
-      <Defense>k__BackingField: 100
       <AutoVisible>k__BackingField: 1
       <ID>k__BackingField: 1
       <ActivatedBy>k__BackingField: 0
-      <TotalUpgradeStages>k__BackingField: 0
-    - Name: House
+      <CommonData>k__BackingField: {fileID: 11400000, guid: 27792ea22bdfc5646a46eca0213be160, type: 2}
+    - Name: House_ID2
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 161b15b4b7f8b9f4d9a60a2b40edd13d, type: 3}
-      <PrefabType>k__BackingField: 2
-      <Defense>k__BackingField: 20
       <AutoVisible>k__BackingField: 0
       <ID>k__BackingField: 2
       <ActivatedBy>k__BackingField: 1
-      <TotalUpgradeStages>k__BackingField: 0
-    - Name: Tower
+      <CommonData>k__BackingField: {fileID: 11400000, guid: a7c44e983f687624f9299682b72e5ea1, type: 2}
+    - Name: Tower_ID3
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 5aec09464eee4a247aaadb0b1669bf9c, type: 3}
-      <PrefabType>k__BackingField: 3
-      <Defense>k__BackingField: 50
       <AutoVisible>k__BackingField: 0
       <ID>k__BackingField: 3
       <ActivatedBy>k__BackingField: 1
-      <TotalUpgradeStages>k__BackingField: 0
-    - Name: Mill
+      <CommonData>k__BackingField: {fileID: 11400000, guid: 4291dd6dba85beb4c915efad979329a0, type: 2}
+    - Name: Mill_ID4
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 2ba028353d8d8684ab4f5c44611d48be, type: 3}
-      <PrefabType>k__BackingField: 4
-      <Defense>k__BackingField: 30
       <AutoVisible>k__BackingField: 0
       <ID>k__BackingField: 4
       <ActivatedBy>k__BackingField: 1
-      <TotalUpgradeStages>k__BackingField: 0
-    - Name: House_2
-      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: c866d8f3737859c43a50014ea312e0ff, type: 3}
-      <PrefabType>k__BackingField: 2
-      <Defense>k__BackingField: 30
-      <AutoVisible>k__BackingField: 0
-      <ID>k__BackingField: 5
-      <ActivatedBy>k__BackingField: 2
-      <TotalUpgradeStages>k__BackingField: 0
-    - Name: House_3
-      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: da04f1db0f2ac0946b8dd1efc12eeacd, type: 3}
-      <PrefabType>k__BackingField: 2
-      <Defense>k__BackingField: 30
-      <AutoVisible>k__BackingField: 0
-      <ID>k__BackingField: 6
-      <ActivatedBy>k__BackingField: 5
-      <TotalUpgradeStages>k__BackingField: 0
-    - Name: Tower_2
-      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: b35f0bf675daa8b43b17e3b9ffce4828, type: 3}
-      <PrefabType>k__BackingField: 3
-      <Defense>k__BackingField: 50
-      <AutoVisible>k__BackingField: 0
-      <ID>k__BackingField: 7
-      <ActivatedBy>k__BackingField: 3
-      <TotalUpgradeStages>k__BackingField: 0
+      <CommonData>k__BackingField: {fileID: 11400000, guid: 48c00b3564712954ca3b245178e0eae6, type: 2}

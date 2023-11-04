@@ -1,35 +1,18 @@
 using Code.Construction;
-using Code.Input;
-using Code.ScriptableObjects;
 using Code.UI;
 using UnityEngine;
 
 public class TestEntry : MonoBehaviour
 {
-    [SerializeField] private ConstructionSO _constructionSO;
-    [SerializeField] private ConstructionPrefabs _buildingPrefabs;
-    [SerializeField] private UnitPrefabs _unitPrefabs;
     [SerializeField] private UpgradePanel _upgradePanel;
-
-    private ConstructionService _constructionService;
-    private UnitService _unitService;
+    [SerializeField] private PricePanel _pricePanel;
     private UIService _uiService;
-    private IInputService _input;
+    private ConstructionService _constrService;
 
     void Start()
     {
-        ServiceLocator.Container.Register<IInputService>(new KeyboardInput());
-
-        _constructionService = new ConstructionService(_constructionSO, _buildingPrefabs);
-        _constructionService.StartLevel(1);
-
-        _unitService = new UnitService(_unitPrefabs);
-        _unitService.CreatePlayer();
-
-        _uiService = new UIService(_upgradePanel);
-        _constructionService.OnBuildConstruction += _uiService.PlaceUpgradePanel;
-
-        _input = ServiceLocator.Container.RequestFor<IInputService>();
-        _input.OnPressSpace += _constructionService.BuildConstruction;
+        _uiService = new UIService(_upgradePanel, _pricePanel);
+        _constrService = ServiceLocator.Container.RequestFor<ConstructionService>();
+        _constrService.OnBuildConstruction += _uiService.PlaceUpgradePanel;
     }
 }
