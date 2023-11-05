@@ -3,7 +3,7 @@
 
 namespace Code.Strategy
 {
-    public interface IUnitStrategy
+    public interface IUnitStrategy : IStrategy
     {
         void Execute(UnitModel model, UnitView view);
     }

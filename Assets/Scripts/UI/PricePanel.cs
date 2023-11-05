@@ -1,6 +1,7 @@
+using TMPro;
 using UnityEngine;
 
 public class PricePanel : MonoBehaviour
 {
-    public int Price;
+    public TextMeshProUGUI Price;
 }

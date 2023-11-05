@@ -1,13 +1,14 @@
 
 namespace Code.Strategy
 {
-    public class StrategHandler
+    public class StrategyHandler : IService
     {
-        public IConstructionStrategy GetStrategy(PrefabType type)
+        public IStrategy GetStrategy(PrefabType type)
         {
-            IConstructionStrategy strategy = type switch
+            IStrategy strategy = type switch
             {
                 PrefabType.Castle => new TestStrategy(),
+                PrefabType.Player => new PlayerMovementStrategy(),
                 _ => new TestStrategy(),
             };
             return strategy;

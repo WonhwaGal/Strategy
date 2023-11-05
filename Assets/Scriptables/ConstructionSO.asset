@@ -51,3 +51,17 @@ MonoBehaviour:
         <ID>k__BackingField: 5
         <ActivatedBy>k__BackingField: 2
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: a7c44e983f687624f9299682b72e5ea1, type: 2}
+    - Name: House_ID6
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: da04f1db0f2ac0946b8dd1efc12eeacd, type: 3}
+      <UniqueInfo>k__BackingField:
+        <AutoVisible>k__BackingField: 0
+        <ID>k__BackingField: 6
+        <ActivatedBy>k__BackingField: 5
+      <CommonInfo>k__BackingField: {fileID: 11400000, guid: a7c44e983f687624f9299682b72e5ea1, type: 2}
+    - Name: Tower_ID7
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: b35f0bf675daa8b43b17e3b9ffce4828, type: 3}
+      <UniqueInfo>k__BackingField:
+        <AutoVisible>k__BackingField: 0
+        <ID>k__BackingField: 7
+        <ActivatedBy>k__BackingField: 3
+      <CommonInfo>k__BackingField: {fileID: 11400000, guid: 4291dd6dba85beb4c915efad979329a0, type: 2}

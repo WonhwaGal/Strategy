@@ -9,12 +9,12 @@ namespace Code.Construction
     {
         private readonly Dictionary<PrefabType, ConstructionPresenter> _presenters;
         private readonly Pool<ConstructionView> _pool;
-        private readonly StrategHandler _strategyHandler;
+        private readonly StrategyHandler _strategyHandler;
         public PresenterRegistry(Pool<ConstructionView> pool)
         {
             _pool = pool;
             _presenters = new();
-            _strategyHandler = new StrategHandler();
+            _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
         }
 
         public ConstructionPresenter CreatePresenter(SingleBuildingData buildingData)
@@ -32,7 +32,8 @@ namespace Code.Construction
         {
             var buildingView = _pool.Spawn(buildingData);
             var model = new ConstructionModel(buildingData);
-            var strategy = _strategyHandler.GetStrategy(buildingData.CommonInfo.PrefabType);
+            var strategy = 
+                (IConstructionStrategy)_strategyHandler.GetStrategy(buildingData.CommonInfo.PrefabType);
 
             var presenter = new ConstructionPresenter(buildingView, model, strategy);
             _presenters.Add(buildingData.CommonInfo.PrefabType, presenter);

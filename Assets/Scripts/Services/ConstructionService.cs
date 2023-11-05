@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Code.Factories;
-using Code.Input;
 using Code.ScriptableObjects;
-using UnityEngine;
 
 namespace Code.Construction
 {
@@ -12,10 +10,9 @@ namespace Code.Construction
         private readonly ConstructionSO _constructionSO;
         private readonly Pool<ConstructionView> _pool;
         private readonly PresenterRegistry _registry;
-        private int _choosenConstructionID;
+        private IConstructionModel _choosenModel;
 
-        public event Action<int, BuildActionType> OnNotifyConnections;
-        public event Action<Vector3> OnBuildConstruction;
+        public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
         {
@@ -24,7 +21,7 @@ namespace Code.Construction
             _registry = new PresenterRegistry(_pool);
         }
 
-        public void StartLevel(int lvlNumber) 
+        public void StartLevel(int lvlNumber)
             => CreatePresenters(_constructionSO.FindBuildingsOfLevel(lvlNumber));
 
         private void CreatePresenters(List<SingleBuildingData> buildings)
@@ -33,29 +30,43 @@ namespace Code.Construction
             {
                 var presenter = _registry.CreatePresenter(buildings[i]);
                 presenter.OnDestroyObj += DestroyBuilding;
-                presenter.OnShowConnections += NotifyConnections;
-                OnNotifyConnections += presenter.CheckConnection;
+                presenter.OnViewTriggered += SendTriggerNotification;
+                OnNotifyConnections += presenter.CheckOwnConnection;
             }
         }
 
-        private void NotifyConnections(int senderID, BuildActionType action)
+        public void TryToBuild() // when Space key pressed
         {
-            _choosenConstructionID = action == BuildActionType.Show ? senderID : 0;
-            OnNotifyConnections?.Invoke(senderID, action);
+            if (_choosenModel == null || _choosenModel.CurrentStage >= _choosenModel.TotalStages)
+                return;
+
+            if(_choosenModel.CurrentStage == 0)
+                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+            else
+                SendTriggerNotification(_choosenModel, BuildActionType.Upgrade);
         }
 
-        public void BuildConstruction()
+        public void Upgrade()
         {
-            if (_choosenConstructionID != 0)
-                NotifyConnections(_choosenConstructionID, BuildActionType.Build);
+            if (_choosenModel != null)
+                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+        }
+
+        private void SendTriggerNotification(IConstructionModel model, BuildActionType action)
+        {
+            OnNotifyConnections?.Invoke(model, action);
+            if (action == BuildActionType.PutAway)
+                _choosenModel = null;
+            else
+                _choosenModel = model;
         }
 
         private void DestroyBuilding(ConstructionPresenter presenter)
         {
             presenter.Dispose();
             presenter.OnDestroyObj -= DestroyBuilding;
-            presenter.OnShowConnections -= NotifyConnections;
-            OnNotifyConnections -= presenter.CheckConnection;
+            presenter.OnViewTriggered -= SendTriggerNotification;
+            OnNotifyConnections -= presenter.CheckOwnConnection;
         }
     }
 }

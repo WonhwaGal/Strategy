@@ -5,9 +5,10 @@ namespace Code.ScriptableObjects
     [CreateAssetMenu(fileName = nameof(BuildingCommonData), menuName = "Construction/BuildingCommonData")]
     public class BuildingCommonData : ScriptableObject
     {
-        [field: SerializeField] public PrefabType PrefabType { get; private set; }
-        [field: SerializeField] public int Defense { get; private set; }
-        [field: SerializeField] public int TotalUpgradeStages { get; private set; }
-        [field: SerializeField] public int Price { get; private set; }
+        public PrefabType PrefabType;
+        public int Defense;
+        public int TotalStages;
+        [field: SerializeField] public bool[] AutoUpgrades { get; private set; }
+        [field: SerializeField] public int[] PriceList { get; private set; }
     }
 }

@@ -1,15 +1,16 @@
-﻿using Code.Units;
-using System;
+﻿using System;
+using Code.Units;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ConstructionView : MonoBehaviour, IUnitView
 {
-    [SerializeField] private GameObject[] Previews;
-    [SerializeField] private GameObject[] ViewStages;
+    [SerializeField] private GameObject[] _previews;
+    [SerializeField] private GameObject[] _viewStages;
     private int _currentStage = -1;
 
     public event Action<BuildActionType> OnTriggerAction;
+    public event Action<int> OnStageChange;
     public event Action OnUpdate;
 
     private void OnEnable() => ShowCurrentStage();
@@ -27,9 +28,9 @@ public class ConstructionView : MonoBehaviour, IUnitView
             OnTriggerAction?.Invoke(BuildActionType.PutAway);
     }
 
-    public void Show(BuildActionType action)
+    public void React(BuildActionType action)
     {
-        if (action == BuildActionType.Build)
+        if (action == BuildActionType.Build || action == BuildActionType.Upgrade)
             ShowCurrentStage(1);
         else
             ShowPreviewPoint(action == BuildActionType.Show);
@@ -39,20 +40,20 @@ public class ConstructionView : MonoBehaviour, IUnitView
     {
         ShowPreviewPoint(false);
         if (_currentStage >= 0)
-            ViewStages[_currentStage].SetActive(false);
+            _viewStages[_currentStage].SetActive(false);
 
-        _currentStage += addValue;
-        for (int i = 0; i < ViewStages.Length; i++)
-            ViewStages[i].SetActive(i == _currentStage);
+        OnStageChange?.Invoke(_currentStage += addValue);
+        for (int i = 0; i < _viewStages.Length; i++)
+            _viewStages[i].SetActive(i == _currentStage);
     }
 
     private void ShowPreviewPoint(bool toShow)
     {
-        for(int i = 0; i < Previews.Length; i++)
+        for(int i = 0; i < _previews.Length; i++)
         {
-            Previews[i].SetActive(false);
+            _previews[i].SetActive(false);
             if(i == _currentStage + 1)
-                Previews[i].SetActive(toShow);
+                _previews[i].SetActive(toShow);
         }
     }
 

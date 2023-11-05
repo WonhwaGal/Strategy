@@ -1,4 +1,5 @@
 using Code.Input;
+using Code.Strategy;
 using Code.Construction;
 using Code.ScriptableObjects;
 using UnityEngine;
@@ -38,15 +39,16 @@ namespace Code.SceneLoaders
         private void AddServices()
         {
             _input = ServiceLocator.Container.RegisterAndAssign<IInputService>(new KeyboardInput());
+            ServiceLocator.Container.Register(new StrategyHandler());
             _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));
-            _input.OnPressSpace += _constructionService.BuildConstruction;
+            _input.OnPressSpace += _constructionService.TryToBuild;
         }
 
         private void OnDestroy()
         {
-            _input.OnPressSpace -= _constructionService.BuildConstruction;
+            _input.OnPressSpace -= _constructionService.TryToBuild;
         }
     }
 }

@@ -13,6 +13,11 @@ namespace Code.Strategy
 
         public void Execute(UnitModel model, UnitView view)
         {
+            Move(model, view);
+        }
+
+        private void Move(UnitModel model, UnitView view)
+        {
             _targetPos = _input.GetInput() * model.Speed + view.transform.position;
 
             if (model.HP > 0)

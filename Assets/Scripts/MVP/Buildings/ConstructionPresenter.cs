@@ -1,59 +1,64 @@
-using Code.Strategy;
 using System;
-using UnityEngine;
+using Code.Strategy;
 using static Code.ScriptableObjects.SingleBuildingData;
 
 namespace Code.Construction
 {
     public class ConstructionPresenter : IDisposable
     {
-        private readonly ConstructionView View;
-        private readonly ConstructionModel Model;
-        private readonly IConstructionStrategy BuiltStrategy;
+        private readonly ConstructionView _view;
+        private readonly ConstructionModel _model;
+        private readonly IConstructionStrategy _strategy;
 
         public event Action<ConstructionPresenter> OnDestroyObj;
-        public event Action<int, BuildActionType> OnShowConnections;
+        public event Action<IConstructionModel, BuildActionType> OnViewTriggered;
 
-        public ConstructionPresenter(ConstructionView view, ConstructionModel model, IConstructionStrategy builtStrategy)
+        public ConstructionPresenter(ConstructionView view, ConstructionModel model, IConstructionStrategy strategy)
         {
-            View = view;
-            Model = model;
-            BuiltStrategy = builtStrategy;
-            Model.OnDestroyed += DestroyObject;
-            View.OnTriggerAction += ShowConnectedObjects;
-            if (Model.AutoVisible)
-                View.ShowCurrentStage(1);
-            Debug.Log($"created presenter for id {Model.ID}, activated by {Model.ActivatedBy} and auto {Model.AutoVisible}");
+            _view = view;
+            _model = model;
+            _strategy = strategy;
+            _model.OnDestroyed += DestroyConstruction;
+            _view.OnStageChange += UpgradeStage;
+            _view.OnTriggerAction += HandleTrigger;
+            if (_model.AutoVisible)
+                _view.ShowCurrentStage(1);
         }
 
-        private void ShowConnectedObjects(BuildActionType action) => OnShowConnections?.Invoke(Model.ID, action);
+        private void UpgradeStage(int currentStage) => _model.CurrentStage = currentStage;
+        private void HandleTrigger(BuildActionType action) => OnViewTriggered?.Invoke(_model, action);
 
-        public void CheckConnection(int senderID, BuildActionType action)
+        public void CheckOwnConnection(IConstructionModel model, BuildActionType action)
         {
-            if (senderID == Model.ActivatedBy || senderID == Model.ID)
-            {
-                View.gameObject.SetActive(true);
-                View.Show(action);
-            }
+            if (action == BuildActionType.Upgrade && !model.AutoUpgrades[model.CurrentStage]) 
+                    return;
+           
+            if(_model.CurrentStage < 0 && model.ID == _model.ActivatedBy ||
+                _model.CurrentStage >= 0 && model.ID == _model.ID)
+                    _view.React(action);
         }
 
-        public void DestroyObject()
+        public void DestroyConstruction()
         {
-            Model.OnDestroyed -= DestroyObject;
-            View.OnTriggerAction -= ShowConnectedObjects;
+            _model.OnDestroyed -= DestroyConstruction;
+            _view.OnStageChange -= UpgradeStage;
+            _view.OnTriggerAction -= HandleTrigger;
             OnDestroyObj?.Invoke(this);
         }
 
         public ConstructionPresenter Clone(ConstructionView view, UniqueData data)
         {
-            var model = Model.Clone(data.ID, data.ActivatedBy, data.AutoVisible);
-            var strategy = BuiltStrategy.Clone() as IConstructionStrategy;
+            var model = _model.Clone() as ConstructionModel;
+            model.ID = data.ID;
+            model.ActivatedBy = data.ActivatedBy;
+            model.AutoVisible = data.AutoVisible;
+            var strategy = _strategy.Clone() as IConstructionStrategy;
             return new ConstructionPresenter(view, model, strategy);
         }
 
         public void Dispose()
         {
-            Model.Dispose();
+            _model.Dispose();
             GC.SuppressFinalize(this);
         }
     }

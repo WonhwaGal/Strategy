@@ -13,6 +13,13 @@ public class TestEntry : MonoBehaviour
     {
         _uiService = new UIService(_upgradePanel, _pricePanel);
         _constrService = ServiceLocator.Container.RequestFor<ConstructionService>();
-        _constrService.OnBuildConstruction += _uiService.PlaceUpgradePanel;
+        _constrService.OnNotifyConnections += _uiService.ShowPanel;
+        _uiService.OnChooseUpgrade += _constrService.Upgrade;
+    }
+
+    private void OnDestroy()
+    {
+        _constrService.OnNotifyConnections -= _uiService.ShowPanel;
+        _uiService.OnChooseUpgrade -= _constrService.Upgrade;
     }
 }

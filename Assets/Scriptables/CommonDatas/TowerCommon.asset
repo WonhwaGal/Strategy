@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559b4b00fa8dc68428103e3c64b05c8a, type: 3}
   m_Name: TowerCommon
   m_EditorClassIdentifier: 
-  <PrefabType>k__BackingField: 3
-  <Defense>k__BackingField: 50
-  <TotalUpgradeStages>k__BackingField: 2
-  <Price>k__BackingField: 3
+  PrefabType: 3
+  Defense: 50
+  TotalStages: 2
+  <AutoUpgrades>k__BackingField: 010000
+  <PriceList>k__BackingField: 030000000400000004000000

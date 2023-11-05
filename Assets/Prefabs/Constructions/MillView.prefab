@@ -216,10 +216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6b4f2017977e14986e36837d619ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Previews:
+  _previews:
   - {fileID: 4815260924711212409}
   - {fileID: 6520594262538564777}
-  ViewStages:
+  _viewStages:
   - {fileID: 4731551927859455437}
   - {fileID: 1810750461894548064}
 --- !u!54 &4731551927949739905
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 3664932006009779251}
   - component: {fileID: 7571158862764786118}
   m_Layer: 0
-  m_Name: Preview
+  m_Name: PreviewStage_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

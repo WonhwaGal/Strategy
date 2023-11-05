@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559b4b00fa8dc68428103e3c64b05c8a, type: 3}
   m_Name: CastleCommon
   m_EditorClassIdentifier: 
-  <PrefabType>k__BackingField: 1
-  <Defense>k__BackingField: 50
-  <TotalUpgradeStages>k__BackingField: 2
-  <Price>k__BackingField: 3
+  PrefabType: 1
+  Defense: 100
+  TotalStages: 3
+  <AutoUpgrades>k__BackingField: 01000000
+  <PriceList>k__BackingField: 05000000070000000700000007000000

@@ -1,52 +1,46 @@
-﻿using Code.ScriptableObjects;
-using System;
+﻿using System;
+using UnityEngine;
+using Code.ScriptableObjects;
 
-public class ConstructionModel : IDisposable
+namespace Code.Construction
 {
-    private int _id;
-    private int _activatedBy;
-    private int _defense;
-
-    public int ID => _id;
-    public int ActivatedBy => _activatedBy;
-    public int Defense
+    public class ConstructionModel : IConstructionModel
     {
-        get => _defense;
-        set
+        private int _defense;
+
+        public int Defense
         {
-            _defense = value;
-            if(_defense <= 0)
-                OnDestroyed?.Invoke();
+            get => _defense;
+            set
+            {
+                _defense = value;
+                if (_defense <= 0)
+                    OnDestroyed?.Invoke();
+            }
         }
-    }
-    public bool AutoVisible { get; private set; }
+        public int ID { get; set; }
+        public int ActivatedBy { get; set; }
+        public bool AutoVisible { get; set; }
+        public int CurrentStage { get; set; } = -1;
+        public int TotalStages { get; set; }
+        public bool[] AutoUpgrades { get; set; }
+        public int[] PriceList { get; set; }
 
-    public event Action OnDestroyed;
+        public event Action OnDestroyed;
 
-    public ConstructionModel(SingleBuildingData data)
-    {
-        _id = data.UniqueInfo.ID;
-        _activatedBy = data.UniqueInfo.ActivatedBy;
-        _defense = data.CommonInfo.Defense;
-        AutoVisible = data.UniqueInfo.AutoVisible;
-    }
+        public ConstructionModel(SingleBuildingData data)
+        {
+            _defense = data.CommonInfo.Defense;
+            AutoUpgrades = data.CommonInfo.AutoUpgrades;
+            TotalStages = data.CommonInfo.TotalStages;
+            PriceList = data.CommonInfo.PriceList;
+            ID = data.UniqueInfo.ID;
+            ActivatedBy = data.UniqueInfo.ActivatedBy;
+            AutoVisible = data.UniqueInfo.AutoVisible;
+        }
 
-    public void AssignUniqueValues(int id, int activatedby, bool isAutoVis)
-    {
-        _id = id;
-        _activatedBy = activatedby;
-        AutoVisible = isAutoVis;
-    }
+        public object Clone() => this.MemberwiseClone();
 
-    public ConstructionModel Clone(int id, int actBy, bool auto)
-    {
-        var model = this.MemberwiseClone() as ConstructionModel;
-        model.AssignUniqueValues(id, actBy, auto);
-        return model;
-    }
-
-    public void Dispose()
-    {
-
+        public void Dispose() { }
     }
 }
