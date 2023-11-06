@@ -4,6 +4,6 @@ namespace Code.Units
 {
     public interface IUnitView
     {
-        event Action OnUpdate;
+        event Action<float> OnUpdate;
     }
 }

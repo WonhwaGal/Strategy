@@ -9,13 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4145437a3e4c624dbc6d28b883a177c, type: 3}
-  m_Name: UnitPrefabs
+  m_Script: {fileID: 11500000, guid: 48ea9bcb06d6acc4f8c046e3e1dc54e5, type: 3}
+  m_Name: UnitSettingList
   m_EditorClassIdentifier: 
-  _prefabs:
+  _units:
   - Name: Player
-    Type: 25
-    Prefab: {fileID: -264269600797050580, guid: cb8fc6e22b4ccba49965bdc0bbaeb99d, type: 3}
+    PrefabType: 25
+    HP: 100
+    Speed: 4
+    LongRangeRadius: 10
+    AttackInterval: 3
   - Name: Enemy
-    Type: 30
-    Prefab: {fileID: 3773491852779761335, guid: fc936c498ad9be747a3f4f2e81092c7f, type: 3}
+    PrefabType: 30
+    HP: 50
+    Speed: 4
+    LongRangeRadius: 10
+    AttackInterval: 4

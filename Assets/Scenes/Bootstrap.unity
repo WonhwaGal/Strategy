@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb70cbef6e533e34e8cb58873f6a2287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _unitSetList: {fileID: 11400000, guid: d65f650dd9a4e9d428f04d7a270d3ee8, type: 2}
   _constructionSO: {fileID: 11400000, guid: d80ca3e29e4274842b93d0852fd6bf66, type: 2}
   _buildingPrefabs: {fileID: 11400000, guid: dde8ca16b0b7671489780f43123ae93b, type: 2}
   _unitPrefabs: {fileID: 11400000, guid: 620877041b702c847a1daaa9370010da, type: 2}

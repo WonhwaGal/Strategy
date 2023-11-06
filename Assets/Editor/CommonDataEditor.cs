@@ -6,7 +6,7 @@ using UnityEngine;
 public sealed class CommonDataEditor : Editor
 {
     private BuildingCommonData _commonData;
-    private int _maxStageNumber = 4;
+    private readonly int _maxStageNumber = 4;
 
     private void OnEnable() => _commonData = (BuildingCommonData)target;
 
@@ -16,6 +16,7 @@ public sealed class CommonDataEditor : Editor
 
         _commonData.PrefabType = (PrefabType)EditorGUILayout.EnumPopup("PrefabType", _commonData.PrefabType);
         _commonData.Defense = EditorGUILayout.IntField("Defense", _commonData.Defense);
+        _commonData.AttackRadius = EditorGUILayout.FloatField("AttackRadius", _commonData.AttackRadius);
         _commonData.TotalStages = EditorGUILayout.IntSlider("TotalStages", _commonData.TotalStages, 2, _maxStageNumber);
 
         EditorGUILayout.Space(7);

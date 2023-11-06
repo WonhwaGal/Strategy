@@ -7,14 +7,12 @@ namespace Code.Units
     [RequireComponent(typeof(NavMeshAgent))]
     public class UnitView : MonoBehaviour, IUnitView
     {
-        [SerializeField] private float _speed;
         [SerializeField] private NavMeshAgent _agent;
 
         public NavMeshAgent NavAgent => _agent;
-        public float Speed { get => _speed; }
 
-        public event Action OnUpdate;
+        public event Action<float> OnUpdate;
 
-        private void Update() => OnUpdate?.Invoke();
+        private void Update() => OnUpdate?.Invoke(Time.deltaTime);
     }
 }

@@ -9,6 +9,7 @@ namespace Code.SceneLoaders
 {
     public sealed class Bootstrapper : MonoBehaviour
     {
+        [SerializeField] private UnitSettingList _unitSetList;
         [SerializeField] private ConstructionSO _constructionSO;
         [SerializeField] private ConstructionPrefabs _buildingPrefabs;
         [SerializeField] private UnitPrefabs _unitPrefabs;
@@ -33,6 +34,7 @@ namespace Code.SceneLoaders
         {
             _constructionService.StartLevel(1);
             _unitService.CreatePlayer();
+            _unitService.CreateTestUnits();              // to delete
             SceneManager.sceneLoaded -= OnLoadEvent;
         }
 
@@ -40,7 +42,8 @@ namespace Code.SceneLoaders
         {
             _input = ServiceLocator.Container.RegisterAndAssign<IInputService>(new KeyboardInput());
             ServiceLocator.Container.Register(new StrategyHandler());
-            _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitPrefabs));
+            ServiceLocator.Container.RegisterAndAssign(new CombatService());
+            _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));
             _input.OnPressSpace += _constructionService.TryToBuild;

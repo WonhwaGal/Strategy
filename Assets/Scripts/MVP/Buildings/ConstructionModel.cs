@@ -7,7 +7,22 @@ namespace Code.Construction
     public class ConstructionModel : IConstructionModel
     {
         private int _defense;
+        public ConstructionModel(SingleBuildingData data)
+        {
+            _defense = data.CommonInfo.Defense;
+            PrefabType = data.CommonInfo.PrefabType;
+            Transform = data.Transform;
+            Radius = data.CommonInfo.AttackRadius;
+            AutoUpgrades = data.CommonInfo.AutoUpgrades;
+            TotalStages = data.CommonInfo.TotalStages;
+            PriceList = data.CommonInfo.PriceList;
+            ID = data.UniqueInfo.ID;
+            ActivatedBy = data.UniqueInfo.ActivatedBy;
+            AutoVisible = data.UniqueInfo.AutoVisible;
+        }
 
+        public PrefabType PrefabType { get; private set; }
+        public Transform Transform { get; private set; }
         public int Defense
         {
             get => _defense;
@@ -18,6 +33,7 @@ namespace Code.Construction
                     OnDestroyed?.Invoke();
             }
         }
+        public float Radius { get; private set; }
         public int ID { get; set; }
         public int ActivatedBy { get; set; }
         public bool AutoVisible { get; set; }
@@ -27,17 +43,6 @@ namespace Code.Construction
         public int[] PriceList { get; set; }
 
         public event Action OnDestroyed;
-
-        public ConstructionModel(SingleBuildingData data)
-        {
-            _defense = data.CommonInfo.Defense;
-            AutoUpgrades = data.CommonInfo.AutoUpgrades;
-            TotalStages = data.CommonInfo.TotalStages;
-            PriceList = data.CommonInfo.PriceList;
-            ID = data.UniqueInfo.ID;
-            ActivatedBy = data.UniqueInfo.ActivatedBy;
-            AutoVisible = data.UniqueInfo.AutoVisible;
-        }
 
         public object Clone() => this.MemberwiseClone();
 

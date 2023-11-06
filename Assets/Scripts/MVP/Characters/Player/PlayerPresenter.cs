@@ -1,5 +1,3 @@
-
-
 using Code.Strategy;
 
 namespace Code.Units
@@ -7,12 +5,10 @@ namespace Code.Units
     public class PlayerPresenter : UnitPresenter
     {
         public PlayerPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy) 
-            : base(view, model, moveStrategy)
-        {
-            _view.OnUpdate += Update;
-        }
+            : base(view, model, moveStrategy) 
+        { }
 
-        private void Update() => _strategy.Execute(_model, _view);
+
 
         public override void Dispose()
         {

@@ -15,5 +15,6 @@ MonoBehaviour:
   PrefabType: 3
   Defense: 50
   TotalStages: 2
-  <AutoUpgrades>k__BackingField: 010000
-  <PriceList>k__BackingField: 030000000400000004000000
+  AttackRadius: 30
+  <AutoUpgrades>k__BackingField: 01000000
+  <PriceList>k__BackingField: 03000000040000000400000004000000

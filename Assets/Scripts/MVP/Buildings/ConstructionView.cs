@@ -11,20 +11,20 @@ public class ConstructionView : MonoBehaviour, IUnitView
 
     public event Action<BuildActionType> OnTriggerAction;
     public event Action<int> OnStageChange;
-    public event Action OnUpdate;
+    public event Action<float> OnUpdate;
 
     private void OnEnable() => ShowCurrentStage();
-    private void Update() => OnUpdate?.Invoke();
+    private void Update() => OnUpdate?.Invoke(Time.deltaTime);
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerUnit>())
+        if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
             OnTriggerAction?.Invoke(BuildActionType.Show);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerUnit>())
+        if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
             OnTriggerAction?.Invoke(BuildActionType.PutAway);
     }
 

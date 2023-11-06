@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using Code.Units;
 
 namespace Code.Construction
 {
-    public interface IConstructionModel : IDisposable
+    public interface IConstructionModel : IModel
     {
         public int ID { get; }
         public int CurrentStage { get; }
