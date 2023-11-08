@@ -1,16 +1,21 @@
-using Code.Units;
 using System;
+using Code.Units;
+using Code.Factories;
 using UnityEngine;
 
-public class CombatService : IService
+public class CombatService : IService      // add Dispose()
 {
+    private readonly SingleTypePool<ArrowView> _arrowPool;
+    private readonly ArrowView _arrowView;
     private LayerMask _enemyMask;
     private LayerMask _playerMask;
     private LayerMask _buildingMask;
     private LayerMask _allyMask;
 
-    public CombatService()
+    public CombatService(ArrowView arrowPrefab)
     {
+        _arrowView = arrowPrefab;
+        _arrowPool = new SingleTypePool<ArrowView>(_arrowView);
         _enemyMask = LayerMask.GetMask("Enemies");
         _playerMask = LayerMask.GetMask("Player");
         _buildingMask = LayerMask.GetMask("Building");
@@ -34,13 +39,9 @@ public class CombatService : IService
             return;
 
         if (attack == AttackType.Arrow)
-        {
-            var result = FindClosestOpponent(colliders, origin);
-            Debug.Log("found enemy" + result.name);
-        }
+            ShootArrow(colliders, origin);
         else
         {
-            Debug.Log("send scanned area event");
             for (int i = 0; i < colliders.Length; i++)
                 OnLocatingCollider?.Invoke(colliders[i].gameObject);
         }
@@ -62,5 +63,19 @@ public class CombatService : IService
             closest = list[i];
         }
         return closest.transform;
+    }
+
+    private void ShootArrow(Collider[] colliders, Vector3 origin)
+    {
+        var result = FindClosestOpponent(colliders, origin);
+        ArrowView arrow = _arrowPool.Spawn(_arrowView);
+        arrow.OnReachTarget += DespawnArrow;
+        arrow.AssignTarget(origin, result);
+    }
+
+    private void DespawnArrow(ArrowView arrow)
+    {
+        _arrowPool.Despawn(arrow);
+        arrow.OnReachTarget -= DespawnArrow; 
     }
 }

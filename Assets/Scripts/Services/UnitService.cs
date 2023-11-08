@@ -28,13 +28,13 @@ public class UnitService : IService
     public void CreateTestUnits()
     {
         var view = GameObject.Instantiate(
-            _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(28, 0.77f, 9), Quaternion.identity);
+            _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(32, 0.77f, 12), Quaternion.identity);
         var model = new UnitModel(_unitSetList.FindUnit(PrefabType.Enemy), view.transform);
-        new UnitPresenter(view, model, new TestUnitStrategy());
+        new EnemyPresenter(view, model, new TestUnitStrategy());
 
         var view2 = GameObject.Instantiate(
-            _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(8, 0.77f, 9), Quaternion.identity);
+            _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(-12, 0.77f, 15), Quaternion.identity);
         var model2 = new UnitModel(_unitSetList.FindUnit(PrefabType.Enemy), view.transform);
-        new UnitPresenter(view2, model2, new TestUnitStrategy());
+        new EnemyPresenter(view2, model2, new TestUnitStrategy());
     }
 }

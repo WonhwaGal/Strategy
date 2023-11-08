@@ -1,13 +1,18 @@
 ﻿using System;
+using Code.Factories;
 using Code.Units;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ConstructionView : MonoBehaviour, IUnitView
+public class ConstructionView : MonoBehaviour, IUnitView, ISpawnableType
 {
+    [SerializeField] private PrefabType _prefabType;
     [SerializeField] private GameObject[] _previews;
     [SerializeField] private GameObject[] _viewStages;
+
     private int _currentStage = -1;
+
+    public PrefabType PrefabType => _prefabType;
 
     public event Action<BuildActionType> OnTriggerAction;
     public event Action<int> OnStageChange;

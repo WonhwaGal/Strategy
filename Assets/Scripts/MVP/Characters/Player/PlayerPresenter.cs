@@ -6,13 +6,10 @@ namespace Code.Units
     {
         public PlayerPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy) 
             : base(view, model, moveStrategy) 
-        { }
-
-
+        {}
 
         public override void Dispose()
         {
-            _view.OnUpdate -= Update;
             base.Dispose();
         }
     }

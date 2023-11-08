@@ -6,6 +6,8 @@ namespace Code.Units
 {
     public class UnitModel : IModel
     {
+        private int _hp;
+
         public UnitModel(UnitSettings settings, Transform transform)
         {
             PrefabType = settings.PrefabType;
@@ -14,14 +16,27 @@ namespace Code.Units
             Speed = settings.Speed;
             Radius = settings.LongRangeRadius;
             AttackInterval = settings.AttackInterval;
+            Damage = settings.Damage;
         }
 
         public PrefabType PrefabType { get; private set; }
         public Transform Transform { get; private set; }
-        public int HP { get; set; }
+        public int HP
+        {
+            get => _hp;
+            set
+            {
+                _hp = value;
+                if(_hp <= 0)
+                    OnDestroyed?.Invoke();
+            }
+        }
         public float Speed { get; set; }
         public float Radius { get; private set; }
         public float AttackInterval { get; private set; }
+        public int Damage { get; private set; }  // which DAMAGE is this?
+
+        public event Action OnDestroyed;
 
         public void Dispose() { }
     }

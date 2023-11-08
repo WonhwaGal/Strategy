@@ -17,6 +17,7 @@ MonoBehaviour:
     Level: 1
     BuildingList:
     - Name: Castle
+      <PrefabType>k__BackingField: 1
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 1
@@ -24,6 +25,7 @@ MonoBehaviour:
         <ActivatedBy>k__BackingField: 0
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: 27792ea22bdfc5646a46eca0213be160, type: 2}
     - Name: House_ID2
+      <PrefabType>k__BackingField: 2
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 161b15b4b7f8b9f4d9a60a2b40edd13d, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 0
@@ -31,6 +33,7 @@ MonoBehaviour:
         <ActivatedBy>k__BackingField: 1
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: a7c44e983f687624f9299682b72e5ea1, type: 2}
     - Name: Tower_ID3
+      <PrefabType>k__BackingField: 3
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 5aec09464eee4a247aaadb0b1669bf9c, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 0
@@ -38,6 +41,7 @@ MonoBehaviour:
         <ActivatedBy>k__BackingField: 1
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: 4291dd6dba85beb4c915efad979329a0, type: 2}
     - Name: Mill_ID4
+      <PrefabType>k__BackingField: 4
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 2ba028353d8d8684ab4f5c44611d48be, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 0
@@ -45,6 +49,7 @@ MonoBehaviour:
         <ActivatedBy>k__BackingField: 1
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: 48c00b3564712954ca3b245178e0eae6, type: 2}
     - Name: House_ID5
+      <PrefabType>k__BackingField: 2
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: c866d8f3737859c43a50014ea312e0ff, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 0
@@ -52,6 +57,7 @@ MonoBehaviour:
         <ActivatedBy>k__BackingField: 2
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: a7c44e983f687624f9299682b72e5ea1, type: 2}
     - Name: House_ID6
+      <PrefabType>k__BackingField: 2
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: da04f1db0f2ac0946b8dd1efc12eeacd, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 0
@@ -59,6 +65,7 @@ MonoBehaviour:
         <ActivatedBy>k__BackingField: 5
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: a7c44e983f687624f9299682b72e5ea1, type: 2}
     - Name: Tower_ID7
+      <PrefabType>k__BackingField: 3
       <Transform>k__BackingField: {fileID: 2467765520304043027, guid: b35f0bf675daa8b43b17e3b9ffce4828, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 0

@@ -10,5 +10,7 @@ public enum PrefabType
     // for player's
     Player = 25,
     // for enemies'
-    Enemy = 30
+    Enemy = 30,
+    // for other objects
+    Arrow = 50
 }

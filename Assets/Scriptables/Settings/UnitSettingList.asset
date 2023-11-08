@@ -17,11 +17,13 @@ MonoBehaviour:
     PrefabType: 25
     HP: 100
     Speed: 4
-    LongRangeRadius: 10
+    LongRangeRadius: 30
     AttackInterval: 3
+    Damage: 20
   - Name: Enemy
     PrefabType: 30
     HP: 50
     Speed: 4
-    LongRangeRadius: 10
+    LongRangeRadius: 15
     AttackInterval: 4
+    Damage: 20

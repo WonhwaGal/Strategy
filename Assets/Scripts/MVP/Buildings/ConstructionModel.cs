@@ -10,7 +10,7 @@ namespace Code.Construction
         public ConstructionModel(SingleBuildingData data)
         {
             _defense = data.CommonInfo.Defense;
-            PrefabType = data.CommonInfo.PrefabType;
+            PrefabType = data.PrefabType;
             Transform = data.Transform;
             Radius = data.CommonInfo.AttackRadius;
             AutoUpgrades = data.CommonInfo.AutoUpgrades;

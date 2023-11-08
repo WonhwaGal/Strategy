@@ -8,5 +8,7 @@ namespace Code.Units
         Transform Transform { get; }
         PrefabType PrefabType { get; }
         float Radius { get; }
+
+        event Action OnDestroyed;
     }
 }

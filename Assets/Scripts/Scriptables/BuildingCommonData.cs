@@ -5,7 +5,6 @@ namespace Code.ScriptableObjects
     [CreateAssetMenu(fileName = nameof(BuildingCommonData), menuName = "Construction/BuildingCommonData")]
     public class BuildingCommonData : ScriptableObject
     {
-        public PrefabType PrefabType;
         public int Defense;
         public int TotalStages;
         public float AttackRadius;

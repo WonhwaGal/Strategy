@@ -27,5 +27,6 @@ public class UnitSettingList : ScriptableObject
         public float Speed;
         public float LongRangeRadius;
         public float AttackInterval;
+        public int Damage;
     }
 }

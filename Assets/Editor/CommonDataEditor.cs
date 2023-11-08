@@ -14,7 +14,6 @@ public sealed class CommonDataEditor : Editor
     {
         serializedObject.Update();
 
-        _commonData.PrefabType = (PrefabType)EditorGUILayout.EnumPopup("PrefabType", _commonData.PrefabType);
         _commonData.Defense = EditorGUILayout.IntField("Defense", _commonData.Defense);
         _commonData.AttackRadius = EditorGUILayout.FloatField("AttackRadius", _commonData.AttackRadius);
         _commonData.TotalStages = EditorGUILayout.IntSlider("TotalStages", _commonData.TotalStages, 2, _maxStageNumber);

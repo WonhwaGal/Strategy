@@ -255,3 +255,4 @@ MonoBehaviour:
   _constructionSO: {fileID: 11400000, guid: d80ca3e29e4274842b93d0852fd6bf66, type: 2}
   _buildingPrefabs: {fileID: 11400000, guid: dde8ca16b0b7671489780f43123ae93b, type: 2}
   _unitPrefabs: {fileID: 11400000, guid: 620877041b702c847a1daaa9370010da, type: 2}
+  _arrowView: {fileID: 6358702822060077249, guid: 79bc8c84b6390b14a9c18e4f5145826e, type: 3}

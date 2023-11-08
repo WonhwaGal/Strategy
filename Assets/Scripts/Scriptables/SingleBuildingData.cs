@@ -4,9 +4,10 @@ using UnityEngine;
 namespace Code.ScriptableObjects
 {
     [Serializable]
-    public class SingleBuildingData : ISpawnable
+    public class SingleBuildingData : ISpawnBuilding
     {
         [SerializeField] private string Name;
+        [field: SerializeField] public PrefabType PrefabType { get; private set; }
         [field: SerializeField] public Transform Transform { get; private set; }
         [field: SerializeField] public UniqueData UniqueInfo { get; private set; }
         [field: SerializeField] public BuildingCommonData CommonInfo { get; private set; }

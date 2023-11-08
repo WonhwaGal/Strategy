@@ -1,7 +1,8 @@
-﻿using Code.ScriptableObjects;
+﻿using Code.Factories;
+using Code.ScriptableObjects;
 using UnityEngine;
 
-public interface ISpawnable
+public interface ISpawnBuilding : ISpawnableType
 {
     public BuildingCommonData CommonInfo { get; }
     public Transform Transform { get; }
