@@ -1,7 +1,7 @@
 ﻿using Code.ScriptableObjects;
 using UnityEngine;
 
-namespace Code.Factories
+namespace Code.Pools
 {
     public sealed class ConstructionPool<T> : Pool<T>
         where T : ConstructionView, ISpawnableType

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Code.Factories
+namespace Code.Pools
 {
     public class SingleTypePool<T> : Pool<T>
         where T : MonoBehaviour, ISpawnableType
@@ -15,6 +15,12 @@ namespace Code.Factories
             _factories.Add(_prefab.PrefabType, newFactory);
             GameObject rootObject = new(_prefab.GetType().ToString());
             newFactory.RootTransform = rootObject.transform;
+        }
+
+        public T Spawn()
+        {
+            var result = base.Spawn(_prefab);
+            return result;
         }
 
         protected override void OnSpawn(T prefab, ISpawnableType spawnData)

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Code.Factories
+namespace Code.Pools
 {
     public abstract class Pool<T> : IDisposable
         where T : MonoBehaviour, ISpawnableType

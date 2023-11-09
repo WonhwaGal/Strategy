@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Code.Factories;
+using Code.Pools;
 using Code.ScriptableObjects;
 
 namespace Code.Construction
@@ -8,7 +8,6 @@ namespace Code.Construction
     public sealed class ConstructionService : IService
     {
         private readonly ConstructionSO _constructionSO;
-        private readonly Pool<ConstructionView> _pool;
         private readonly PresenterRegistry _registry;
         private IConstructionModel _choosenModel;
 
@@ -17,8 +16,8 @@ namespace Code.Construction
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
         {
             _constructionSO = constructionSO;
-            _pool = new ConstructionPool<ConstructionView>(prefabs);
-            _registry = new PresenterRegistry(_pool);
+            _registry = new PresenterRegistry(
+                new ConstructionPool<ConstructionView>(prefabs));
         }
 
         public void StartLevel(int lvlNumber)

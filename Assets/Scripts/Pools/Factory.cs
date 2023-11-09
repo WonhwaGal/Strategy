@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Factories
+namespace Code.Pools
 {
     public abstract class Factory<T>
         where T : MonoBehaviour

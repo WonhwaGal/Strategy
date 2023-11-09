@@ -32,6 +32,7 @@ public class UnitService : IService
         var model = new UnitModel(_unitSetList.FindUnit(PrefabType.Enemy), view.transform);
         new EnemyPresenter(view, model, new TestUnitStrategy());
 
+
         var view2 = GameObject.Instantiate(
             _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(-12, 0.77f, 15), Quaternion.identity);
         var model2 = new UnitModel(_unitSetList.FindUnit(PrefabType.Enemy), view.transform);

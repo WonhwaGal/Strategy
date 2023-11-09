@@ -1,5 +1,5 @@
 ﻿
-namespace Code.Factories
+namespace Code.Pools
 {
     public interface ISpawnableType
     {

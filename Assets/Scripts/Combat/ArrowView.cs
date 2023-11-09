@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using Code.Factories;
+using Code.Pools;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ArrowView : MonoBehaviour, ISpawnableType
@@ -8,10 +8,6 @@ public class ArrowView : MonoBehaviour, ISpawnableType
     [SerializeField] private float _speed;
     private Rigidbody _rb;
     private Transform _target;
-    private Vector3 _center;
-    private Vector3 _origin;
-    private float _radius;
-    private float _length;
 
     public event Action<ArrowView> OnReachTarget;
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Code.Factories
+namespace Code.Pools
 {
     public sealed class SingleTypeFactory<T> : Factory<T>
         where T : MonoBehaviour, ISpawnableType

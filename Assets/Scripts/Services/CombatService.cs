@@ -1,12 +1,13 @@
 using System;
 using Code.Units;
-using Code.Factories;
+using Code.Pools;
 using UnityEngine;
 
-public class CombatService : IService      // add Dispose()
+public class CombatService : IService
 {
     private readonly SingleTypePool<ArrowView> _arrowPool;
     private readonly ArrowView _arrowView;
+    private readonly Collider[] _colliders;
     private LayerMask _enemyMask;
     private LayerMask _playerMask;
     private LayerMask _buildingMask;
@@ -20,6 +21,7 @@ public class CombatService : IService      // add Dispose()
         _playerMask = LayerMask.GetMask("Player");
         _buildingMask = LayerMask.GetMask("Building");
         _allyMask = LayerMask.GetMask("Allies");
+        _colliders = new Collider[25];
     }
 
     public event Action<GameObject> OnLocatingCollider;
@@ -34,43 +36,43 @@ public class CombatService : IService      // add Dispose()
 
     private void ScanArea(Vector3 origin, float radius, int mask, AttackType attack)
     {
-        Collider[] colliders = Physics.OverlapSphere(origin, radius, mask);
-        if (colliders.Length == 0)
+        int number = Physics.OverlapSphereNonAlloc(origin, radius, _colliders, mask);
+        if (number == 0)
             return;
 
         if (attack == AttackType.Arrow)
-            ShootArrow(colliders, origin);
+            ShootArrow(number, origin);
         else
         {
-            for (int i = 0; i < colliders.Length; i++)
-                OnLocatingCollider?.Invoke(colliders[i].gameObject);
+            for (int i = 0; i < number; i++)
+                OnLocatingCollider?.Invoke(_colliders[i].gameObject);
         }
     }
 
-    private Transform FindClosestOpponent(Collider[] list, Vector3 origin)
+    private void ShootArrow(int numberOfFounds, Vector3 origin)
     {
-        if (list.Length == 1)
-            return list[0].transform;
-
-        Collider closest = list[0];
-        float dist = (closest.transform.position - origin).sqrMagnitude;
-        for (int i = 1; i < list.Length; i++)
-        {
-            var currentDist = (list[i].transform.position - origin).sqrMagnitude;
-            if ((list[i].transform.position - origin).sqrMagnitude > dist)
-                continue;
-            dist = currentDist;
-            closest = list[i];
-        }
-        return closest.transform;
-    }
-
-    private void ShootArrow(Collider[] colliders, Vector3 origin)
-    {
-        var result = FindClosestOpponent(colliders, origin);
-        ArrowView arrow = _arrowPool.Spawn(_arrowView);
+        var result = FindClosestOpponent(numberOfFounds, origin);
+        ArrowView arrow = _arrowPool.Spawn();
         arrow.OnReachTarget += DespawnArrow;
         arrow.AssignTarget(origin, result);
+    }
+
+    private Transform FindClosestOpponent(int numberOfFounds, Vector3 origin)
+    {
+        Collider closest = _colliders[0];
+        if (numberOfFounds == 1)
+            return closest.transform;
+
+        float dist = (closest.transform.position - origin).sqrMagnitude;
+        for (int i = 1; i < numberOfFounds; i++)
+        {
+            var currentDist = (_colliders[i].transform.position - origin).sqrMagnitude;
+            if ((_colliders[i].transform.position - origin).sqrMagnitude > dist)
+                continue;
+            dist = currentDist;
+            closest = _colliders[i];
+        }
+        return closest.transform;
     }
 
     private void DespawnArrow(ArrowView arrow)

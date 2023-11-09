@@ -1,4 +1,4 @@
-using Code.Factories;
+using Code.Pools;
 using Code.ScriptableObjects;
 using Code.Strategy;
 using System.Collections.Generic;
@@ -7,13 +7,13 @@ namespace Code.Construction
 {
     public sealed class PresenterRegistry
     {
-        private readonly Dictionary<PrefabType, ConstructionPresenter> _presenters;
+        private readonly Dictionary<PrefabType, ConstructionPresenter> _presenters = new ();
         private readonly Pool<ConstructionView> _pool;
         private readonly StrategyHandler _strategyHandler;
+
         public PresenterRegistry(Pool<ConstructionView> pool)
         {
             _pool = pool;
-            _presenters = new();
             _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
         }
 
