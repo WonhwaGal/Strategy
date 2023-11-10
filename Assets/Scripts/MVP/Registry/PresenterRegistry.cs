@@ -8,12 +8,13 @@ namespace Code.Construction
     public sealed class PresenterRegistry
     {
         private readonly Dictionary<PrefabType, ConstructionPresenter> _presenters = new ();
-        private readonly Pool<ConstructionView> _pool;
+        //private readonly Pool<ConstructionView> _pool;
+        private readonly MultiPool<ConstructionView> _multiPool;
         private readonly StrategyHandler _strategyHandler;
 
-        public PresenterRegistry(Pool<ConstructionView> pool)
+        public PresenterRegistry(MultiPool<ConstructionView> pool)
         {
-            _pool = pool;
+            _multiPool = pool;
             _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
         }
 
@@ -26,11 +27,13 @@ namespace Code.Construction
         }
 
         public ConstructionPresenter ClonePresenter(SingleBuildingData buildingData) 
-            => _presenters[buildingData.PrefabType].Clone(_pool.Spawn(buildingData), buildingData.UniqueInfo);
+            => _presenters[buildingData.PrefabType].Clone(
+                _multiPool.Spawn(buildingData.PrefabType), buildingData.UniqueInfo);
 
         public ConstructionPresenter AddPresenter(SingleBuildingData buildingData)
         {
-            var buildingView = _pool.Spawn(buildingData);
+            var buildingView = _multiPool.Spawn(buildingData.PrefabType);
+            _multiPool.OnSpawned(buildingView, buildingData);
             var model = new ConstructionModel(buildingData);
             var strategy = 
                 (IConstructionStrategy)_strategyHandler.GetStrategy(buildingData.PrefabType);

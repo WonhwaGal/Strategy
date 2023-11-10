@@ -3,68 +3,71 @@ using Code.Pools;
 using Code.Units;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class ConstructionView : MonoBehaviour, IUnitView, ISpawnableType
+namespace Code.Construction
 {
-    [SerializeField] private PrefabType _prefabType;
-    [SerializeField] private GameObject[] _previews;
-    [SerializeField] private GameObject[] _viewStages;
-
-    private int _currentStage = -1;
-
-    public PrefabType PrefabType => _prefabType;
-
-    public event Action<BuildActionType> OnTriggerAction;
-    public event Action<int> OnStageChange;
-    public event Action<float> OnUpdate;
-
-    private void OnEnable() => ShowCurrentStage();
-    private void Update() => OnUpdate?.Invoke(Time.deltaTime);
-
-    private void OnTriggerEnter(Collider other)
+    [RequireComponent(typeof(Rigidbody))]
+    public class ConstructionView : MonoBehaviour, IUnitView, ISpawnableType
     {
-        if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
-            OnTriggerAction?.Invoke(BuildActionType.Show);
-    }
+        [SerializeField] private PrefabType _prefabType;
+        [SerializeField] private GameObject[] _previews;
+        [SerializeField] private GameObject[] _viewStages;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
-            OnTriggerAction?.Invoke(BuildActionType.PutAway);
-    }
+        private int _currentStage = -1;
 
-    public void React(BuildActionType action)
-    {
-        if (action == BuildActionType.Build || action == BuildActionType.Upgrade)
-            ShowCurrentStage(1);
-        else
-            ShowPreviewPoint(action == BuildActionType.Show);
-    }
+        public PrefabType PrefabType => _prefabType;
 
-    public void ShowCurrentStage(int addValue = 0)
-    {
-        ShowPreviewPoint(false);
-        if (_currentStage >= 0)
-            _viewStages[_currentStage].SetActive(false);
+        public event Action<BuildActionType> OnTriggerAction;
+        public event Action<int> OnStageChange;
+        public event Action<float> OnUpdate;
 
-        OnStageChange?.Invoke(_currentStage += addValue);
-        for (int i = 0; i < _viewStages.Length; i++)
-            _viewStages[i].SetActive(i == _currentStage);
-    }
+        private void OnEnable() => ShowCurrentStage();
+        private void Update() => OnUpdate?.Invoke(Time.deltaTime);
 
-    private void ShowPreviewPoint(bool toShow)
-    {
-        for(int i = 0; i < _previews.Length; i++)
+        private void OnTriggerEnter(Collider other)
         {
-            _previews[i].SetActive(false);
-            if(i == _currentStage + 1)
-                _previews[i].SetActive(toShow);
+            if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
+                OnTriggerAction?.Invoke(BuildActionType.Show);
         }
-    }
 
-    private void OnDestroy()
-    {
-        OnTriggerAction = null;
-        OnUpdate = null;
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
+                OnTriggerAction?.Invoke(BuildActionType.PutAway);
+        }
+
+        public void React(BuildActionType action)
+        {
+            if (action == BuildActionType.Build || action == BuildActionType.Upgrade)
+                ShowCurrentStage(1);
+            else
+                ShowPreviewPoint(action == BuildActionType.Show);
+        }
+
+        public void ShowCurrentStage(int addValue = 0)
+        {
+            ShowPreviewPoint(false);
+            if (_currentStage >= 0)
+                _viewStages[_currentStage].SetActive(false);
+
+            OnStageChange?.Invoke(_currentStage += addValue);
+            for (int i = 0; i < _viewStages.Length; i++)
+                _viewStages[i].SetActive(i == _currentStage);
+        }
+
+        private void ShowPreviewPoint(bool toShow)
+        {
+            for (int i = 0; i < _previews.Length; i++)
+            {
+                _previews[i].SetActive(false);
+                if (i == _currentStage + 1)
+                    _previews[i].SetActive(toShow);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            OnTriggerAction = null;
+            OnUpdate = null;
+        }
     }
 }

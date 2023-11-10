@@ -2,21 +2,21 @@ using System;
 using Code.Units;
 using Code.Pools;
 using UnityEngine;
+using Code.Weapons;
 
 public class CombatService : IService
 {
-    private readonly SingleTypePool<ArrowView> _arrowPool;
-    private readonly ArrowView _arrowView;
+    //private readonly SingleTypePool<ArrowView> _arrowPool;
+    private readonly MultiPool<WeaponView> _weaponPool;
     private readonly Collider[] _colliders;
     private LayerMask _enemyMask;
     private LayerMask _playerMask;
     private LayerMask _buildingMask;
     private LayerMask _allyMask;
 
-    public CombatService(ArrowView arrowPrefab)
+    public CombatService(WeaponList weaponList)
     {
-        _arrowView = arrowPrefab;
-        _arrowPool = new SingleTypePool<ArrowView>(_arrowView);
+        _weaponPool = new ObjectMultiPool(weaponList);
         _enemyMask = LayerMask.GetMask("Enemies");
         _playerMask = LayerMask.GetMask("Player");
         _buildingMask = LayerMask.GetMask("Building");
@@ -52,7 +52,7 @@ public class CombatService : IService
     private void ShootArrow(int numberOfFounds, Vector3 origin)
     {
         var result = FindClosestOpponent(numberOfFounds, origin);
-        ArrowView arrow = _arrowPool.Spawn();
+        ArrowView arrow = (ArrowView)_weaponPool.Spawn(PrefabType.Arrow);
         arrow.OnReachTarget += DespawnArrow;
         arrow.AssignTarget(origin, result);
     }
@@ -77,7 +77,7 @@ public class CombatService : IService
 
     private void DespawnArrow(ArrowView arrow)
     {
-        _arrowPool.Despawn(arrow);
-        arrow.OnReachTarget -= DespawnArrow; 
+        _weaponPool.Despawn(arrow);
+        arrow.OnReachTarget -= DespawnArrow;
     }
 }

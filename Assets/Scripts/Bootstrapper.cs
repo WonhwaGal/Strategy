@@ -4,6 +4,7 @@ using Code.Construction;
 using Code.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Code.Weapons;
 
 namespace Code.SceneLoaders
 {
@@ -13,7 +14,7 @@ namespace Code.SceneLoaders
         [SerializeField] private ConstructionSO _constructionSO;
         [SerializeField] private ConstructionPrefabs _buildingPrefabs;
         [SerializeField] private UnitPrefabs _unitPrefabs;
-        [SerializeField] private ArrowView _arrowView;
+        [SerializeField] private WeaponList _weaponList;
 
         private const string GameScene = "GameScene";
 
@@ -43,7 +44,7 @@ namespace Code.SceneLoaders
         {
             _input = ServiceLocator.Container.RegisterAndAssign<IInputService>(new KeyboardInput());
             ServiceLocator.Container.Register(new StrategyHandler());
-            ServiceLocator.Container.Register(new CombatService(_arrowView));
+            ServiceLocator.Container.Register(new CombatService(_weaponList));
             _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));

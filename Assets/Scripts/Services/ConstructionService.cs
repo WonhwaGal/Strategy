@@ -16,8 +16,7 @@ namespace Code.Construction
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
         {
             _constructionSO = constructionSO;
-            _registry = new PresenterRegistry(
-                new ConstructionPool<ConstructionView>(prefabs));
+            _registry = new PresenterRegistry(new ConstructionMultiPool(prefabs));
         }
 
         public void StartLevel(int lvlNumber)
