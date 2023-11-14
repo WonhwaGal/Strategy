@@ -16,3 +16,6 @@ MonoBehaviour:
   - Name: Arrow
     WeaponType: 50
     WeaponPrefab: {fileID: 6358702822060077249, guid: 79bc8c84b6390b14a9c18e4f5145826e, type: 3}
+  - Name: AreaSword
+    WeaponType: 51
+    WeaponPrefab: {fileID: 1922903439988031481, guid: 8d482a7cf3af9574a9b4f683cbb34cf5, type: 3}

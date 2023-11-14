@@ -7,9 +7,11 @@ namespace Code.Strategy
         {
             IStrategy strategy = type switch
             {
-                PrefabType.Castle => new TestStrategy(),
+                PrefabType.Castle => new CombatBuildingStrategy(),
+                PrefabType.Tower => new CombatBuildingStrategy(),
                 PrefabType.Player => new PlayerStrategy(),
-                _ => new TestStrategy(),
+                PrefabType.Enemy => new InfantryStrategy(),
+                _ => new PassiveStrategy(),
             };
             return strategy;
         }

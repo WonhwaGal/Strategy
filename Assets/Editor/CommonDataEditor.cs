@@ -16,6 +16,7 @@ public sealed class CommonDataEditor : Editor
 
         _commonData.Defense = EditorGUILayout.IntField("Defense", _commonData.Defense);
         _commonData.AttackRadius = EditorGUILayout.FloatField("AttackRadius", _commonData.AttackRadius);
+        _commonData.AttackInterval = EditorGUILayout.FloatField("AttackInterval", _commonData.AttackInterval);
         _commonData.TotalStages = EditorGUILayout.IntSlider("TotalStages", _commonData.TotalStages, 2, _maxStageNumber);
 
         EditorGUILayout.Space(7);

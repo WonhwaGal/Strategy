@@ -1,10 +1,9 @@
 ﻿using Code.Construction;
-using System;
 
 namespace Code.Strategy
 {
-    public interface IConstructionStrategy : IStrategy, ICloneable
+    public interface IConstructionStrategy : IStrategy
     {
-        void Execute(ConstructionModel model);
+        void Execute(ConstructionModel model, float delta);
     }
 }

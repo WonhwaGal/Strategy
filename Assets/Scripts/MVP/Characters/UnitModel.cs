@@ -28,7 +28,9 @@ namespace Code.Units
             {
                 _hp = value;
                 if(_hp <= 0)
-                    OnDestroyed?.Invoke();
+                {
+                    OnKilled?.Invoke();
+                }
             }
         }
         public float Speed { get; set; }
@@ -36,7 +38,7 @@ namespace Code.Units
         public float AttackInterval { get; private set; }
         public int Damage { get; private set; }  // which DAMAGE is this?
 
-        public event Action OnDestroyed;
+        public event Action OnKilled;
 
         public void Dispose() { }
     }

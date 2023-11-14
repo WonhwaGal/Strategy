@@ -2,11 +2,12 @@ using System;
 using UnityEngine;
 using Code.Pools;
 
-namespace Code.Weapons
+namespace Code.Combat
 {
     public class ArrowView : WeaponView
     {
         [SerializeField] private float _speed;
+
         [SerializeField, Range(0.1f, 2)] private float _height = 1.5f;
 
         private Transform _target;
@@ -25,7 +26,7 @@ namespace Code.Weapons
 
         private void Update()
         {
-            if (_target == null)
+            if (_target == null || !_target.gameObject.activeSelf)
             {
                 if (_lastTargetPos == Vector3.zero)
                     return;
@@ -40,7 +41,7 @@ namespace Code.Weapons
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_target == null && _totalLength != 0)
+            if (_totalLength != 0 && (!_target.gameObject.activeSelf || _target == null))
                 ReturnToPool();
         }
 

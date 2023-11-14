@@ -1,4 +1,4 @@
-﻿using Code.Units;
+﻿
 
 namespace Code.Input
 {
@@ -11,6 +11,7 @@ namespace Code.Input
         private const string Vertical = "Vertical";
 
         public event Action OnPressSpace;
+
         public Vector3 GetInput()
         {
             if(Input.GetKeyUp(KeyCode.Space))

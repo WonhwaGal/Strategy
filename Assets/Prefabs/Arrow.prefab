@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabType: 50
+  _damage: 20
   _speed: 12
   _height: 1.5
 --- !u!23 &3592874516824967807

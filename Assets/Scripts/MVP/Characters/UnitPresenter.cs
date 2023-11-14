@@ -4,14 +4,12 @@ using UnityEngine;
 
 namespace Code.Units
 {
-    public abstract class UnitPresenter : IDisposable
+    public abstract class UnitPresenter : IPresenter
     {
         protected readonly UnitView _view;
         protected readonly UnitModel _model;
         protected readonly IUnitStrategy _strategy;
         protected readonly HPBar _hpBar;
-
-        public event Action<UnitPresenter> OnBeingKilled;
 
         public UnitPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy)
         {
@@ -19,31 +17,49 @@ namespace Code.Units
             _model = model;
             _strategy = moveStrategy;
             _hpBar = view.HPBar;
-            _hpBar.MaxSliderValue = _model.HP;
-            _hpBar.ChangeHPSlider(_model.HP);
+            _hpBar.SetMaxValue(_model.HP);
+            _model.OnKilled += Die;
             _view.OnUpdate += Update;
             _view.OnReceiveDamage += ReceiveDamage;
-            _model.OnDestroyed += Die;
+            _view.OnViewDestroyed += Destroy;
         }
 
-        protected void Update(float deltaTime)
+        public event Action<PrefabType, GameObject, IPresenter> OnReadyForCombat;
+        public event Action<IPresenter, IUnitView> OnBeingKilled;
+        public event Action<UnitPresenter> OnRequestDestroy;
+
+        public void PlaceUnit(Vector3 pos) => _view.transform.position = pos;
+
+        public void ChangeStage(GameMode stage)
         {
-            _strategy.Execute(_model, _view, deltaTime);
+            if (stage == GameMode.IsNight)
+                OnReadyForCombat?.Invoke(_view.PrefabType, _view.gameObject, this);
+            OnStartNight(stage);
         }
+        protected virtual void OnStartNight(GameMode stage) { }
 
-        protected void ReceiveDamage()
+        public void ReceiveDamage(int damage) 
+            => _hpBar.ChangeHPSlider(_model.HP -= damage);
+
+        protected void Update(float deltaTime) 
+            => _strategy.Execute(_model, _view, deltaTime);
+
+        protected void Die()
         {
-            _model.HP -= _model.Damage;
-            _hpBar.ChangeHPSlider(_model.HP);
+            OnBeingKilled?.Invoke(this, _view);
+            _model.HP = (int)_hpBar.MaxSliderValue;
         }
 
-        protected void Die() => OnBeingKilled?.Invoke(this);
+        private void Destroy() => OnRequestDestroy?.Invoke(this);
 
         public virtual void Dispose()
         {
             _view.OnUpdate -= Update;
+            _model.OnKilled -= Die;
             _view.OnReceiveDamage -= ReceiveDamage;
-            _model.OnDestroyed -= Die;
+            _view.OnViewDestroyed += Destroy;
+            _strategy.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

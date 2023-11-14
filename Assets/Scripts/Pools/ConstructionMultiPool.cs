@@ -3,7 +3,7 @@ using Code.ScriptableObjects;
 
 namespace Code.Pools
 {
-    public sealed class ConstructionMultiPool : MultiPool<ConstructionView>
+    public sealed class ConstructionMultiPool : MultiPool<PrefabType, ConstructionView>
     {
         private readonly ConstructionPrefabs _prefabs;
 

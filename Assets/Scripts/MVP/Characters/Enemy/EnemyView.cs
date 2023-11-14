@@ -1,4 +1,4 @@
-using Code.Weapons;
+using Code.Combat;
 using UnityEngine;
 
 namespace Code.Units
@@ -10,7 +10,7 @@ namespace Code.Units
             if (other.TryGetComponent(out ArrowView arrow))
             {
                 arrow.ReturnToPool();
-                ReceiveDamage();
+                ReceiveDamage(arrow.Damage);
             }
         }
     }

@@ -9,6 +9,6 @@ namespace Code.Units
         PrefabType PrefabType { get; }
         float Radius { get; }
 
-        event Action OnDestroyed;
+        event Action OnKilled;
     }
 }

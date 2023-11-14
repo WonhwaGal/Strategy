@@ -1,41 +1,72 @@
-using Code.Units;
-using Code.ScriptableObjects;
+using System;
 using UnityEngine;
+using Code.Units;
+using Code.Construction;
+using Code.ScriptableObjects;
 using Code.Strategy;
+using Code.Pools;
+using static WaveSO;
+using Random = UnityEngine.Random;
 
-public class UnitService : IService
+public class UnitService : ICombatService
 {
     private readonly UnitSettingList _unitSetList;
-    private readonly PrefabSO<UnitView> _unitPrefabs;
     private readonly StrategyHandler _strategyHandler;
+    private readonly MultiPool<PrefabType, UnitView> _unitPool;
 
-    public UnitService(UnitSettingList unitSetList, PrefabSO<UnitView> prefabs)
+    public UnitService(UnitSettingList unitSetList, UnitPrefabs prefabs)
     {
         _unitSetList = unitSetList;
-        _unitPrefabs = prefabs;
+        _unitPool = new UnitMultiPool(prefabs);
         _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
     }
 
-    public void CreatePlayer()
+    public event Action<GameMode> OnChangeGameStage;
+    public event Action<PrefabType, GameObject, IPresenter> OnRegisterForCombat;
+
+    public void SwitchMode(GameMode mode) => OnChangeGameStage?.Invoke(mode);
+
+    public UnitPresenter CreateUnit(PrefabType type)
     {
-        var playerView = GameObject.Instantiate(
-            _unitPrefabs.FindPrefab(PrefabType.Player), Vector3.zero, Quaternion.identity);
-        var model = new UnitModel(_unitSetList.FindUnit(PrefabType.Player), playerView.transform);
-        var strategy = (IUnitStrategy)_strategyHandler.GetStrategy(PrefabType.Player);
-        new PlayerPresenter(playerView, model, strategy);
+        var view = _unitPool.Spawn(type);
+        var model = new UnitModel(_unitSetList.FindUnit(type), view.transform);
+        var strategy = (IUnitStrategy)_strategyHandler.GetStrategy(type);
+        UnitPresenter presenter = type == PrefabType.Player ? 
+            new PlayerPresenter(view, model, strategy) : new EnemyPresenter(view, model, strategy);
+        presenter.OnBeingKilled += ResetPresenter;
+        presenter.OnReadyForCombat += RegisterForCombat;
+        presenter.OnRequestDestroy += DestroyPresenter;
+        OnChangeGameStage += presenter.ChangeStage;
+        return presenter;
     }
 
-    public void CreateTestUnits()
+    public void CreateWave(LevelWaveData levelSpawns)
     {
-        var view = GameObject.Instantiate(
-            _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(32, 0.77f, 12), Quaternion.identity);
-        var model = new UnitModel(_unitSetList.FindUnit(PrefabType.Enemy), view.transform);
-        new EnemyPresenter(view, model, new TestUnitStrategy());
+        for (int i = 0; i < levelSpawns.SpawnSpots.Count; i++)
+        {
+            var spawnData = levelSpawns.SpawnSpots[i];
+            for (int j = 0; j < spawnData.EnemyQuantity; j++)
+            {
+                var presenter = CreateUnit(spawnData.EnemyType);
+                var spawnSpot = spawnData.SpawnCenter.position + 
+                    (Vector3)Random.insideUnitSphere * spawnData.SpawnRadius;
+                presenter.PlaceUnit(spawnSpot);
+            }
+        }
+    }
 
+    public void RegisterForCombat(PrefabType type, GameObject go, IPresenter presenter) 
+        => OnRegisterForCombat?.Invoke(type, go, presenter);
 
-        var view2 = GameObject.Instantiate(
-            _unitPrefabs.FindPrefab(PrefabType.Enemy), new Vector3(-12, 0.77f, 15), Quaternion.identity);
-        var model2 = new UnitModel(_unitSetList.FindUnit(PrefabType.Enemy), view.transform);
-        new EnemyPresenter(view2, model2, new TestUnitStrategy());
+    private void ResetPresenter(IPresenter presenter, IUnitView view) 
+        => _unitPool.Despawn(view.PrefabType, (UnitView)view);
+
+    public void DestroyPresenter(UnitPresenter presenter)
+    {
+        OnChangeGameStage -= presenter.ChangeStage;
+        presenter.OnBeingKilled -= ResetPresenter;
+        presenter.OnReadyForCombat -= RegisterForCombat;
+        presenter.OnRequestDestroy -= DestroyPresenter;
+        presenter.Dispose();
     }
 }

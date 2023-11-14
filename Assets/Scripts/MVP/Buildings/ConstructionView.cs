@@ -1,24 +1,29 @@
 ﻿using System;
-using Code.Pools;
 using Code.Units;
 using UnityEngine;
 
 namespace Code.Construction
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class ConstructionView : MonoBehaviour, IUnitView, ISpawnableType
+    public class ConstructionView : MonoBehaviour, IUnitView
     {
         [SerializeField] private PrefabType _prefabType;
         [SerializeField] private GameObject[] _previews;
         [SerializeField] private GameObject[] _viewStages;
+        [SerializeField] private GameObject _brokenView;
+        [SerializeField] private HPBar _hpBar;
 
         private int _currentStage = -1;
 
         public PrefabType PrefabType => _prefabType;
+        public GameObject GameObject => gameObject;
+        public HPBar HPBar => _hpBar;
+        public GameObject BrokenView => _brokenView;
 
         public event Action<BuildActionType> OnTriggerAction;
-        public event Action<int> OnStageChange;
+        public event Action<int> OnModeChange;
         public event Action<float> OnUpdate;
+        public event Action OnViewDestroyed;
 
         private void OnEnable() => ShowCurrentStage();
         private void Update() => OnUpdate?.Invoke(Time.deltaTime);
@@ -49,7 +54,7 @@ namespace Code.Construction
             if (_currentStage >= 0)
                 _viewStages[_currentStage].SetActive(false);
 
-            OnStageChange?.Invoke(_currentStage += addValue);
+            OnModeChange?.Invoke(_currentStage += addValue);
             for (int i = 0; i < _viewStages.Length; i++)
                 _viewStages[i].SetActive(i == _currentStage);
         }
@@ -62,12 +67,10 @@ namespace Code.Construction
                 if (i == _currentStage + 1)
                     _previews[i].SetActive(toShow);
             }
+            _brokenView.SetActive(false);
+            _hpBar.gameObject.SetActive(false);
         }
 
-        private void OnDestroy()
-        {
-            OnTriggerAction = null;
-            OnUpdate = null;
-        }
+        private void OnDestroy() => OnViewDestroyed?.Invoke();
     }
 }

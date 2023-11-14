@@ -7,10 +7,12 @@ namespace Code.Units
     {
         [SerializeField] private Slider _hpSlider;
 
-        public float MaxSliderValue { get => _hpSlider.maxValue; set => _hpSlider.maxValue = value; }
+        public float MaxSliderValue => _hpSlider.maxValue;
 
         private void OnEnable() => _hpSlider.value = MaxSliderValue;
 
         public void ChangeHPSlider(int currentValue) => _hpSlider.value = currentValue;
+
+        public void SetMaxValue(float value) => _hpSlider.maxValue = value;
     }
 }

@@ -7,12 +7,14 @@ namespace Code.Construction
     public class ConstructionModel : IConstructionModel
     {
         private int _defense;
+
         public ConstructionModel(SingleBuildingData data)
         {
             _defense = data.CommonInfo.Defense;
             PrefabType = data.PrefabType;
             Transform = data.Transform;
             Radius = data.CommonInfo.AttackRadius;
+            AttackInterval = data.CommonInfo.AttackInterval;
             AutoUpgrades = data.CommonInfo.AutoUpgrades;
             TotalStages = data.CommonInfo.TotalStages;
             PriceList = data.CommonInfo.PriceList;
@@ -30,10 +32,11 @@ namespace Code.Construction
             {
                 _defense = value;
                 if (_defense <= 0)
-                    OnDestroyed?.Invoke();
+                    OnKilled?.Invoke();
             }
         }
         public float Radius { get; private set; }
+        public float AttackInterval { get; private set; }
         public int ID { get; set; }
         public int ActivatedBy { get; set; }
         public bool AutoVisible { get; set; }
@@ -42,9 +45,7 @@ namespace Code.Construction
         public bool[] AutoUpgrades { get; set; }
         public int[] PriceList { get; set; }
 
-        public event Action OnDestroyed;
-
-        public object Clone() => this.MemberwiseClone();
+        public event Action OnKilled;
 
         public void Dispose() { }
     }

@@ -18,7 +18,7 @@ MonoBehaviour:
     BuildingList:
     - Name: Castle
       <PrefabType>k__BackingField: 1
-      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
+      <Transform>k__BackingField: {fileID: 6150147399341352769, guid: 168a8feefc461ba44be54c04c227a4b6, type: 3}
       <UniqueInfo>k__BackingField:
         <AutoVisible>k__BackingField: 1
         <ID>k__BackingField: 1
@@ -72,3 +72,6 @@ MonoBehaviour:
         <ID>k__BackingField: 7
         <ActivatedBy>k__BackingField: 3
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: 4291dd6dba85beb4c915efad979329a0, type: 2}
+  - Name: Level_2
+    Level: 2
+    BuildingList: []

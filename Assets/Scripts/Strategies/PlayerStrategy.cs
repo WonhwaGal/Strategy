@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Code.Input;
 using Code.Units;
+using Code.Combat;
 
 namespace Code.Strategy
 {
@@ -19,11 +20,16 @@ namespace Code.Strategy
             _input.OnPressSpace += ActivateAbility;
         }
 
+        public bool IsNight { get; set; }
+
         public void Execute(UnitModel model, UnitView view, float delta)
         {
             Move(model, view);
-            CountDown(model, delta);
-            UseAbility(model);
+            if (IsNight)
+            {
+                CountDown(model, delta);
+                UseAbility(model);
+            }
         }
 
         private void Move(UnitModel model, UnitView view)
@@ -43,16 +49,20 @@ namespace Code.Strategy
             }
         }
 
-        private void ActivateAbility() => _abilityActive = true;
+        private void ActivateAbility() => _abilityActive = IsNight;
+
         private void UseAbility(UnitModel model)
         {
             if (!_abilityActive)
                 return;
+
             Attack(model, AttackType.AreaSword);
             _abilityActive = false;
         }
 
         private void Attack(IModel model, AttackType attack) =>
             _combatService.CheckForTargets(model, attack);
+
+        public void Dispose() => _input.OnPressSpace -= ActivateAbility;
     }
 }

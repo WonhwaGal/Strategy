@@ -1,15 +1,14 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code.Pools
 {
-    public abstract class MultiPool<T> : IService
+    public abstract class MultiPool<K, T> : IService
         where T : MonoBehaviour, ISpawnableType
     {
-        private readonly Dictionary<Enum, SinglePool> _pools = new();
+        private readonly Dictionary<K, SinglePool> _pools = new();
 
-        public T Spawn(PrefabType type)
+        public T Spawn(K type)
         {
             if (!_pools.TryGetValue(type, out SinglePool pool))
             {
@@ -20,15 +19,15 @@ namespace Code.Pools
             return pool.Spawn();
         }
 
-        public void Despawn(T prefab)
+        public void Despawn(K key,T prefab)
         {
-            if (_pools.ContainsKey(prefab.PrefabType))
-                _pools[prefab.PrefabType].Despawn(prefab);
+            if (_pools.ContainsKey(key))
+                _pools[key].Despawn(prefab);
             else
                 GameObject.Destroy(prefab);
         }
 
-        protected abstract T GetPrefab(PrefabType type);
+        protected abstract T GetPrefab(K type);
         public virtual void OnSpawned(T result, ISpawnableType data) { }
 
         private sealed class SinglePool : BaseSinglePool<T>

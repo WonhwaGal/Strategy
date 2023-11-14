@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd686bd4fd7bbf8418dfcccbe3f1652d, type: 3}
+  m_Name: WaveSO
+  m_EditorClassIdentifier: 
+  _waves:
+  - Name: Wave_Level_1
+    Level: 1
+    SpawnSpots:
+    - EnemyType: 30
+      EnemyQuantity: 5
+      SpawnCenter: {fileID: 5115164992374440404, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
+      SpawnRadius: 8

@@ -8,6 +8,7 @@ namespace Code.ScriptableObjects
         public int Defense;
         public int TotalStages;
         public float AttackRadius;
+        public float AttackInterval;
         [field: SerializeField] public bool[] AutoUpgrades { get; private set; }
         [field: SerializeField] public int[] PriceList { get; private set; }
     }

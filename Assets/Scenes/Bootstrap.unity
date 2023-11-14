@@ -256,3 +256,4 @@ MonoBehaviour:
   _buildingPrefabs: {fileID: 11400000, guid: dde8ca16b0b7671489780f43123ae93b, type: 2}
   _unitPrefabs: {fileID: 11400000, guid: 620877041b702c847a1daaa9370010da, type: 2}
   _weaponList: {fileID: 11400000, guid: 4b71754f61488ad46b068b12cfa21bc5, type: 2}
+  _wavesList: {fileID: 11400000, guid: 6a11192e50937e94ca46fc57b9da77b1, type: 2}

@@ -1,47 +1,65 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Code.Pools;
 using Code.ScriptableObjects;
 
 namespace Code.Construction
 {
-    public sealed class ConstructionService : IService
+    public sealed class ConstructionService : ICombatService
     {
         private readonly ConstructionSO _constructionSO;
-        private readonly PresenterRegistry _registry;
+        private readonly ConstructionRegistry _registry;
         private IConstructionModel _choosenModel;
-
-        public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
+        private bool _isNight;
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
         {
             _constructionSO = constructionSO;
-            _registry = new PresenterRegistry(new ConstructionMultiPool(prefabs));
+            _registry = new ConstructionRegistry(new ConstructionMultiPool(prefabs));
         }
+
+        public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
+        public event Action<PrefabType, GameObject, IPresenter> OnRegisterForCombat;
+        public event Action<GameMode> OnChangeGameStage;
 
         public void StartLevel(int lvlNumber)
             => CreatePresenters(_constructionSO.FindBuildingsOfLevel(lvlNumber));
 
         private void CreatePresenters(List<SingleBuildingData> buildings)
         {
+            if (buildings == null)
+                return;
+
             for (int i = 0; i < buildings.Count; i++)
             {
                 var presenter = _registry.CreatePresenter(buildings[i]);
-                presenter.OnDestroyObj += DestroyBuilding;
                 presenter.OnViewTriggered += SendTriggerNotification;
+                presenter.OnReadyForCombat += RegisterForCombat;
+                presenter.OnRequestDestroy += DestroyPresenter;
+                OnChangeGameStage += presenter.ChangeStage;
                 OnNotifyConnections += presenter.CheckOwnConnection;
             }
         }
 
-        public void TryToBuild() // when Space key pressed
+        public void SwitchMode(GameMode mode)
         {
-            if (_choosenModel == null || _choosenModel.CurrentStage >= _choosenModel.TotalStages)
-                return;
+            _isNight = mode == GameMode.IsNight;
+            OnChangeGameStage?.Invoke(mode);
+        }
 
-            if(_choosenModel.CurrentStage == 0)
-                SendTriggerNotification(_choosenModel, BuildActionType.Build);
-            else
-                SendTriggerNotification(_choosenModel, BuildActionType.Upgrade);
+        public void RegisterForCombat(PrefabType type, GameObject go, IPresenter presenter)
+            => OnRegisterForCombat?.Invoke(type, go, presenter);
+
+        public bool ReadyToBuild() // when Space key pressed
+        {
+            if (_choosenModel != null && _choosenModel.CurrentStage < _choosenModel.TotalStages)
+            {
+                NotifyOnTrigger();
+                return true;
+            }
+
+            return false;
         }
 
         public void Upgrade()
@@ -50,8 +68,19 @@ namespace Code.Construction
                 SendTriggerNotification(_choosenModel, BuildActionType.Build);
         }
 
+        private void NotifyOnTrigger()
+        {
+            if (_choosenModel.CurrentStage == 0)
+                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+            else
+                SendTriggerNotification(_choosenModel, BuildActionType.Upgrade);
+        }
+
         private void SendTriggerNotification(IConstructionModel model, BuildActionType action)
         {
+            if (_isNight)
+                return;
+
             OnNotifyConnections?.Invoke(model, action);
             if (action == BuildActionType.PutAway)
                 _choosenModel = null;
@@ -59,12 +88,14 @@ namespace Code.Construction
                 _choosenModel = model;
         }
 
-        private void DestroyBuilding(ConstructionPresenter presenter)
+        private void DestroyPresenter(ConstructionPresenter presenter)
         {
-            presenter.Dispose();
-            presenter.OnDestroyObj -= DestroyBuilding;
-            presenter.OnViewTriggered -= SendTriggerNotification;
+            OnChangeGameStage -= presenter.ChangeStage;
             OnNotifyConnections -= presenter.CheckOwnConnection;
+            presenter.OnRequestDestroy -= DestroyPresenter;
+            presenter.OnViewTriggered -= SendTriggerNotification;
+            presenter.OnReadyForCombat -= RegisterForCombat;
+            presenter.Dispose();
         }
     }
 }
