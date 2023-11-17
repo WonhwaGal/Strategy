@@ -14,7 +14,8 @@ namespace Code.Combat
         private Vector3 _lastTargetPos;
         private Vector3 _origin;
         private float _parabolaWidthMultiplier;
-        private float _totalLength;
+        private float _totalDist;
+        private float _currentDist;
 
         public event Action<ArrowView> OnReachTarget;
 
@@ -41,21 +42,17 @@ namespace Code.Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_totalLength != 0 && (!_target.gameObject.activeSelf || _target == null))
+            if (_totalDist != 0 && (!_target.gameObject.activeSelf || _target == null))
                 ReturnToPool();
         }
 
         public void MoveInTrajectory()
         {
-            float currentProgress = (transform.position - _origin).magnitude / _totalLength;
-            currentProgress *= _parabolaWidthMultiplier;
-            float yAdd = (Mathf.Pow(currentProgress, 2) - _height) * -1;
-
-            var newDir = (_lastTargetPos - transform.position).normalized + new Vector3(0, yAdd, 0);
+            var newDir = GetDirection();
             _rb.velocity = newDir.normalized * _speed;
 
             var newRot = Quaternion.LookRotation(newDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRot, currentProgress);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRot, _currentDist);
         }
 
         public void AssignTarget(Vector3 origin, Transform target)
@@ -64,11 +61,19 @@ namespace Code.Combat
             _lastTargetPos = _target.position;
             _origin = origin;
             transform.position = _origin;
-            var dir = target.position - origin;
-            transform.rotation = Quaternion.LookRotation(dir);
 
             _parabolaWidthMultiplier = Mathf.Sqrt(_height);
-            _totalLength = (target.position - origin).magnitude;
+            _totalDist = (target.position - origin).magnitude;
+            transform.rotation = Quaternion.LookRotation(GetDirection());
+        }
+
+        private Vector3 GetDirection()
+        {
+            _currentDist = (transform.position - _origin).magnitude / _totalDist;
+            _currentDist *= _parabolaWidthMultiplier;
+            float yAdd = (Mathf.Pow(_currentDist, 2) - _height) * -1;
+
+            return (_lastTargetPos - transform.position).normalized + new Vector3(0, yAdd, 0);
         }
 
         public void ReturnToPool() => OnReachTarget?.Invoke(this);
@@ -79,7 +84,7 @@ namespace Code.Combat
             _lastTargetPos = Vector3.zero;
             _origin = Vector3.zero;
             _parabolaWidthMultiplier = 0;
-            _totalLength = 0;
+            _totalDist = 0;
         }
     }
 }

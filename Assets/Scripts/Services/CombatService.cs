@@ -1,26 +1,20 @@
-using System;
 using UnityEngine;
 using Code.Units;
+using Code.Pools;
 
 namespace Code.Combat
 {
     public sealed class CombatService : IService
     {
-        private readonly AttackHolder _weaponHolder;
-        private readonly Collider[] _colliders;
+        private readonly ObjectMultiPool _weaponPool;
         private LayerMask _enemyMask;
         private LayerMask _playerMask;
         private LayerMask _buildingMask;
         private LayerMask _allyMask;
-        private const int EnemyStartIndex = 30;
-
-        private BasePresentorWaveCollection<IPresenter> _enemies;
-        private BasePresentorWaveCollection<IPresenter> _allies;
 
         public CombatService(WeaponList weaponList)
         {
-            _colliders = new Collider[25];
-            _weaponHolder = new (weaponList, _colliders);
+            _weaponPool = new ObjectMultiPool(weaponList);
             _enemyMask = LayerMask.GetMask("Enemies");
             _playerMask = LayerMask.GetMask("Player");
             _buildingMask = LayerMask.GetMask("Building");
@@ -29,80 +23,40 @@ namespace Code.Combat
 
         public Vector3 Castle { get; set; }
 
-        public event Action<bool> OnCombatEnded;
-
-        public void RegisterParticipants(PrefabType type, GameObject go, IPresenter presenter)
-        {
-            if ((int)type >= EnemyStartIndex)
-                AddEnemy(go, presenter);
-            else
-                AddAlly(type, go, presenter);
-        }
-
-        private void AddEnemy(GameObject go, IPresenter presenter)
-        {
-            if (_enemies == null)
-            {
-                _enemies = new EnemyWaveCollection();
-                _enemies.OnWaveOver += OnNightOver;
-            }
-            _enemies.AddToCollection(go, presenter);
-        }
-
-        private void AddAlly(PrefabType type, GameObject go, IPresenter presenter)
-        {
-            if (_allies == null)
-            {
-                _allies = new AlliesWaveCollection();
-                _allies.OnWaveOver += OnNightOver;
-            }
-
-            if (type == PrefabType.Castle)
-                ((AlliesWaveCollection)_allies).AddCastle(presenter);
-            else
-                _allies.AddToCollection(go, presenter);
-        }
-
         public void CheckForTargets(IModel model, AttackType attack)
         {
-            if ((int)model.PrefabType <= (int)PrefabType.Player)
-                ScanArea(model.Transform.position, model.Radius, _enemyMask, attack);
-            else
-                ScanArea(model.Transform.position, model.Radius, _playerMask | _buildingMask | _allyMask, attack);
-        }
-
-        private void ScanArea(Vector3 origin, float radius, int mask, AttackType attack)
-        {
-            int number = Physics.OverlapSphereNonAlloc(origin, radius, _colliders, mask);
-            if (number == 0)
-                return;
+            var mask = GetMask(model.PrefabType);
 
             switch (attack)
             {
                 case AttackType.Arrow:
-                    _weaponHolder.ShootArrow(number, origin);
+                    AttackHandler.ShootArrow(model, mask, GetArrow());
                     break;
                 case AttackType.AreaSword:
-                    _weaponHolder.SwordAreaAttack(number, _enemies);
+                    AttackHandler.SwordAreaAttack(model, mask, WaveLocator.GetCollection("Enemy"));
                     break;
             }
         }
 
-        private void OnNightOver(bool isVictory)
+        private LayerMask GetMask(PrefabType type)
         {
-            if (isVictory)
-            {
-                Debug.Log("Wave is defeated");
-                _enemies.Dispose();
-                _allies.Dispose();
-                _enemies = null;
-                _allies = null;
-            }
+            if ((int)type <= (int)PrefabType.Player)
+                return _enemyMask;
             else
-            {
-                Debug.Log("Wave has destroyed the castle");
-            }
-            OnCombatEnded?.Invoke(isVictory);
+                return _playerMask | _buildingMask | _allyMask;
+        }
+
+        private ArrowView GetArrow()
+        {
+            var arrow = (ArrowView)_weaponPool.Spawn(PrefabType.Arrow);
+            arrow.OnReachTarget += DespawnArrow;
+            return arrow;
+        }
+
+        private void DespawnArrow(ArrowView arrow)
+        {
+            _weaponPool.Despawn(PrefabType.Arrow, arrow);
+            arrow.OnReachTarget -= DespawnArrow;
         }
     }
 }

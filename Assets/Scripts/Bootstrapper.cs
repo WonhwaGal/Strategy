@@ -22,7 +22,6 @@ namespace Code.SceneLoaders
         private IInputService _input;
         private UnitService _unitService;
         private LevelService _levelService;
-        private CombatService _combatService;
         private ConstructionService _constructionService;
 
         private void Awake() => DontDestroyOnLoad(this);
@@ -46,7 +45,7 @@ namespace Code.SceneLoaders
         {
             _input = ServiceLocator.Container.RegisterAndAssign<IInputService>(new KeyboardInput());
             ServiceLocator.Container.Register(new StrategyHandler());
-            _combatService = ServiceLocator.Container.RegisterAndAssign(new CombatService(_weaponList));
+            ServiceLocator.Container.Register(new CombatService(_weaponList));
             _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));
@@ -60,9 +59,6 @@ namespace Code.SceneLoaders
             _levelService.OnCreatingWaves += _unitService.CreateWave;
             _levelService.OnChangingGameMode += _unitService.SwitchMode;
             _levelService.OnChangingGameMode += _constructionService.SwitchMode;
-            _unitService.OnRegisterForCombat += _combatService.RegisterParticipants;
-            _constructionService.OnRegisterForCombat += _combatService.RegisterParticipants;
-            _combatService.OnCombatEnded += _levelService.SwitchToDay;
         }
 
         private void OnDestroy()
@@ -71,9 +67,6 @@ namespace Code.SceneLoaders
             _levelService.OnCreatingWaves -= _unitService.CreateWave;
             _levelService.OnChangingGameMode -= _unitService.SwitchMode;
             _levelService.OnChangingGameMode -= _constructionService.SwitchMode;
-            _unitService.OnRegisterForCombat -= _combatService.RegisterParticipants;
-            _constructionService.OnRegisterForCombat -= _combatService.RegisterParticipants;
-            _combatService.OnCombatEnded -= _levelService.SwitchToDay;
         }
     }
 }

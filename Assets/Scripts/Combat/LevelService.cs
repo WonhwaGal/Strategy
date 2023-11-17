@@ -14,6 +14,7 @@ namespace Code.Combat
         {
             _wavesData = wavesData;
             _construction = ServiceLocator.Container.RequestFor<ConstructionService>();
+            WaveLocator.SubscribeToWaveOver(SwitchToDay);
         }
 
         public int Level { get; private set; } = 1;

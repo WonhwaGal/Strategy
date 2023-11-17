@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Code.Combat
 {
-    public abstract class BasePresentorWaveCollection<T> : IDisposable where T : IPresenter
+    public abstract class BaseWaveCollection<T> : IDisposable where T : IPresenter
     {
         protected Dictionary<GameObject, T> _participants = new();
 

@@ -2,7 +2,7 @@
 
 namespace Code.Combat
 {
-    public sealed class AlliesWaveCollection : BasePresentorWaveCollection<IPresenter>
+    public sealed class BuildingWaveCollection : BaseWaveCollection<IPresenter>
     {
         public IPresenter Castle;
 

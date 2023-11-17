@@ -8,8 +8,6 @@ namespace Code.Pools
 
         public ObjectMultiPool(WeaponList prefabs) => _prefabs = prefabs;
 
-        public int GetDamage(PrefabType type) => GetPrefab(type).Damage;
-
         protected override WeaponView GetPrefab(PrefabType type) => _prefabs.FindPrefab(type);
     }
 }
