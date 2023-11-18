@@ -12,6 +12,7 @@ namespace Code.Strategy
         private Vector3 _targetPos;
         private float _currentInterval = 0;
         private bool _abilityActive;
+        private bool _isNight;
 
         public PlayerStrategy()
         {
@@ -20,16 +21,23 @@ namespace Code.Strategy
             _input.OnPressSpace += ActivateAbility;
         }
 
-        public bool IsNight { get; set; }
+        public void Init(IUnitPresenter presenter) { }
 
-        public void Execute(UnitModel model, UnitView view, float delta)
+        public void Execute(IUnitPresenter presenter, float delta)
         {
-            Move(model, view);
-            if (IsNight)
+            Move(presenter.Model, presenter.View);
+            if (_isNight)
             {
-                CountDown(model, delta);
-                UseAbility(model);
+                CountDown(presenter.Model, delta);
+                UseAbility(presenter.Model);
             }
+        }
+
+        public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
+        {
+             _isNight = mode == GameMode.IsNight;
+            if(mode == GameMode.IsNight)
+                WaveLocator.ParticipateInCombat(PrefabType.Player, presenter.View.gameObject, presenter);
         }
 
         private void Move(UnitModel model, UnitView view)
@@ -49,7 +57,7 @@ namespace Code.Strategy
             }
         }
 
-        private void ActivateAbility() => _abilityActive = IsNight;
+        private void ActivateAbility() => _abilityActive = _isNight;
 
         private void UseAbility(UnitModel model)
         {

@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 6539363094206887993}
   - component: {fileID: 7849846874868591126}
   - component: {fileID: 3186657878189993018}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ViewStage_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6539363094206887993
 Transform:
   m_ObjectHideFlags: 0
@@ -539,13 +539,14 @@ GameObject:
   - component: {fileID: 3275029141039828264}
   - component: {fileID: 4760399714931464489}
   - component: {fileID: 1834899266051113762}
-  m_Layer: 0
+  - component: {fileID: 6835925884525276827}
+  m_Layer: 9
   m_Name: ViewStage_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3275029141039828264
 Transform:
   m_ObjectHideFlags: 0
@@ -611,6 +612,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!208 &6835925884525276827
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6043455098414384142}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.45, y: 0.5, z: 0.45}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: -0.5, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &6091426018889841358
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,6 +730,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1818370437229421249, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2645391787430370132, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -725,9 +746,21 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3084772966694093465, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818077330155711961, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4027121954720227828, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Name
       value: HPSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 4027121954720227828, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4843383771458490566, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Pivot.x
@@ -823,6 +856,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4843383771458490566, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574561522924474164, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972406499630698009, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6523131368943631110, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}

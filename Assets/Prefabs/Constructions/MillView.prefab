@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3391148805609087616}
   - component: {fileID: 3746664636841481703}
   - component: {fileID: 2491692813532292697}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ViewStage_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,9 +543,25 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1818370437229421249, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084772966694093465, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818077330155711961, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4027121954720227828, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Name
       value: HPSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 4027121954720227828, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4843383771458490566, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Pivot.x
@@ -641,6 +657,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4843383771458490566, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574561522924474164, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972406499630698009, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6523131368943631110, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}

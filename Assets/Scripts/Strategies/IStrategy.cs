@@ -1,7 +1,5 @@
-﻿namespace Code.Strategy
+﻿
+namespace Code.Strategy
 {
-    public interface IStrategy
-    {
-        bool IsNight { get; set; }
-    }
+    public interface IStrategy { }
 }

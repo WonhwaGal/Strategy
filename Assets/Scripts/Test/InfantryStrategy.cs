@@ -12,15 +12,9 @@ namespace Code.Strategy
         public InfantryStrategy()
         {
             _combatService = ServiceLocator.Container.RequestFor<CombatService>();
-            AssignTarget(_combatService.Castle);
         }
 
         public bool IsNight { get; set; }
-
-        public void Execute(UnitModel model, UnitView view, float delta)
-        {
-            Move(model, view);
-        }
 
         private Vector3 AssignTarget(Vector3 target) => _targetPos = target;
 
@@ -31,6 +25,18 @@ namespace Code.Strategy
         }
 
         public void Dispose()
+        {
+        }
+
+        public void Init(IUnitPresenter presenter)
+        {
+        }
+
+        public void Execute(IUnitPresenter presenter, float delta)
+        {
+        }
+
+        public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
         }
     }

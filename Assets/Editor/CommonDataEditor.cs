@@ -15,14 +15,24 @@ public sealed class CommonDataEditor : Editor
         serializedObject.Update();
 
         _commonData.Defense = EditorGUILayout.IntField("Defense", _commonData.Defense);
-        _commonData.AttackRadius = EditorGUILayout.FloatField("AttackRadius", _commonData.AttackRadius);
-        _commonData.AttackInterval = EditorGUILayout.FloatField("AttackInterval", _commonData.AttackInterval);
+
+        _commonData.IsForCombat = EditorGUILayout.BeginToggleGroup("Is for Combat", _commonData.IsForCombat);
+        if (_commonData.IsForCombat)
+        {
+            _commonData.CloseRadius = EditorGUILayout.FloatField("CloseRadius", _commonData.CloseRadius);
+            _commonData.AttackRadius = EditorGUILayout.FloatField("AttackRadius", _commonData.AttackRadius);
+            _commonData.AttackInterval = EditorGUILayout.FloatField("AttackInterval", _commonData.AttackInterval);
+        }
+        EditorGUILayout.EndToggleGroup();
+
+        EditorGUILayout.Space(5);
         _commonData.TotalStages = EditorGUILayout.IntSlider("TotalStages", _commonData.TotalStages, 2, _maxStageNumber);
 
         EditorGUILayout.Space(7);
         ShowArrayProperty(serializedObject.FindProperty("<AutoUpgrades>k__BackingField"),
             serializedObject.FindProperty("<PriceList>k__BackingField"));
 
+        EditorUtility.SetDirty(_commonData);
         serializedObject.ApplyModifiedProperties();
     }
 

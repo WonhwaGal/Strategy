@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559b4b00fa8dc68428103e3c64b05c8a, type: 3}
   m_Name: TowerCommon
   m_EditorClassIdentifier: 
-  PrefabType: 3
   Defense: 50
   TotalStages: 2
+  IsForCombat: 1
+  CloseRadius: 5
   AttackRadius: 30
+  AttackInterval: 2
   <AutoUpgrades>k__BackingField: 01000000
   <PriceList>k__BackingField: 03000000040000000400000004000000

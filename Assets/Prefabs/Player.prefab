@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6565988345918906307}
   - component: {fileID: 2308141264000036370}
   - component: {fileID: 5676139044146651172}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 7432608381448773010}
   - component: {fileID: 2818183599193853017}
   - component: {fileID: 2146573753361290130}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: -264269600797050580}
   - component: {fileID: 6393258279016263076}
   - component: {fileID: 6393258279016263077}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,6 +342,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1818370437229421249, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2645391787430370132, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Color.b
       value: 0.096600205
@@ -354,9 +358,21 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.20730819
       objectReference: {fileID: 0}
+    - target: {fileID: 3084772966694093465, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818077330155711961, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4027121954720227828, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Name
       value: HPSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 4027121954720227828, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4843383771458490566, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Pivot.x
@@ -441,6 +457,14 @@ PrefabInstance:
     - target: {fileID: 4843383771458490566, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574561522924474164, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972406499630698009, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6523131368943631110, guid: 7cb57279a33ad094e858940cb7fa60d7, type: 3}
       propertyPath: m_Color.b

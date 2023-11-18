@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559b4b00fa8dc68428103e3c64b05c8a, type: 3}
   m_Name: HouseCommon
   m_EditorClassIdentifier: 
-  PrefabType: 2
   Defense: 20
   TotalStages: 2
+  IsForCombat: 0
+  CloseRadius: 0
+  AttackRadius: 0
+  AttackInterval: 0
   <AutoUpgrades>k__BackingField: 01010000
   <PriceList>k__BackingField: 02000000020000000000000000000000

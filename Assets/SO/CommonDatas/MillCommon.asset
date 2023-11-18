@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559b4b00fa8dc68428103e3c64b05c8a, type: 3}
   m_Name: MillCommon
   m_EditorClassIdentifier: 
-  PrefabType: 4
   Defense: 30
   TotalStages: 2
+  IsForCombat: 0
+  CloseRadius: 0
   AttackRadius: 0
+  AttackInterval: 0
   <AutoUpgrades>k__BackingField: 01010101
   <PriceList>k__BackingField: 03000000030000000300000003000000

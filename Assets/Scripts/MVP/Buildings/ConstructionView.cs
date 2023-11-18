@@ -18,7 +18,6 @@ namespace Code.Construction
         public PrefabType PrefabType => _prefabType;
         public GameObject GameObject => gameObject;
         public HPBar HPBar => _hpBar;
-        public GameObject BrokenView => _brokenView;
 
         public event Action<BuildActionType> OnTriggerAction;
         public event Action<int> OnModeChange;
@@ -50,6 +49,7 @@ namespace Code.Construction
 
         public void ShowCurrentStage(int addValue = 0)
         {
+            _brokenView.SetActive(false);
             ShowPreviewPoint(false);
             if (_currentStage >= 0)
                 _viewStages[_currentStage].SetActive(false);
@@ -69,6 +69,13 @@ namespace Code.Construction
             }
             _brokenView.SetActive(false);
             _hpBar.gameObject.SetActive(false);
+        }
+
+        public void ShowDestroyedView()
+        {
+            _brokenView.SetActive(true);
+            for (int i = 0; i < _viewStages.Length; i++)
+                _viewStages[i].SetActive(false);
         }
 
         private void OnDestroy() => OnViewDestroyed?.Invoke();

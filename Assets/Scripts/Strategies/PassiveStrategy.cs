@@ -5,8 +5,16 @@ namespace Code.Strategy
 {
     public class PassiveStrategy : IConstructionStrategy
     {
-        public bool IsNight { get; set; }
+        public void Execute(IConstructionPresenter presenter, float delta)
+        {
+        }
 
-        public void Execute(ConstructionModel model, float delta) { }
+        public void Init(IConstructionPresenter presenter)
+        {
+        }
+
+        public void SwitchStrategy(IConstructionPresenter presenter, GameMode mode)
+        {
+        }
     }
 }

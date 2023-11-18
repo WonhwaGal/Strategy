@@ -12,6 +12,7 @@ namespace Code.Combat
 
         public void AddToCollection(GameObject gameObj, T presenter)
         {
+            Debug.Log(gameObj.name + " added");
             _participants.Add(gameObj, presenter);
             OnAddToCollection(presenter);
         }
@@ -29,6 +30,8 @@ namespace Code.Combat
             else
                 Debug.Log($"Participant {gameObj.name} not found");
         }
+
+        public IPresenter FindParticipant(GameObject gameObj) => _participants[gameObj];
 
         protected virtual void OnAddToCollection(T presenter) { }
         protected virtual void OnRemoveFromCollection() { }

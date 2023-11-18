@@ -1,4 +1,5 @@
 ﻿using Code.Units;
+using UnityEngine;
 
 namespace Code.Combat
 {
@@ -8,9 +9,12 @@ namespace Code.Combat
 
         public void AddCastle(IPresenter presenter)
         {
+            Debug.Log("added castle");
             Castle = presenter;
             presenter.OnBeingKilled += OnCastleDestroyed;
         }
+
+        public IPresenter FindCastle() => Castle;
 
         private void OnCastleDestroyed(IPresenter presenter, IUnitView view)
         {

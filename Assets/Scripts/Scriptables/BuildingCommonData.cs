@@ -7,6 +7,8 @@ namespace Code.ScriptableObjects
     {
         public int Defense;
         public int TotalStages;
+        public bool IsForCombat;
+        public float CloseRadius;
         public float AttackRadius;
         public float AttackInterval;
         [field: SerializeField] public bool[] AutoUpgrades { get; private set; }

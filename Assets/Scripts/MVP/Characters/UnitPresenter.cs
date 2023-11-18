@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Code.Units
 {
-    public abstract class UnitPresenter : IPresenter
+    public abstract class UnitPresenter : IUnitPresenter
     {
         protected readonly UnitView _view;
         protected readonly UnitModel _model;
-        protected readonly IUnitStrategy _strategy;
+        protected IUnitStrategy _strategy;
         protected readonly HPBar _hpBar;
 
         public UnitPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy)
@@ -23,26 +23,21 @@ namespace Code.Units
             _view.OnReceiveDamage += ReceiveDamage;
             _view.OnViewDestroyed += Destroy;
         }
+        UnitView IUnitPresenter.View => _view;
+        UnitModel IUnitPresenter.Model => _model;
+        IStrategy IUnitPresenter.Strategy { get { return _strategy; } set { _strategy = (IUnitStrategy)value; } }
 
-        public event Action<PrefabType, GameObject, IPresenter> OnReadyForCombat;
         public event Action<IPresenter, IUnitView> OnBeingKilled;
         public event Action<UnitPresenter> OnRequestDestroy;
 
         public void PlaceUnit(Vector3 pos) => _view.transform.position = pos;
-
-        public void ChangeStage(GameMode stage)
-        {
-            if (stage == GameMode.IsNight)
-                OnReadyForCombat?.Invoke(_view.PrefabType, _view.gameObject, this);
-            OnStartNight(stage);
-        }
-        protected virtual void OnStartNight(GameMode stage) { }
+        public void OnGameModeChange(GameMode mode) => _strategy.SwitchStrategy(this, mode);
 
         public void ReceiveDamage(int damage) 
             => _hpBar.ChangeHPSlider(_model.HP -= damage);
 
         protected void Update(float deltaTime) 
-            => _strategy.Execute(_model, _view, deltaTime);
+            => _strategy.Execute(this, deltaTime);
 
         protected void Die()
         {
@@ -58,7 +53,6 @@ namespace Code.Units
             _model.OnKilled -= Die;
             _view.OnReceiveDamage -= ReceiveDamage;
             _view.OnViewDestroyed += Destroy;
-            _strategy.Dispose();
             GC.SuppressFinalize(this);
         }
     }

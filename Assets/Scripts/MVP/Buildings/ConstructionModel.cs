@@ -13,7 +13,9 @@ namespace Code.Construction
             _defense = data.CommonInfo.Defense;
             PrefabType = data.PrefabType;
             Transform = data.Transform;
-            Radius = data.CommonInfo.AttackRadius;
+            IsForCombat = data.CommonInfo.IsForCombat;
+            CloseRadius = data.CommonInfo.CloseRadius;
+            LongRadius = data.CommonInfo.AttackRadius;
             AttackInterval = data.CommonInfo.AttackInterval;
             AutoUpgrades = data.CommonInfo.AutoUpgrades;
             TotalStages = data.CommonInfo.TotalStages;
@@ -25,6 +27,7 @@ namespace Code.Construction
 
         public PrefabType PrefabType { get; private set; }
         public Transform Transform { get; private set; }
+        public bool IsDestroyed { get; set; }
         public int Defense
         {
             get => _defense;
@@ -35,7 +38,9 @@ namespace Code.Construction
                     OnKilled?.Invoke();
             }
         }
-        public float Radius { get; private set; }
+        public bool IsForCombat { get; private set; }
+        public float CloseRadius { get; private set; }
+        public float LongRadius { get; private set; }
         public float AttackInterval { get; private set; }
         public int ID { get; set; }
         public int ActivatedBy { get; set; }

@@ -4,6 +4,6 @@ using Code.Units;
 public interface IPresenter: IDisposable
 {
     event Action<IPresenter, IUnitView> OnBeingKilled;
-    void ChangeStage(GameMode stage);
+    void OnGameModeChange(GameMode mode);
     void ReceiveDamage(int damage);
 }

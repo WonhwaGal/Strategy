@@ -1,5 +1,7 @@
 public enum AttackType
 {
-    Arrow = 0,
-    AreaSword = 1
+    None = 0,
+    Arrow = 1,
+    AreaSword = 2,
+    CloseHit = 3
 }

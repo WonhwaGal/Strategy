@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559b4b00fa8dc68428103e3c64b05c8a, type: 3}
   m_Name: CastleCommon
   m_EditorClassIdentifier: 
-  PrefabType: 1
   Defense: 100
   TotalStages: 3
+  IsForCombat: 1
+  CloseRadius: 8
+  AttackRadius: 50
+  AttackInterval: 4
   <AutoUpgrades>k__BackingField: 01000000
   <PriceList>k__BackingField: 05000000070000000700000007000000

@@ -1,6 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Code.Units;
+using Code.Tools;
 
 namespace Code.Combat
 {
@@ -17,16 +17,37 @@ namespace Code.Combat
                 arrow.ReturnToPool();
         }
 
-        public static void SwordAreaAttack(IModel model, LayerMask mask, BaseWaveCollection<IPresenter> participants)
+        public static void SwordAreaAttack(IModel model, LayerMask mask, BaseWaveCollection<IPresenter> list)
         {
-            var targetNumber = GetTargetsInRadius(model, mask);
+            if (list == null)
+                return;
+
+            var targetNumber = GetTargetsInRadius(model.Transform.position, model.LongRadius, mask);
             for (int i = 0; i < targetNumber; i++)
-                participants.ApplyDamage(_colliders[i].gameObject, ((UnitModel)model).Damage);
+                list.ApplyDamage(_colliders[i].gameObject, ((UnitModel)model).Damage);
         }
+
+        public static IPresenter FindClosestType(IModel model, LayerMask mask, BaseWaveCollection<IPresenter> list)
+        {
+            if (list == null)
+                return null;
+
+            var result = FindClosestOpponent(model, mask);
+
+            if (result != null)
+                return list.FindParticipant(result.gameObject);
+            else if(mask.value == LayerMask.GetMask(Constants.Buildings))
+                return ((BuildingWaveCollection)list).FindCastle();
+
+            return null;
+        }
+
+        public static void HitTarget(IPresenter target, int damage) 
+            => target.ReceiveDamage(damage);
 
         private static Transform FindClosestOpponent(IModel model, LayerMask mask)
         {
-            var numberOfFounds = GetTargetsInRadius(model, mask);
+            var numberOfFounds = GetTargetsInRadius(model.Transform.position, model.LongRadius, mask);
             if (numberOfFounds == 0)
                 return null;
 
@@ -47,7 +68,7 @@ namespace Code.Combat
             return closest.transform;
         }
 
-        private static int GetTargetsInRadius(IModel model, int mask)
-            => Physics.OverlapSphereNonAlloc(model.Transform.position, model.Radius, _colliders, mask);
+        private static int GetTargetsInRadius(Vector3 origin, float radius, int mask)
+            => Physics.OverlapSphereNonAlloc(origin, radius, _colliders, mask);
     }
 }

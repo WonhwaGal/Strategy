@@ -1,6 +1,7 @@
 using UnityEngine;
 using Code.Units;
 using Code.Pools;
+using Code.Tools;
 
 namespace Code.Combat
 {
@@ -15,13 +16,31 @@ namespace Code.Combat
         public CombatService(WeaponList weaponList)
         {
             _weaponPool = new ObjectMultiPool(weaponList);
-            _enemyMask = LayerMask.GetMask("Enemies");
-            _playerMask = LayerMask.GetMask("Player");
-            _buildingMask = LayerMask.GetMask("Building");
-            _allyMask = LayerMask.GetMask("Allies");
+            _enemyMask = LayerMask.GetMask(Constants.Enemies);
+            _playerMask = LayerMask.GetMask(Constants.Player);
+            _buildingMask = LayerMask.GetMask(Constants.Buildings);
+            _allyMask = LayerMask.GetMask(Constants.Allies);
         }
 
-        public Vector3 Castle { get; set; }
+        public IModel Castle { get; set; }
+
+        public (IPresenter, bool) ReceiveClosestTarget(IModel model)
+        {
+            bool isUnit = false;
+            var result = AttackHandler
+                .FindClosestType(model, _allyMask, WaveLocator.GetCollection(Constants.Allies));
+            if(result == null)
+            {
+                result = AttackHandler
+                    .FindClosestType(model, _buildingMask, WaveLocator.GetCollection(Constants.Buildings));
+                return (result, isUnit);
+            }
+            else
+            {
+                isUnit = true;
+            }
+            return (result, isUnit);
+        }
 
         public void CheckForTargets(IModel model, AttackType attack)
         {
@@ -33,10 +52,13 @@ namespace Code.Combat
                     AttackHandler.ShootArrow(model, mask, GetArrow());
                     break;
                 case AttackType.AreaSword:
-                    AttackHandler.SwordAreaAttack(model, mask, WaveLocator.GetCollection("Enemy"));
+                    AttackHandler.SwordAreaAttack(model, mask, WaveLocator.GetCollection(Constants.Enemies));
                     break;
             }
         }
+
+        public void HitTarget(IPresenter target, int damage)
+            => AttackHandler.HitTarget(target, damage);
 
         private LayerMask GetMask(PrefabType type)
         {

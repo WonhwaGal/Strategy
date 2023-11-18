@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Code.Combat;
+using Code.Tools;
 
 public static class WaveLocator
 {
     private readonly static Dictionary<string, BaseWaveCollection<IPresenter>> _collections = new();
-    private const int EnemyThreshold = 30;
-    private const int PlayerThreshold = 25;
-    private const string Enemy = "Enemy";
-    private const string Building = "Building";
-    private const string Ally = "Ally";
 
     public static BaseWaveCollection<IPresenter> GetCollection(string key)
     {
@@ -39,21 +35,21 @@ public static class WaveLocator
     {
         string collectionKey;
 
-        if ((int)type >= EnemyThreshold)
+        if ((int)type >= Constants.EnemyThreshold)
         {
-            collectionKey = Enemy;
+            collectionKey = Constants.Enemies;
             if (!_collections.ContainsKey(collectionKey))
                 _collections.Add(collectionKey, new EnemyWaveCollection());
         }
-        else if ((int)type < PlayerThreshold)
+        else if ((int)type < Constants.PlayerThreshold)
         {
-            collectionKey = Building;
+            collectionKey = Constants.Buildings;
             if (!_collections.ContainsKey(collectionKey))
                 _collections.Add(collectionKey, new BuildingWaveCollection());
         }
         else
         {
-            collectionKey = Ally;
+            collectionKey = Constants.Allies;
             if (!_collections.ContainsKey(collectionKey))
                 _collections.Add(collectionKey, new AllyWaveCollection());
         }

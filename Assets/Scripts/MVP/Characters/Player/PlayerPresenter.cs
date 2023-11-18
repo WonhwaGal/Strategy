@@ -9,15 +9,10 @@ namespace Code.Units
         {
         }
 
-        protected override void OnStartNight(GameMode stage)
-        {
-            if (_strategy is PlayerStrategy playerStrategy)
-                playerStrategy.IsNight = stage == GameMode.IsNight;
-        }
-
         public override void Dispose()
         {
             base.Dispose();
+            (_strategy as PlayerStrategy).Dispose();
         }
     }
 }

@@ -14,7 +14,8 @@ namespace Code.Units
             Transform = transform;
             HP = settings.HP;
             Speed = settings.Speed;
-            Radius = settings.LongRangeRadius;
+            CloseRadius = settings.CloseRangeRadius;
+            LongRadius = settings.LongRangeRadius;
             AttackInterval = settings.AttackInterval;
             Damage = settings.Damage;
         }
@@ -34,7 +35,8 @@ namespace Code.Units
             }
         }
         public float Speed { get; set; }
-        public float Radius { get; private set; }
+        public float CloseRadius { get; private set; }
+        public float LongRadius { get; private set; }
         public float AttackInterval { get; private set; }
         public int Damage { get; private set; }  // which DAMAGE is this?
 

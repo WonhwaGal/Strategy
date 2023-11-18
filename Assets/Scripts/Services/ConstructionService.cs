@@ -21,7 +21,7 @@ namespace Code.Construction
 
         public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
         public event Action<PrefabType, GameObject, IPresenter> OnRegisterForCombat;
-        public event Action<GameMode> OnChangeGameStage;
+        public event Action<GameMode> OnGameModeChange;
 
         public void StartLevel(int lvlNumber)
             => CreatePresenters(_constructionSO.FindBuildingsOfLevel(lvlNumber));
@@ -35,9 +35,8 @@ namespace Code.Construction
             {
                 var presenter = _registry.CreatePresenter(buildings[i]);
                 presenter.OnViewTriggered += SendTriggerNotification;
-                presenter.OnReadyForCombat += RegisterForCombat;
                 presenter.OnRequestDestroy += DestroyPresenter;
-                OnChangeGameStage += presenter.ChangeStage;
+                OnGameModeChange += presenter.OnGameModeChange;
                 OnNotifyConnections += presenter.CheckOwnConnection;
             }
         }
@@ -45,7 +44,7 @@ namespace Code.Construction
         public void SwitchMode(GameMode mode)
         {
             _isNight = mode == GameMode.IsNight;
-            OnChangeGameStage?.Invoke(mode);
+            OnGameModeChange?.Invoke(mode);
         }
 
         public void RegisterForCombat(PrefabType type, GameObject go, IPresenter presenter)
@@ -90,11 +89,10 @@ namespace Code.Construction
 
         private void DestroyPresenter(ConstructionPresenter presenter)
         {
-            OnChangeGameStage -= presenter.ChangeStage;
+            OnGameModeChange -= presenter.OnGameModeChange;
             OnNotifyConnections -= presenter.CheckOwnConnection;
             presenter.OnRequestDestroy -= DestroyPresenter;
             presenter.OnViewTriggered -= SendTriggerNotification;
-            presenter.OnReadyForCombat -= RegisterForCombat;
             presenter.Dispose();
         }
     }

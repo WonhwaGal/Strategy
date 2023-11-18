@@ -7,7 +7,8 @@ namespace Code.Units
     {
         Transform Transform { get; }
         PrefabType PrefabType { get; }
-        float Radius { get; }
+        float CloseRadius { get; }
+        float LongRadius { get; }
 
         event Action OnKilled;
     }

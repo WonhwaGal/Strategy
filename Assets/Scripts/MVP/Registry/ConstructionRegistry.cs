@@ -24,6 +24,8 @@ namespace Code.Construction
                 (IConstructionStrategy)_strategyHandler.GetStrategy(buildingData.PrefabType);
 
             var presenter = new ConstructionPresenter(buildingView, model, strategy);
+            strategy.Init(presenter);
+
             return presenter;
         }
     }

@@ -21,10 +21,10 @@ public class UnitService : ICombatService
         _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
     }
 
-    public event Action<GameMode> OnChangeGameStage;
+    public event Action<GameMode> OnGameModeChange;
     public event Action<PrefabType, GameObject, IPresenter> OnRegisterForCombat;
 
-    public void SwitchMode(GameMode mode) => OnChangeGameStage?.Invoke(mode);
+    public void SwitchMode(GameMode mode) => OnGameModeChange?.Invoke(mode);
 
     public UnitPresenter CreateUnit(PrefabType type)
     {
@@ -33,10 +33,10 @@ public class UnitService : ICombatService
         var strategy = (IUnitStrategy)_strategyHandler.GetStrategy(type);
         UnitPresenter presenter = type == PrefabType.Player ? 
             new PlayerPresenter(view, model, strategy) : new EnemyPresenter(view, model, strategy);
+        strategy.Init(presenter);
         presenter.OnBeingKilled += ResetPresenter;
-        presenter.OnReadyForCombat += RegisterForCombat;
         presenter.OnRequestDestroy += DestroyPresenter;
-        OnChangeGameStage += presenter.ChangeStage;
+        OnGameModeChange += presenter.OnGameModeChange;
         return presenter;
     }
 
@@ -63,9 +63,8 @@ public class UnitService : ICombatService
 
     public void DestroyPresenter(UnitPresenter presenter)
     {
-        OnChangeGameStage -= presenter.ChangeStage;
+        OnGameModeChange -= presenter.OnGameModeChange;
         presenter.OnBeingKilled -= ResetPresenter;
-        presenter.OnReadyForCombat -= RegisterForCombat;
         presenter.OnRequestDestroy -= DestroyPresenter;
         presenter.Dispose();
     }
