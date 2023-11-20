@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 394da021b705ade48aad25c4504c44f9, type: 3}
-  m_Name: WeaponList
+  m_Script: {fileID: 11500000, guid: 7312a37c166959d479bbffbe63eea108, type: 3}
+  m_Name: RuinList
   m_EditorClassIdentifier: 
   _prefabs:
-  - Name: Arrow
-    Type: 50
-    Prefab: {fileID: 6358702822060077249, guid: 79bc8c84b6390b14a9c18e4f5145826e, type: 3}
+  - Name: Common ruins
+    Type: 52
+    Prefab: {fileID: -4646329623471639227, guid: 0d7e747929d022c4989df5f6ed403937, type: 3}

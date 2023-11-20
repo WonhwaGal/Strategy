@@ -8,11 +8,10 @@ namespace Code.Combat
     {
         protected Dictionary<GameObject, T> _participants = new();
 
-        public event Action <bool> OnWaveOver;
+        public event Action<bool> OnWaveOver;
 
         public void AddToCollection(GameObject gameObj, T presenter)
         {
-            Debug.Log(gameObj.name + " added");
             _participants.Add(gameObj, presenter);
             OnAddToCollection(presenter);
         }
@@ -31,7 +30,7 @@ namespace Code.Combat
                 Debug.Log($"Participant {gameObj.name} not found");
         }
 
-        public IPresenter FindParticipant(GameObject gameObj) => _participants[gameObj];
+        public virtual IPresenter FindParticipant(GameObject gameObj) => _participants[gameObj];
 
         protected virtual void OnAddToCollection(T presenter) { }
         protected virtual void OnRemoveFromCollection() { }

@@ -34,8 +34,9 @@ namespace Code.Strategy
 
         public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
+            var type = presenter.Model.PrefabType;
             if (mode == GameMode.IsNight)
-                WaveLocator.ParticipateInCombat(presenter.Model.PrefabType, presenter.View.gameObject, presenter);
+                WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
         }
 
         private void Move(UnitView view, UnitModel model, float delta)
@@ -60,14 +61,13 @@ namespace Code.Strategy
         private void SearchForNewOpponents(UnitModel model)
         {
             var newTargetInfo = _combatService.ReceiveClosestTarget(model);
-            var presenter = newTargetInfo.Item1;
+            IPresenter presenter = newTargetInfo.Item1;
 
             if (presenter != null)
             {
                 IModel targetModel = newTargetInfo.Item2 ?
                     ((IUnitPresenter)presenter).Model : ((IConstructionPresenter)presenter).Model;
                 ReceiveTarget(targetModel);
-
                 CheckAttackConditions(model, presenter);
             }
         }

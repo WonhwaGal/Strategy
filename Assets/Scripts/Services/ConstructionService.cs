@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Code.Pools;
 using Code.ScriptableObjects;
 
 namespace Code.Construction
 {
-    public sealed class ConstructionService : ICombatService
+    public sealed class ConstructionService : IReactToDaytimeSwitch
     {
         private readonly ConstructionSO _constructionSO;
         private readonly ConstructionRegistry _registry;
@@ -20,7 +19,6 @@ namespace Code.Construction
         }
 
         public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
-        public event Action<PrefabType, GameObject, IPresenter> OnRegisterForCombat;
         public event Action<GameMode> OnGameModeChange;
 
         public void StartLevel(int lvlNumber)
@@ -47,9 +45,6 @@ namespace Code.Construction
             OnGameModeChange?.Invoke(mode);
         }
 
-        public void RegisterForCombat(PrefabType type, GameObject go, IPresenter presenter)
-            => OnRegisterForCombat?.Invoke(type, go, presenter);
-
         public bool ReadyToBuild() // when Space key pressed
         {
             if (_choosenModel != null && _choosenModel.CurrentStage < _choosenModel.TotalStages)
@@ -57,7 +52,6 @@ namespace Code.Construction
                 NotifyOnTrigger();
                 return true;
             }
-
             return false;
         }
 
@@ -81,10 +75,7 @@ namespace Code.Construction
                 return;
 
             OnNotifyConnections?.Invoke(model, action);
-            if (action == BuildActionType.PutAway)
-                _choosenModel = null;
-            else
-                _choosenModel = model;
+            _choosenModel = action == BuildActionType.PutAway ? null : model;
         }
 
         private void DestroyPresenter(ConstructionPresenter presenter)

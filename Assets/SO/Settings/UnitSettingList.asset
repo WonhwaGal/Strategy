@@ -26,6 +26,6 @@ MonoBehaviour:
     HP: 50
     Speed: 1.5
     CloseRangeRadius: 2
-    LongRangeRadius: 5
+    LongRangeRadius: 10
     AttackInterval: 4
     Damage: 20

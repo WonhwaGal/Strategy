@@ -1,6 +1,7 @@
 using System;
 using Code.Strategy;
 using Code.Units;
+using UnityEngine;
 
 namespace Code.Construction
 {
@@ -16,8 +17,8 @@ namespace Code.Construction
             _view = view;
             _model = model;
             _strategy = strategy;
-            _hpBar = _view.HPBar;
-            _hpBar.ChangeHPSlider(_model.Defense);
+            //_hpBar = _view.HPBar;
+            //_hpBar.ChangeHPSlider(_model.Defense);
             _model.OnKilled += RuinBuilding;
             _view.OnUpdate += Update;
             _view.OnModeChange += UpgradeStage;
@@ -55,12 +56,12 @@ namespace Code.Construction
                 _view.React(action);
         }
 
-        public void ReceiveDamage(int damage) => _hpBar.ChangeHPSlider(_model.Defense -= damage);
+        public void ReceiveDamage(int damage) => _model.Defense -= damage;
 
         public void RuinBuilding()
         {
             _model.IsDestroyed = true;
-            _hpBar.gameObject.SetActive(false);
+            //_hpBar.gameObject.SetActive(false);
             OnBeingKilled?.Invoke(this, _view);
         }
 

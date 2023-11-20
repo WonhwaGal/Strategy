@@ -2,6 +2,7 @@ using UnityEngine;
 using Code.Units;
 using Code.Pools;
 using Code.Tools;
+using Code.ScriptableObjects;
 
 namespace Code.Combat
 {
@@ -28,7 +29,7 @@ namespace Code.Combat
         {
             bool isUnit = false;
             var result = AttackHandler
-                .FindClosestType(model, _allyMask, WaveLocator.GetCollection(Constants.Allies));
+                .FindClosestType(model, _playerMask | _allyMask, WaveLocator.GetCollection(Constants.Allies));
             if(result == null)
             {
                 result = AttackHandler
@@ -37,9 +38,8 @@ namespace Code.Combat
             }
             else
             {
-                isUnit = true;
+                return (result, true);
             }
-            return (result, isUnit);
         }
 
         public void CheckForTargets(IModel model, AttackType attack)

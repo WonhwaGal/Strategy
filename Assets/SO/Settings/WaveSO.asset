@@ -16,7 +16,13 @@ MonoBehaviour:
   - Name: Wave_Level_1
     Level: 1
     SpawnSpots:
-    - EnemyType: 30
-      EnemyQuantity: 5
+    - WaveTurn: 1
+      EnemyType: 30
+      EnemyQuantity: 8
+      SpawnCenter: {fileID: 5115164992374440404, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
+      SpawnRadius: 8
+    - WaveTurn: 2
+      EnemyType: 30
+      EnemyQuantity: 3
       SpawnCenter: {fileID: 5115164992374440404, guid: 978d60c05ae714d4da0d999d6580ce06, type: 3}
       SpawnRadius: 8

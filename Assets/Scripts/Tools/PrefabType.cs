@@ -13,5 +13,6 @@ public enum PrefabType
     Enemy = 30,
     // for other objects
     Arrow = 50,
-    AreaSword = 51
+    AreaSword = 51,
+    CommonRuin = 52
 }

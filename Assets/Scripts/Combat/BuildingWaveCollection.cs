@@ -9,9 +9,16 @@ namespace Code.Combat
 
         public void AddCastle(IPresenter presenter)
         {
-            Debug.Log("added castle");
             Castle = presenter;
             presenter.OnBeingKilled += OnCastleDestroyed;
+        }
+
+        public override IPresenter FindParticipant(GameObject gameObj)
+        {
+            if (_participants.ContainsKey(gameObj))
+                return base.FindParticipant(gameObj);
+            else
+                return FindCastle();
         }
 
         public IPresenter FindCastle() => Castle;

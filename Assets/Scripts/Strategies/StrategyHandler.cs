@@ -1,3 +1,4 @@
+using Code.Tools;
 
 namespace Code.Strategy
 {
@@ -5,15 +6,14 @@ namespace Code.Strategy
     {
         public IStrategy GetStrategy(PrefabType type)
         {
-            IStrategy strategy = type switch
-            {
-                PrefabType.Castle => new DayBuildingStrategy(),
-                PrefabType.Tower => new DayBuildingStrategy(),
-                PrefabType.Player => new PlayerStrategy(),
-                PrefabType.Enemy => new EnemyStrategy(),
-                _ => new PassiveStrategy(),
-            };
-            return strategy;
+            if(type == PrefabType.Player)
+                return new PlayerStrategy();
+            if ((int)type < Constants.PlayerThreshold)
+                return new DayBuildingStrategy();
+            else if ((int)type >= Constants.EnemyThreshold)
+                return new EnemyStrategy();
+
+            return null;
         }
     }
 }

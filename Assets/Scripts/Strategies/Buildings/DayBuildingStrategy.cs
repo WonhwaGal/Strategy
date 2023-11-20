@@ -6,6 +6,8 @@ namespace Code.Strategy
 {
     public sealed class DayBuildingStrategy : IConstructionStrategy
     {
+        private bool _isCombatType;
+
         public DayBuildingStrategy(IConstructionPresenter presenter = null)
         {
             //get coin pool
@@ -15,9 +17,12 @@ namespace Code.Strategy
 
         public void Init(IConstructionPresenter presenter)
         {
-            // if building is destroyed - Does it give a coin?
-            Recover(presenter.Model, presenter.View);
-            GrantCoin(presenter.Model);
+            presenter.View.gameObject.SetActive(true);
+            _isCombatType = presenter.Model.IsForCombat;
+
+            if (presenter.Model.CurrentStage > 0)
+                CheckForRecover(presenter.Model, presenter.View);
+
             if (presenter.Model.PrefabType == PrefabType.Castle)
                 ServiceLocator.Container.RequestFor<CombatService>().Castle = presenter.Model;
         }
@@ -26,9 +31,9 @@ namespace Code.Strategy
 
         public void SwitchStrategy(IConstructionPresenter presenter, GameMode mode)
         {
-            var stage = presenter.Model.CurrentStage;
-            if (mode == GameMode.IsNight && stage > 0)
-                presenter.Strategy = new CombatBuildingStrategy(presenter);
+            if (mode == GameMode.IsNight)
+                presenter.Strategy = _isCombatType ? 
+                    new CombatBuildingStrategy(presenter) : new PassiveNightStrategy(presenter);
         }
 
         private void GrantCoin(ConstructionModel model)
@@ -37,12 +42,16 @@ namespace Code.Strategy
                 Debug.Log(model.CurrentStage + " coins granted");
         }
 
-        private void Recover(ConstructionModel model, ConstructionView view)
+        private void CheckForRecover(ConstructionModel model, ConstructionView view)
         {
             if (model.IsDestroyed)
             {
                 view.ShowCurrentStage();
                 model.IsDestroyed = false;
+            }
+            else
+            {
+                GrantCoin(model);
             }
         }
     }

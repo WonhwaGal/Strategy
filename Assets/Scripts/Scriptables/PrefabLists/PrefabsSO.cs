@@ -1,10 +1,10 @@
-using Code.Units;
 using System.Collections.Generic;
+using Code.Pools;
 using UnityEngine;
 
 namespace Code.ScriptableObjects
 {
-    public abstract class PrefabSO<T> : ScriptableObject where T : class, IUnitView
+    public abstract class PrefabSO<T> : ScriptableObject where T : class, ISpawnableType
     {
         [SerializeField] protected List<PrefabData> _prefabs;
 

@@ -1,3 +1,4 @@
+using Code.Combat;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,17 @@ public partial class WaveSO : ScriptableObject
     {
         public string Name;
         public int Level;
-        public List<EnemySpawnData> SpawnSpots; 
+        public List<EnemySpawnData> SpawnSpots;
+
+        public int WavesCount()
+        {
+            var count = 1;
+            for(int i = 0; i < SpawnSpots.Count; i++)
+            {
+                if(SpawnSpots[i].WaveTurn > count)
+                    count = SpawnSpots[i].WaveTurn;
+            }
+            return count;
+        }
     }
 }

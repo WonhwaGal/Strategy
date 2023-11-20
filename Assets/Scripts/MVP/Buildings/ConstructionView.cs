@@ -10,14 +10,10 @@ namespace Code.Construction
         [SerializeField] private PrefabType _prefabType;
         [SerializeField] private GameObject[] _previews;
         [SerializeField] private GameObject[] _viewStages;
-        [SerializeField] private GameObject _brokenView;
-        [SerializeField] private HPBar _hpBar;
-
         private int _currentStage = -1;
 
         public PrefabType PrefabType => _prefabType;
         public GameObject GameObject => gameObject;
-        public HPBar HPBar => _hpBar;
 
         public event Action<BuildActionType> OnTriggerAction;
         public event Action<int> OnModeChange;
@@ -49,7 +45,6 @@ namespace Code.Construction
 
         public void ShowCurrentStage(int addValue = 0)
         {
-            _brokenView.SetActive(false);
             ShowPreviewPoint(false);
             if (_currentStage >= 0)
                 _viewStages[_currentStage].SetActive(false);
@@ -67,15 +62,6 @@ namespace Code.Construction
                 if (i == _currentStage + 1)
                     _previews[i].SetActive(toShow);
             }
-            _brokenView.SetActive(false);
-            _hpBar.gameObject.SetActive(false);
-        }
-
-        public void ShowDestroyedView()
-        {
-            _brokenView.SetActive(true);
-            for (int i = 0; i < _viewStages.Length; i++)
-                _viewStages[i].SetActive(false);
         }
 
         private void OnDestroy() => OnViewDestroyed?.Invoke();

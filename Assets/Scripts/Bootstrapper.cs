@@ -5,6 +5,7 @@ using Code.Strategy;
 using Code.Construction;
 using Code.ScriptableObjects;
 using Code.Combat;
+using Code.Pools;
 
 namespace Code.SceneLoaders
 {
@@ -16,6 +17,7 @@ namespace Code.SceneLoaders
         [SerializeField] private UnitPrefabs _unitPrefabs;
         [SerializeField] private WeaponList _weaponList;
         [SerializeField] private WaveSO _wavesList;
+        [SerializeField] private RuinList _ruinsList;
 
         private const string GameScene = "GameScene";
 
@@ -46,6 +48,7 @@ namespace Code.SceneLoaders
             _input = ServiceLocator.Container.RegisterAndAssign<IInputService>(new KeyboardInput());
             ServiceLocator.Container.Register(new StrategyHandler());
             ServiceLocator.Container.Register(new CombatService(_weaponList));
+            ServiceLocator.Container.Register(new RuinMultiPool(_ruinsList));
             _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));
