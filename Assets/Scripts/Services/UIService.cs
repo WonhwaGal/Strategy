@@ -1,19 +1,30 @@
-using Code.Construction;
 using System;
+using Code.Construction;
+using Code.ScriptableObjects;
+using UnityEngine;
 
 namespace Code.UI
 {
     public class UIService : IService
     {
-        private readonly UpgradePanel _upgradePanel;
-        private readonly PricePanel _pricePanel;
+        private readonly HPBarPool _hpPool;
+        private UpgradePanel _upgradePanel;
+        private PricePanel _pricePanel;
 
         public event Action OnChooseUpgrade;
 
-        public UIService(UpgradePanel panel, PricePanel pricePanel)  // REDO EVERYTHING
+        public UIService(UnsortedUIList unsorted, HPBarList hpList)
         {
-            _upgradePanel = panel;
-            _pricePanel = pricePanel;
+            var canvasPrefab = (GameCanvas)unsorted.FindPrefab(UIType.GameCanvas);
+            var canvas = GameObject.Instantiate<GameCanvas>(canvasPrefab);
+            SetUpPanels(canvas);
+            _hpPool = new HPBarPool(hpList, canvas.PoolRoot);
+        }
+
+        private void SetUpPanels(GameCanvas canvas)
+        {
+            _upgradePanel = canvas.UpgradePanel;
+            _pricePanel = canvas.PricePanel;
             _upgradePanel.gameObject.SetActive(false);
             _pricePanel.gameObject.SetActive(false);
             _upgradePanel.BuyButton.onClick.AddListener(() =>
@@ -43,6 +54,20 @@ namespace Code.UI
                     _pricePanel.Price.text = model.PriceList[model.CurrentStage].ToString();
                     break;
             }
+        }
+
+        public HPBar SpawnHPBar(UIType type)
+        {
+            var result = _hpPool.Spawn(type);
+            _hpPool.OnSpawned(result);
+            result.OnOwnerKilled += DespawnHPBar;
+            return result;
+        }
+
+        public void DespawnHPBar(HPBar hpbar)
+        {
+            _hpPool.Despawn(hpbar.UIType, hpbar);
+            hpbar.OnOwnerKilled -= DespawnHPBar;
         }
     }
 }

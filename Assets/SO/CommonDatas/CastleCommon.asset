@@ -15,7 +15,7 @@ MonoBehaviour:
   Defense: 100
   TotalStages: 3
   IsForCombat: 1
-  CloseRadius: 8
+  DamageRadius: 5
   AttackRadius: 50
   AttackInterval: 4
   <AutoUpgrades>k__BackingField: 01000000

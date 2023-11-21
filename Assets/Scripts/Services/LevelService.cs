@@ -1,12 +1,14 @@
 using System;
-using Code.Construction;
 using UnityEngine;
+using Code.Construction;
+using Code.Input;
 using static WaveSO;
 
 namespace Code.Combat
 {
-    public class LevelService : IService
+    public class LevelService : IService, IDisposable
     {
+        private readonly IInputService _input;
         private readonly ConstructionService _construction;
         private readonly WaveSO _wavesData;
         private bool _isNight;
@@ -17,6 +19,9 @@ namespace Code.Combat
             _wavesData = wavesData;
             _construction = ServiceLocator.Container.RequestFor<ConstructionService>();
             WaveLocator.OnWaveEnd += CheckNextWave;
+            _input = ServiceLocator.Container.RequestFor<IInputService>();
+            _input.OnPressSpace += OnSpacePressed;
+            _input.OnPressCtrl += OnLeftCtrlPressed;
         }
 
         public int Level { get; private set; } = 1;
@@ -24,7 +29,7 @@ namespace Code.Combat
         public event Action<LevelWaveData, int> OnCreatingWaves;
         public event Action<GameMode> OnChangingGameMode;
 
-        public void OnSpacePressed()
+        private void OnSpacePressed()
         {
             if (_isNight)
                 return;
@@ -32,6 +37,12 @@ namespace Code.Combat
             _isNight = !_construction.ReadyToBuild();
             if (_isNight)
                 InvokeWave();
+        }
+
+        private void OnLeftCtrlPressed(bool startControl)
+        {
+            var mode = startControl ? GameMode.IsUnitControl : GameMode.IsDay;
+            OnChangingGameMode?.Invoke(mode);
         }
 
         private void InvokeWave()
@@ -56,6 +67,7 @@ namespace Code.Combat
 
         public void SwitchToDay(bool isVictory)
         {
+            _isNight = false;
             if (isVictory)
             {
                 Debug.Log("Level is won");
@@ -68,6 +80,12 @@ namespace Code.Combat
                 Debug.Log("Castle is destroyed, game is lost");
                 OnChangingGameMode?.Invoke(GameMode.IsGameLost);
             }
+        }
+
+        public void Dispose()
+        {
+            _input.OnPressSpace -= OnSpacePressed;
+            _input.OnPressCtrl -= OnLeftCtrlPressed;
         }
     }
 }

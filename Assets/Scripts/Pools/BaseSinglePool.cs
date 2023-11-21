@@ -11,8 +11,11 @@ namespace Code.Pools
         public BaseSinglePool(T prefab)
         {
             _factory = new SingleFactory<T>(prefab);
-            var root = new GameObject(prefab.PrefabType.ToString());
-            _factory.RootTransform = root.transform;
+            if (prefab.PrefabType != PrefabType.None && prefab.PrefabType != PrefabType.UI)
+            {
+                var root = new GameObject(prefab.PrefabType.ToString());
+                _factory.RootTransform = root.transform;
+            }
         }
 
         public T Spawn()
@@ -29,13 +32,16 @@ namespace Code.Pools
 
         public void Despawn(T prefab)
         {
+            if (prefab == null)
+                return;
             prefab.gameObject.SetActive(false);
             _inactives.Push(prefab);
         }
 
         private void OnSpawn(T prefab)
         {
-            prefab.transform.SetParent(_factory.RootTransform);
+            if (_factory.RootTransform != null)
+                prefab.transform.SetParent(_factory.RootTransform);
             prefab.gameObject.SetActive(true);
         }
 

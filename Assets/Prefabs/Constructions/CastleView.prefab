@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6539363094206887993}
   - component: {fileID: 7849846874868591126}
   - component: {fileID: 3186657878189993018}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: ViewStage_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5914040162428297676}
   - component: {fileID: 7163276654624445443}
   - component: {fileID: 8055618161304822525}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: PreviewStage_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 4731551927859455436}
   - component: {fileID: 4731551927859455425}
   - component: {fileID: 4731551927859455426}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: BaseDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 4193202268814738428}
   - component: {fileID: 4731551927949739905}
   - component: {fileID: 5166740130164117590}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: CastleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,8 +310,6 @@ MonoBehaviour:
   - {fileID: 4731551927859455437}
   - {fileID: 6043455098414384142}
   - {fileID: 3283625840382762224}
-  _brokenView: {fileID: 0}
-  _hpBar: {fileID: 0}
 --- !u!54 &4731551927949739905
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -353,7 +351,7 @@ GameObject:
   - component: {fileID: 4731551928379907917}
   - component: {fileID: 4731551928379907906}
   - component: {fileID: 4731551928379907907}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: PreViewStage_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +435,7 @@ GameObject:
   - component: {fileID: 4760399714931464489}
   - component: {fileID: 1834899266051113762}
   - component: {fileID: 6835925884525276827}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: ViewStage_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +534,7 @@ GameObject:
   - component: {fileID: 7797450634068061441}
   - component: {fileID: 7056526602716692791}
   - component: {fileID: 220492260082716815}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: PreviewPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ namespace Code.Strategy
             if ((int)type < Constants.PlayerThreshold)
                 return new DayBuildingStrategy();
             else if ((int)type >= Constants.EnemyThreshold)
-                return new EnemyStrategy();
+                return new EnemyInfantryStrategy();
 
             return null;
         }

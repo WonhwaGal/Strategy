@@ -1,14 +1,13 @@
 using Code.Strategy;
-using UnityEngine;
+using Code.UI;
 
 namespace Code.Units
 {
     public class EnemyPresenter : UnitPresenter
     {
-        public EnemyPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy) : 
-            base(view, model, moveStrategy)
+        public EnemyPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy, HPBar hpBar) :
+            base(view, model, moveStrategy, hpBar)
         {
-            _view.NavAgent.speed = _model.Speed;
         }
 
         public override void Dispose()

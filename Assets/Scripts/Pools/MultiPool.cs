@@ -28,7 +28,7 @@ namespace Code.Pools
         }
 
         protected abstract T GetPrefab(K type);
-        public virtual void OnSpawned(T result, ISpawnableType data) { }
+        public virtual void OnSpawned(T result, ISpawnableType data = null) { }
 
         private sealed class SinglePool : BaseSinglePool<T>
         {

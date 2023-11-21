@@ -1,7 +1,9 @@
 using TMPro;
-using UnityEngine;
 
-public class PricePanel : MonoBehaviour
+namespace Code.UI
 {
-    public TextMeshProUGUI Price;
+    public class PricePanel : UIView
+    {
+        public TextMeshProUGUI Price;
+    }
 }

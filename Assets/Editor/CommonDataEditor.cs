@@ -15,11 +15,11 @@ public sealed class CommonDataEditor : Editor
         serializedObject.Update();
 
         _commonData.Defense = EditorGUILayout.IntField("Defense", _commonData.Defense);
+        _commonData.DamageRadius = EditorGUILayout.FloatField("DamageRadius", _commonData.DamageRadius);
 
         _commonData.IsForCombat = EditorGUILayout.BeginToggleGroup("Is for Combat", _commonData.IsForCombat);
         if (_commonData.IsForCombat)
         {
-            _commonData.CloseRadius = EditorGUILayout.FloatField("CloseRadius", _commonData.CloseRadius);
             _commonData.AttackRadius = EditorGUILayout.FloatField("AttackRadius", _commonData.AttackRadius);
             _commonData.AttackInterval = EditorGUILayout.FloatField("AttackInterval", _commonData.AttackInterval);
         }

@@ -1,5 +1,6 @@
 using System;
 using Code.Strategy;
+using Code.UI;
 using Code.Units;
 using UnityEngine;
 
@@ -10,15 +11,15 @@ namespace Code.Construction
         private readonly ConstructionView _view;
         private readonly ConstructionModel _model;
         private IConstructionStrategy _strategy;
-        protected readonly HPBar _hpBar;
+        protected HPBar _hpBar;
 
-        public ConstructionPresenter(ConstructionView view, ConstructionModel model, IConstructionStrategy strategy)
+        public ConstructionPresenter(ConstructionView view, 
+            ConstructionModel model, IConstructionStrategy strategy, HPBar hpBar)
         {
             _view = view;
             _model = model;
             _strategy = strategy;
-            //_hpBar = _view.HPBar;
-            //_hpBar.ChangeHPSlider(_model.Defense);
+            _hpBar = SetUpHPBar(hpBar);
             _model.OnKilled += RuinBuilding;
             _view.OnUpdate += Update;
             _view.OnModeChange += UpgradeStage;
@@ -39,10 +40,12 @@ namespace Code.Construction
             } 
         }
 
+
         public event Action<IConstructionModel, BuildActionType> OnViewTriggered;
         public event Action<IPresenter, IUnitView> OnBeingKilled;
         public event Action<ConstructionPresenter> OnRequestDestroy;
 
+        public HPBar SetUpHPBar(HPBar hpBar) => hpBar.SetUpSlider(_model.MaxHP, _model.Transform);
         public void OnGameModeChange(GameMode mode) => _strategy.SwitchStrategy(this, mode);
 
         public void CheckOwnConnection(IConstructionModel model, BuildActionType action)
@@ -56,12 +59,16 @@ namespace Code.Construction
                 _view.React(action);
         }
 
-        public void ReceiveDamage(int damage) => _model.Defense -= damage;
+        public void ReceiveDamage(int damage)
+        {
+            var newValue = _model.Defense -= damage;
+            _hpBar.gameObject.SetActive(newValue > 0);
+            _hpBar.SetHPValue(newValue);
+        }
 
         public void RuinBuilding()
         {
             _model.IsDestroyed = true;
-            //_hpBar.gameObject.SetActive(false);
             OnBeingKilled?.Invoke(this, _view);
         }
 
@@ -72,6 +79,7 @@ namespace Code.Construction
         public void Destroy() => OnRequestDestroy?.Invoke(this);
         public void Dispose()
         {
+            _hpBar.Despawn();
             _model.OnKilled -= RuinBuilding;
             _view.OnUpdate -= Update;
             _view.OnModeChange -= UpgradeStage;

@@ -25,7 +25,7 @@ public class UnitSettingList : ScriptableObject
         public PrefabType PrefabType;
         public int HP;
         public float Speed;
-        public float CloseRangeRadius;
+        public float DamageRadius;
         public float LongRangeRadius;
         public float AttackInterval;
         public int Damage;

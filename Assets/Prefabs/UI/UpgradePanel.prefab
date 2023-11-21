@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d284d736264e2c4ba1d4f4fcde29d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabType: 60
   BuyButton: {fileID: 7427627640160111313}
 --- !u!1 &816885696930597971
 GameObject:

@@ -22,7 +22,7 @@ namespace Code.Combat
             if (list == null)
                 return;
 
-            var targetNumber = GetTargetsInRadius(model.Transform.position, model.LongRadius, mask);
+            var targetNumber = GetTargetsInRadius(model.Transform.position, model.LongRadius / 2, mask);
             for (int i = 0; i < targetNumber; i++)
                 list.ApplyDamage(_colliders[i].gameObject, ((UnitModel)model).Damage);
         }
@@ -41,9 +41,6 @@ namespace Code.Combat
 
             return null;
         }
-
-        public static void HitTarget(IPresenter target, int damage) 
-            => target.ReceiveDamage(damage);
 
         private static Transform FindClosestOpponent(IModel model, LayerMask mask)
         {

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Code.UI
 {
-    public class UpgradePanel : MonoBehaviour
+    public class UpgradePanel : UIView
     {
         public Button BuyButton;
     }

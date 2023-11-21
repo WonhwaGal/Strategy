@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f383b20a1941f45af4dd3ed00e13c5, type: 3}
+  m_Name: UnsortedUIList
+  m_EditorClassIdentifier: 
+  _prefabs:
+  - Name: Game Canvas
+    Type: 50
+    Prefab: {fileID: -3955023181498688778, guid: 211d5339ef772704a912d663cd7a56db, type: 3}
+  - Name: Upgrade Panel
+    Type: 50
+    Prefab: {fileID: 1725441568600304481, guid: 79059a774f2ebd14b809b930bb83da73, type: 3}
+  - Name: Priice Panel
+    Type: 51
+    Prefab: {fileID: 4189945916979338007, guid: bb42a2d3756776c4da9f26b957a34ca8, type: 3}
+  - Name: Priice Panel
+    Type: 51
+    Prefab: {fileID: 4189945916979338007, guid: bb42a2d3756776c4da9f26b957a34ca8, type: 3}

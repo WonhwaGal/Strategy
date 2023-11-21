@@ -10,11 +10,11 @@ namespace Code.Construction
 
         public ConstructionModel(SingleBuildingData data)
         {
-            _defense = data.CommonInfo.Defense;
+            _defense = MaxHP = data.CommonInfo.Defense;
             PrefabType = data.PrefabType;
             Transform = data.Transform;
             IsForCombat = data.CommonInfo.IsForCombat;
-            CloseRadius = data.CommonInfo.CloseRadius;
+            DamageRadius = data.CommonInfo.DamageRadius;
             LongRadius = data.CommonInfo.AttackRadius;
             AttackInterval = data.CommonInfo.AttackInterval;
             AutoUpgrades = data.CommonInfo.AutoUpgrades;
@@ -28,6 +28,7 @@ namespace Code.Construction
         public PrefabType PrefabType { get; private set; }
         public Transform Transform { get; private set; }
         public bool IsDestroyed { get; set; }
+        public int MaxHP { get; private set; }
         public int Defense
         {
             get => _defense;
@@ -36,10 +37,12 @@ namespace Code.Construction
                 _defense = value;
                 if (_defense <= 0)
                     OnKilled?.Invoke();
+                if(_defense > MaxHP)
+                    _defense = MaxHP;
             }
         }
         public bool IsForCombat { get; private set; }
-        public float CloseRadius { get; private set; }
+        public float DamageRadius { get; private set; }
         public float LongRadius { get; private set; }
         public float AttackInterval { get; private set; }
         public int ID { get; set; }

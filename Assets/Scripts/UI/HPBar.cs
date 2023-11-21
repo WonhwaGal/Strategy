@@ -1,18 +1,48 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Code.Units
+namespace Code.UI
 {
-    public class HPBar : MonoBehaviour
+    public class HPBar : UIView
     {
         [SerializeField] private Slider _hpSlider;
+        [SerializeField] private float _verticalShift;
 
-        public float MaxSliderValue => _hpSlider.maxValue;
+        private Transform _owner;
+        private Camera _camera;
+        private bool _isSetUp;
 
-        private void OnEnable() => _hpSlider.value = MaxSliderValue;
+        public event Action<HPBar> OnOwnerKilled;
 
-        public void ChangeHPSlider(int currentValue) => _hpSlider.value = currentValue;
+        private void OnEnable() => _camera = Camera.main;
 
-        public void SetMaxValue(float value) => _hpSlider.maxValue = value;
+        public HPBar SetUpSlider(int maxValue, Transform owner)
+        {
+            _hpSlider.maxValue = maxValue;
+            _hpSlider.value = maxValue;
+            _owner = owner;
+            _isSetUp = true;
+            gameObject.SetActive(false);
+            return this;
+        }
+
+        private void LateUpdate()
+        {
+            if (!_isSetUp)
+                return;
+
+            FollowOwner();
+        }
+
+        public void SetHPValue(int value) => _hpSlider.value = value;
+
+        public void Despawn() => OnOwnerKilled?.Invoke(this);
+
+        private void FollowOwner()
+        {
+            _hpSlider.transform.position = _camera.WorldToScreenPoint(_owner.position);
+            _hpSlider.transform.position += new Vector3(0, _verticalShift, 0);
+        }
     }
 }

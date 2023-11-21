@@ -2,20 +2,21 @@ using System;
 using System.Collections.Generic;
 using Code.Pools;
 using Code.ScriptableObjects;
+using UnityEngine;
 
 namespace Code.Construction
 {
     public sealed class ConstructionService : IReactToDaytimeSwitch
     {
         private readonly ConstructionSO _constructionSO;
-        private readonly ConstructionRegistry _registry;
+        private readonly ConstructionCreator _creator;
         private IConstructionModel _choosenModel;
         private bool _isNight;
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
         {
             _constructionSO = constructionSO;
-            _registry = new ConstructionRegistry(new ConstructionMultiPool(prefabs));
+            _creator = new ConstructionCreator(new ConstructionMultiPool(prefabs));
         }
 
         public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
@@ -31,7 +32,7 @@ namespace Code.Construction
 
             for (int i = 0; i < buildings.Count; i++)
             {
-                var presenter = _registry.CreatePresenter(buildings[i]);
+                var presenter = _creator.CreatePresenter(buildings[i]);
                 presenter.OnViewTriggered += SendTriggerNotification;
                 presenter.OnRequestDestroy += DestroyPresenter;
                 OnGameModeChange += presenter.OnGameModeChange;

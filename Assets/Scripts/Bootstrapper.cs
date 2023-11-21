@@ -5,7 +5,8 @@ using Code.Strategy;
 using Code.Construction;
 using Code.ScriptableObjects;
 using Code.Combat;
-using Code.Pools;
+using Code.Units;
+using Code.UI;
 
 namespace Code.SceneLoaders
 {
@@ -17,11 +18,12 @@ namespace Code.SceneLoaders
         [SerializeField] private UnitPrefabs _unitPrefabs;
         [SerializeField] private WeaponList _weaponList;
         [SerializeField] private WaveSO _wavesList;
-        [SerializeField] private RuinList _ruinsList;
+        [SerializeField] private UnsortedUIList _unsortedUIList;
+        [SerializeField] private HPBarList _hpBarList;
 
         private const string GameScene = "GameScene";
 
-        private IInputService _input;
+        private UIService _uiService;
         private UnitService _unitService;
         private LevelService _levelService;
         private ConstructionService _constructionService;
@@ -45,10 +47,10 @@ namespace Code.SceneLoaders
 
         private void AddServices()
         {
-            _input = ServiceLocator.Container.RegisterAndAssign<IInputService>(new KeyboardInput());
+            ServiceLocator.Container.Register<IInputService>(new KeyboardInput());
             ServiceLocator.Container.Register(new StrategyHandler());
             ServiceLocator.Container.Register(new CombatService(_weaponList));
-            ServiceLocator.Container.Register(new RuinMultiPool(_ruinsList));
+            _uiService = ServiceLocator.Container.RegisterAndAssign(new UIService(_unsortedUIList, _hpBarList));
             _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));
@@ -58,18 +60,21 @@ namespace Code.SceneLoaders
 
         private void Subsribe()
         {
-            _input.OnPressSpace += _levelService.OnSpacePressed;
             _levelService.OnCreatingWaves += _unitService.CreateWave;
             _levelService.OnChangingGameMode += _unitService.SwitchMode;
             _levelService.OnChangingGameMode += _constructionService.SwitchMode;
+            _constructionService.OnNotifyConnections += _uiService.ShowPanel;
+            _uiService.OnChooseUpgrade += _constructionService.Upgrade;
         }
 
         private void OnDestroy()
         {
-            _input.OnPressSpace -= _levelService.OnSpacePressed;
             _levelService.OnCreatingWaves -= _unitService.CreateWave;
             _levelService.OnChangingGameMode -= _unitService.SwitchMode;
             _levelService.OnChangingGameMode -= _constructionService.SwitchMode;
+            _constructionService.OnNotifyConnections -= _uiService.ShowPanel;
+            _uiService.OnChooseUpgrade -= _constructionService.Upgrade;
+            _levelService.Dispose();
         }
     }
 }

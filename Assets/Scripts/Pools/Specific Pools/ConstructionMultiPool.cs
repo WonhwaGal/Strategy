@@ -13,9 +13,9 @@ namespace Code.Pools
 
         public override void OnSpawned(ConstructionView result, ISpawnableType data)
         {
-            ISpawnBuilding duildingData = data as ISpawnBuilding;
-            result.transform.position = duildingData.Transform.position;
-            result.transform.rotation = duildingData.Transform.rotation;
+            ISpawnBuilding buildingData = data as ISpawnBuilding;
+            result.transform.position = buildingData.Transform.position;
+            result.transform.rotation = buildingData.Transform.rotation;
         }
     }
 }

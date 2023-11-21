@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 6393258279016263078}
   - component: {fileID: 6393258279016263079}
   - component: {fileID: -264269600797050580}
-  - component: {fileID: 6393258279016263076}
   - component: {fileID: 6393258279016263077}
+  - component: {fileID: 6393258279016263076}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -184,20 +184,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabType: 25
   _agent: {fileID: 6393258279016263077}
---- !u!136 &6393258279016263076
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393258279016263083}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &6393258279016263077
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -220,3 +206,17 @@ NavMeshAgent:
   m_BaseOffset: 0.8
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &6393258279016263076
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6393258279016263083}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

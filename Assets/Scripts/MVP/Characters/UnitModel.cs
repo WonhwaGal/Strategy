@@ -12,9 +12,9 @@ namespace Code.Units
         {
             PrefabType = settings.PrefabType;
             Transform = transform;
-            HP = settings.HP;
+            HP = MaxHP = settings.HP;
             Speed = settings.Speed;
-            CloseRadius = settings.CloseRangeRadius;
+            DamageRadius = settings.DamageRadius;
             LongRadius = settings.LongRangeRadius;
             AttackInterval = settings.AttackInterval;
             Damage = settings.Damage;
@@ -22,20 +22,19 @@ namespace Code.Units
 
         public PrefabType PrefabType { get; private set; }
         public Transform Transform { get; private set; }
+        public int MaxHP { get; private set; }
         public int HP
         {
             get => _hp;
             set
             {
                 _hp = value;
-                if(_hp <= 0)
-                {
+                if (_hp <= 0)
                     OnKilled?.Invoke();
-                }
             }
         }
         public float Speed { get; set; }
-        public float CloseRadius { get; private set; }
+        public float DamageRadius { get; private set; }
         public float LongRadius { get; private set; }
         public float AttackInterval { get; private set; }
         public int Damage { get; private set; }  // which DAMAGE is this?
