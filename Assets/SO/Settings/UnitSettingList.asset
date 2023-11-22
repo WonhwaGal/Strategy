@@ -29,3 +29,11 @@ MonoBehaviour:
     LongRangeRadius: 10
     AttackInterval: 4
     Damage: 5
+  - Name: Ally
+    PrefabType: 26
+    HP: 50
+    Speed: 1.5
+    DamageRadius: 2
+    LongRangeRadius: 10
+    AttackInterval: 4
+    Damage: 10

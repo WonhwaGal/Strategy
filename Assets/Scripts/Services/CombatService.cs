@@ -66,7 +66,7 @@ namespace Code.Combat
 
         private LayerMask GetMask(PrefabType type, bool allMasks, bool amongUnits = false)
         {
-            if ((int)type <= (int)PrefabType.Player)
+            if ((int)type < (int)PrefabType.Enemy)
                 return _enemyMask;
 
             if (allMasks)

@@ -8,13 +8,11 @@ namespace Code.Units
     public class UnitCreator
     {
         private readonly UnitMultiPool _multiPool;
-        private readonly StrategyHandler _strategyHandler;
         private readonly UIService _uiService;
 
         public UnitCreator(UnitMultiPool pool)
         {
             _multiPool = pool;
-            _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
             _uiService = ServiceLocator.Container.RequestFor<UIService>();
         }
 
@@ -22,7 +20,7 @@ namespace Code.Units
         {
             var view = _multiPool.Spawn(type);
             var model = new UnitModel(settings, view.transform);
-            var strategy = (IUnitStrategy)_strategyHandler.GetStrategy(type);
+            var strategy = (IUnitStrategy)StrategyHandler.GetStrategy(type);
             var presenter = GetByType(type, view, model, strategy);
             strategy.Init(presenter);
             return presenter;
@@ -36,7 +34,7 @@ namespace Code.Units
                 new PlayerPresenter(view, model, strategy, _uiService.SpawnHPBar(UIType.PlayerHP)),
                 PrefabType.Enemy => 
                 new EnemyPresenter(view, model, strategy, _uiService.SpawnHPBar(UIType.EnemyHP)),
-                _ => null,
+                _ => new AllyPresenter(view, model, strategy, _uiService.SpawnHPBar(UIType.PlayerHP))
             };
         }
 

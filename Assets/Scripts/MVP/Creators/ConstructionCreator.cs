@@ -9,13 +9,11 @@ namespace Code.Construction
     public sealed class ConstructionCreator
     {
         private readonly ConstructionMultiPool _multiPool;
-        private readonly StrategyHandler _strategyHandler;
         private readonly UIService _uiService;
 
         public ConstructionCreator(ConstructionMultiPool pool)
         {
             _multiPool = pool;
-            _strategyHandler = ServiceLocator.Container.RequestFor<StrategyHandler>();
             _uiService = ServiceLocator.Container.RequestFor<UIService>();
         }
 
@@ -25,9 +23,13 @@ namespace Code.Construction
             _multiPool.OnSpawned(buildingView, buildingData);
             var model = new ConstructionModel(buildingData);
             var strategy =
-                (IConstructionStrategy)_strategyHandler.GetStrategy(buildingData.PrefabType);
+                (IConstructionStrategy)StrategyHandler.GetStrategy(buildingData.PrefabType);
 
-            var presenter = new ConstructionPresenter(buildingView, model, strategy, GetBarByType(model.PrefabType));
+            ConstructionPresenter presenter;
+            if (buildingData.PrefabType == PrefabType.Barracks)
+                presenter = new SpawnConstructionPresenter(buildingView, model, strategy, GetBarByType(model.PrefabType));
+            else
+                presenter = new ConstructionPresenter(buildingView, model, strategy, GetBarByType(model.PrefabType));
             strategy.Init(presenter);
 
             return presenter;

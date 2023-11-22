@@ -72,6 +72,14 @@ MonoBehaviour:
         <ID>k__BackingField: 7
         <ActivatedBy>k__BackingField: 3
       <CommonInfo>k__BackingField: {fileID: 11400000, guid: 4291dd6dba85beb4c915efad979329a0, type: 2}
+    - Name: Barracks_ID8
+      <PrefabType>k__BackingField: 6
+      <Transform>k__BackingField: {fileID: 2467765520304043027, guid: 9fd66fd13a8ae2d4fbedf23d31813591, type: 3}
+      <UniqueInfo>k__BackingField:
+        <AutoVisible>k__BackingField: 0
+        <ID>k__BackingField: 8
+        <ActivatedBy>k__BackingField: 3
+      <CommonInfo>k__BackingField: {fileID: 11400000, guid: 92834e57aa398c3498badc2cd8dfd016, type: 2}
   - Name: Level_2
     Level: 2
     BuildingList: []

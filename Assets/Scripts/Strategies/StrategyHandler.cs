@@ -2,18 +2,19 @@ using Code.Tools;
 
 namespace Code.Strategy
 {
-    public class StrategyHandler : IService
+    public static class StrategyHandler
     {
-        public IStrategy GetStrategy(PrefabType type)
+        public static IStrategy GetStrategy(PrefabType type)
         {
-            if(type == PrefabType.Player)
-                return new PlayerStrategy();
             if ((int)type < Constants.PlayerThreshold)
                 return new DayBuildingStrategy();
             else if ((int)type >= Constants.EnemyThreshold)
                 return new EnemyInfantryStrategy();
 
-            return null;
+            if (type == PrefabType.Player)
+                return new PlayerStrategy();
+            else
+                return new DayAllyStrategy();
         }
     }
 }

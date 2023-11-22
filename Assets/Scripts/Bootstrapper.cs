@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Code.Input;
-using Code.Strategy;
 using Code.Construction;
 using Code.ScriptableObjects;
 using Code.Combat;
@@ -48,7 +47,6 @@ namespace Code.SceneLoaders
         private void AddServices()
         {
             ServiceLocator.Container.Register<IInputService>(new KeyboardInput());
-            ServiceLocator.Container.Register(new StrategyHandler());
             ServiceLocator.Container.Register(new CombatService(_weaponList));
             _uiService = ServiceLocator.Container.RegisterAndAssign(new UIService(_unsortedUIList, _hpBarList));
             _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
@@ -64,6 +62,7 @@ namespace Code.SceneLoaders
             _levelService.OnChangingGameMode += _unitService.SwitchMode;
             _levelService.OnChangingGameMode += _constructionService.SwitchMode;
             _constructionService.OnNotifyConnections += _uiService.ShowPanel;
+            _constructionService.OnBuildingWithUnits += _unitService.SpawnAllies;
             _uiService.OnChooseUpgrade += _constructionService.Upgrade;
         }
 
@@ -73,6 +72,7 @@ namespace Code.SceneLoaders
             _levelService.OnChangingGameMode -= _unitService.SwitchMode;
             _levelService.OnChangingGameMode -= _constructionService.SwitchMode;
             _constructionService.OnNotifyConnections -= _uiService.ShowPanel;
+            _constructionService.OnBuildingWithUnits -= _unitService.SpawnAllies;
             _uiService.OnChooseUpgrade -= _constructionService.Upgrade;
             _levelService.Dispose();
         }

@@ -8,8 +8,8 @@ namespace Code.Construction
 {
     public class ConstructionPresenter : IConstructionPresenter
 {
-        private readonly ConstructionView _view;
-        private readonly ConstructionModel _model;
+        protected readonly ConstructionView _view;
+        protected readonly ConstructionModel _model;
         private IConstructionStrategy _strategy;
         protected HPBar _hpBar;
 
@@ -56,7 +56,10 @@ namespace Code.Construction
 
             if (_model.CurrentStage < 0 && model.ID == _model.ActivatedBy ||
                 _model.CurrentStage >= 0 && model.ID == _model.ID)
+            {
                 _view.React(action);
+                OnReactToUpgrade(action, model.ID == _model.ID);
+            }
         }
 
         public void ReceiveDamage(int damage)
@@ -75,6 +78,7 @@ namespace Code.Construction
         private void Update(float delta) => _strategy.Execute(this, delta);
         private void UpgradeStage(int currentStage) => _model.CurrentStage = currentStage;
         private void HandleTrigger(BuildActionType action) => OnViewTriggered?.Invoke(_model, action);
+        protected virtual void OnReactToUpgrade(BuildActionType action, bool selfBuild) { }
 
         public void Destroy() => OnRequestDestroy?.Invoke(this);
         public void Dispose()

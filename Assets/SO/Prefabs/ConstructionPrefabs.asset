@@ -25,3 +25,6 @@ MonoBehaviour:
   - Name: Mill
     Type: 4
     Prefab: {fileID: 2690569823107108208, guid: 3afe6214d5701574da460b3121ed355f, type: 3}
+  - Name: Barracks
+    Type: 6
+    Prefab: {fileID: -3287100420502359946, guid: db467ee9e2fb3ce498f41ecfdd2068c9, type: 3}

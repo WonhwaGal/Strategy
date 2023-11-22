@@ -20,6 +20,7 @@ namespace Code.Construction
         }
 
         public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
+        public event Action<Transform[], PrefabType> OnBuildingWithUnits;
         public event Action<GameMode> OnGameModeChange;
 
         public void StartLevel(int lvlNumber)
@@ -37,6 +38,9 @@ namespace Code.Construction
                 presenter.OnRequestDestroy += DestroyPresenter;
                 OnGameModeChange += presenter.OnGameModeChange;
                 OnNotifyConnections += presenter.CheckOwnConnection;
+                if (buildings[i].PrefabType == PrefabType.Barracks)
+                    ((SpawnConstructionPresenter)presenter).OnBuildingWithUnits
+                         += SendUnitSpawnRequest;
             }
         }
 
@@ -78,6 +82,9 @@ namespace Code.Construction
             OnNotifyConnections?.Invoke(model, action);
             _choosenModel = action == BuildActionType.PutAway ? null : model;
         }
+
+        private void SendUnitSpawnRequest(Transform[] spawnInfo) 
+            => OnBuildingWithUnits?.Invoke(spawnInfo, PrefabType.Ally);
 
         private void DestroyPresenter(ConstructionPresenter presenter)
         {

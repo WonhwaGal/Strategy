@@ -220,9 +220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b0f51acb1c5e8489abd299a299bac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unsortedUIList: {fileID: 11400000, guid: a1255f1c92e8119498736fc88976eff0, type: 2}
-  _hpBarList: {fileID: 11400000, guid: 8172f79df93e59c43b91172ebb009c79, type: 2}
-  _uiRoot: {fileID: 0}
   _ruinsList: {fileID: 11400000, guid: c6502576afe86ef4c82cf5c33a9f59d6, type: 2}
 --- !u!4 &701948581
 Transform:

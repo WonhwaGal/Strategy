@@ -28,12 +28,7 @@ namespace Code.Strategy
 
         public virtual void Execute(IUnitPresenter presenter, float delta) { }
 
-        public virtual void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
-        {
-            var type = presenter.Model.PrefabType;
-            if (mode == GameMode.IsNight)
-                WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
-        }
+        public virtual void SwitchStrategy(IUnitPresenter presenter, GameMode mode) { }
 
         protected abstract void Move(UnitView view, UnitModel model, float delta);
 
@@ -45,15 +40,10 @@ namespace Code.Strategy
             IPresenter presenter = newTargetInfo.Item1;
 
             if (presenter != null)
-            {
-                IModel targetModel = newTargetInfo.Item2 ?
-                    ((IUnitPresenter)presenter).Model : ((IConstructionPresenter)presenter).Model;
-
-                ReceiveTarget(targetModel);
-                if (CheckAttackConditions(model.Transform.position))
-                    Attack(presenter, model.Damage);
-            }
+                OnFindTarget(model, presenter, newTargetInfo.Item2);
         }
+
+        protected virtual void OnFindTarget(UnitModel model, IPresenter presenter, bool isUnit) { }
 
         protected bool CheckAttackConditions(Vector3 selfPos)
         {

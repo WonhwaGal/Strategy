@@ -11,7 +11,7 @@ public enum PrefabType
     Barracks = 6,
     // for player's
     Player = 25,
-    Knight = 26,
+    Ally = 26,
     // for enemies'
     Enemy = 30,
     // for other objects

@@ -1,3 +1,4 @@
+using Code.Construction;
 using Code.Units;
 
 namespace Code.Strategy
@@ -39,6 +40,23 @@ namespace Code.Strategy
                     SearchForNewOpponent(model);
                 _currentInterval = 0;
             }
+        }
+
+        public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
+        {
+            var type = presenter.Model.PrefabType;
+            if (mode == GameMode.IsNight)
+                WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
+        }
+
+        protected override void OnFindTarget(UnitModel model, IPresenter presenter, bool isUnit)
+        {
+            IModel targetModel = isUnit ?
+        ((IUnitPresenter)presenter).Model : ((IConstructionPresenter)presenter).Model;
+
+            ReceiveTarget(targetModel);
+            if (CheckAttackConditions(model.Transform.position))
+                Attack(presenter, model.Damage);
         }
     }
 }

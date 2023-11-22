@@ -4,6 +4,7 @@ using Code.ScriptableObjects;
 using Code.Pools;
 using static WaveSO;
 using Random = UnityEngine.Random;
+using UnityEngine;
 
 namespace Code.Units
 {
@@ -45,6 +46,15 @@ namespace Code.Units
                         Random.insideUnitSphere * spawnData.SpawnRadius;
                     presenter.PlaceUnit(spawnSpot);
                 }
+            }
+        }
+
+        public void SpawnAllies(Transform[] spawnPoints, PrefabType type)
+        {
+            for(int i = 0; i < spawnPoints.Length; i++)
+            {
+                var presenter = CreateUnit(type);
+                presenter.PlaceUnit(spawnPoints[i].position);
             }
         }
 
