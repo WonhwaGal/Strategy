@@ -23,7 +23,7 @@ namespace Code.Combat
 
         public IPresenter FindCastle() => Castle;
 
-        private void OnCastleDestroyed(IPresenter presenter, IUnitView view)
+        private void OnCastleDestroyed(IPresenter presenter, IUnitView view, bool destroyView)
         {
             EndNight(isVictory: false);
             presenter.OnBeingKilled -= OnCastleDestroyed;

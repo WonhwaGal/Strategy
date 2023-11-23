@@ -35,11 +35,15 @@ namespace Code.Strategy
 
         public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
-             _isNight = mode == GameMode.IsNight;
             if(mode == GameMode.IsNight)
             {
                 WaveLocator.ParticipateInCombat(PrefabType.Player, presenter.View.gameObject, presenter);
                 presenter.SetUpHPBar(UIType.PlayerHP);
+            }
+            else
+            {
+                presenter.HPBar.gameObject.SetActive(false);
+                _isNight = false;
             }
         }
 

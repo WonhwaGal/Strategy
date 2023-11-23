@@ -7,7 +7,7 @@ namespace Code.Units
     public interface IUnitView : ISpawnableType
     {
         event Action<float> OnUpdate;
-        event Action OnViewDestroyed;
+        event Action<bool> OnViewDestroyed;
 
         GameObject GameObject { get; }
     }

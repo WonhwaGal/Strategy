@@ -1,5 +1,6 @@
 using Code.Pools;
 using Code.Strategy;
+using UnityEngine;
 using static UnitSettingList;
 
 namespace Code.Units
@@ -24,9 +25,9 @@ namespace Code.Units
         {
             return unitType switch
             {
-                PrefabType.Player => 
+                PrefabType.Player =>
                 new PlayerPresenter(view, model, strategy),
-                PrefabType.Enemy => 
+                PrefabType.Enemy =>
                 new EnemyPresenter(view, model, strategy),
                 _ => new AllyPresenter(view, model, strategy)
             };

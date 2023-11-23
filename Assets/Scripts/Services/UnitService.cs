@@ -45,16 +45,26 @@ namespace Code.Units
         public void SpawnAllies(Transform[] spawnPoints, PrefabType type)
         {
             for(int i = 0; i < spawnPoints.Length; i++)
-            {
-                var presenter = CreateUnit(type);
-                presenter.PlaceUnit(spawnPoints[i].position);
-            }
+                SpawnAlly(type, spawnPoints[i].position, true);
+        }
+        
+        private AllyPresenter SpawnAlly(PrefabType type, Vector3 position, bool active)
+        {
+            var presenter = CreateUnit(type);
+            presenter.PlaceUnit(position);
+            ((IUnitPresenter)presenter).View.gameObject.SetActive(active);
+            return (AllyPresenter)presenter;
         }
 
-        public void DestroyPresenter(IPresenter presenter, IUnitView view)
+        public void DestroyPresenter(IPresenter presenter, IUnitView view, bool destroyView)
         {
-            if (view != null)
+            if (view != null && !destroyView)
+            {
                 _unitCreator.Despawn(view.PrefabType, (UnitView)view);
+                if (view.PrefabType == PrefabType.Ally)
+                    SpawnAlly(view.PrefabType, ((AllyView)view).OrderedPosition, false);
+            }
+
             presenter.OnBeingKilled -= DestroyPresenter;
             presenter.Dispose();
         }

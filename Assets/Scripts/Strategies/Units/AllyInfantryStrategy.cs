@@ -15,7 +15,10 @@ namespace Code.Strategy
         {
             base.SwitchStrategy(presenter, mode);
             if (mode == GameMode.IsDay)
+            {
+                presenter.HPBar.gameObject.SetActive(false);
                 presenter.Strategy = new DayAllyStrategy(presenter);
+            }
         }
 
         protected override void Move(UnitView view, UnitModel model, float delta)

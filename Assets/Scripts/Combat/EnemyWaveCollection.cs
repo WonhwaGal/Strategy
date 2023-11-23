@@ -14,7 +14,7 @@ namespace Code.Combat
                 EndNight(isVictory: true);
         }
 
-        private void OnEnemyKilled(IPresenter presenter, IUnitView view)
+        private void OnEnemyKilled(IPresenter presenter, IUnitView view, bool destroyView)
         {
             RemoveFromCollection(view.GameObject);
             presenter.OnBeingKilled -= OnEnemyKilled;

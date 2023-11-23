@@ -1,4 +1,5 @@
 ﻿using Code.Strategy;
+using Code.UI;
 
 namespace Code.Units
 {
@@ -7,6 +8,7 @@ namespace Code.Units
         UnitView View { get; }
         UnitModel Model { get; }
         IStrategy Strategy { get; set; }
+        HPBar HPBar { get; }
         void SetUpHPBar(UIType uiType);
     }
 }

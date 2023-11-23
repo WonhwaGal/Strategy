@@ -36,7 +36,7 @@ namespace Code.Construction
             {
                 _defense = value;
                 if (_defense <= 0)
-                    OnKilled?.Invoke();
+                    OnKilled?.Invoke(false);
                 if(_defense > MaxHP)
                     _defense = MaxHP;
             }
@@ -53,7 +53,7 @@ namespace Code.Construction
         public bool[] AutoUpgrades { get; set; }
         public int[] PriceList { get; set; }
 
-        public event Action OnKilled;
+        public event Action<bool> OnKilled;
 
         public void Dispose() { }
     }

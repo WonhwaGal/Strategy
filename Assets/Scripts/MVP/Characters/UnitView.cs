@@ -17,12 +17,12 @@ namespace Code.Units
 
         public event Action<float> OnUpdate;
         public event Action<int> OnReceiveDamage;
-        public event Action OnViewDestroyed;
+        public event Action<bool> OnViewDestroyed;
 
         private void Update() => OnUpdate?.Invoke(Time.deltaTime);
 
         protected void ReceiveDamage(int damage) => OnReceiveDamage?.Invoke(damage);
 
-        private void OnDestroy()  => OnViewDestroyed?.Invoke();
+        private void OnDestroy()  => OnViewDestroyed?.Invoke(true);
     }
 }

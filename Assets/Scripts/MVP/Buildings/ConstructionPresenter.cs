@@ -41,10 +41,10 @@ namespace Code.Construction
                 _strategy = (IConstructionStrategy)value;
             }
         }
-
+        HPBar IConstructionPresenter.HPBar => _hpBar;
 
         public event Action<IConstructionModel, BuildActionType> OnViewTriggered;
-        public event Action<IPresenter, IUnitView> OnBeingKilled;
+        public event Action<IPresenter, IUnitView, bool> OnBeingKilled;
         public event Action<ConstructionPresenter> OnRequestDestroy;
 
         public void OnGameModeChange(GameMode mode) => _strategy.SwitchStrategy(this, mode);
@@ -78,10 +78,10 @@ namespace Code.Construction
             _hpBar.SetUpSlider(_model.MaxHP, _model.Transform);
         }
 
-        public void RuinBuilding()
+        public void RuinBuilding(bool destroyView)
         {
             _model.IsDestroyed = true;
-            OnBeingKilled?.Invoke(this, _view);
+            OnBeingKilled?.Invoke(this, _view, destroyView);
         }
 
         private void Update(float delta) => _strategy.Execute(this, delta);
@@ -89,7 +89,7 @@ namespace Code.Construction
         private void HandleTrigger(BuildActionType action) => OnViewTriggered?.Invoke(_model, action);
         protected virtual void OnReactToUpgrade(BuildActionType action, bool selfBuild) { }
 
-        public void Destroy() => OnRequestDestroy?.Invoke(this);
+        public void Destroy(bool destroyView) => OnRequestDestroy?.Invoke(this);
         public void Dispose()
         {
             if (_hpBar != null)

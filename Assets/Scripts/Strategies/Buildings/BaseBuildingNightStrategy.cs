@@ -34,6 +34,7 @@ namespace Code.Strategy
                 if (_ruins != null)
                     _ruinsPool.Despawn(PrefabType.CommonRuin, _ruins);
                 presenter.Strategy = new DayBuildingStrategy(presenter);
+                presenter.HPBar.gameObject.SetActive(false);
             }
         }
 

@@ -29,11 +29,11 @@ namespace Code.Units
         UnitView IUnitPresenter.View => _view;
         UnitModel IUnitPresenter.Model => _model;
         IStrategy IUnitPresenter.Strategy { get { return _strategy; } set { _strategy = (IUnitStrategy)value; } }
+        HPBar IUnitPresenter.HPBar => _hpBar;
 
+        public event Action<IPresenter, IUnitView, bool> OnBeingKilled;
 
-        public event Action<IPresenter, IUnitView> OnBeingKilled;
-
-        public void PlaceUnit(Vector3 pos) => _view.transform.position = pos;
+        public virtual void PlaceUnit(Vector3 pos) => _view.transform.position = pos;
 
         public void OnGameModeChange(GameMode mode) => _strategy.SwitchStrategy(this, mode);
 
@@ -45,20 +45,24 @@ namespace Code.Units
 
         public void SetUpHPBar(UIType uiType)
         {
-            var hpPool = ServiceLocator.Container.RequestFor<HPBarPool>();
-            _hpBar = hpPool.Spawn(uiType);
-            hpPool.OnSpawned(_hpBar);
+            if (_hpBar == null)
+            {
+                var hpPool = ServiceLocator.Container.RequestFor<HPBarPool>();
+                _hpBar = hpPool.Spawn(uiType);
+                hpPool.OnSpawned(_hpBar);
+            }
             _hpBar.SetUpSlider(_model.HP, _model.Transform);
         }
 
         protected void Update(float deltaTime) => _strategy.Execute(this, deltaTime);
 
-        protected void Die() => OnBeingKilled?.Invoke(this, _view);
+        protected void Die(bool destroyView) => OnBeingKilled?.Invoke(this, _view, destroyView);
 
         public virtual void Dispose()
         {
             if (_hpBar != null)
                 _hpBar.Despawn();
+
             _model.OnKilled -= Die;
             _view.OnViewDestroyed -= Die;
             _view.OnUpdate -= Update;

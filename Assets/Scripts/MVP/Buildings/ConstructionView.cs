@@ -18,7 +18,7 @@ namespace Code.Construction
         public event Action<BuildActionType> OnTriggerAction;
         public event Action<int> OnModeChange;
         public event Action<float> OnUpdate;
-        public event Action OnViewDestroyed;
+        public event Action<bool> OnViewDestroyed;
 
         private void OnEnable() => ShowCurrentStage();
         private void Update() => OnUpdate?.Invoke(Time.deltaTime);
@@ -64,6 +64,6 @@ namespace Code.Construction
             }
         }
 
-        private void OnDestroy() => OnViewDestroyed?.Invoke();
+        private void OnDestroy() => OnViewDestroyed?.Invoke(true);
     }
 }
