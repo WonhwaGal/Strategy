@@ -25,3 +25,6 @@ MonoBehaviour:
   - Name: Building HP
     Type: 2
     Prefab: {fileID: 4436009892875377738, guid: ccf278d6863e989459dacf54103ab4ce, type: 3}
+  - Name: Ally HP
+    Type: 26
+    Prefab: {fileID: 4436009892875377738, guid: 542e0d057c5e79e4caa78770cd1f5685, type: 3}

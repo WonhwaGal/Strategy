@@ -32,8 +32,12 @@ namespace Code.Strategy
         public void SwitchStrategy(IConstructionPresenter presenter, GameMode mode)
         {
             if (mode == GameMode.IsNight)
-                presenter.Strategy = _isCombatType ? 
+            {
+                presenter.Strategy = _isCombatType ?
                     new CombatBuildingStrategy(presenter) : new PassiveNightStrategy(presenter);
+                var isCastle = presenter.Model.PrefabType == PrefabType.Castle;
+                presenter.SetUpHPBar(isCastle ? UIType.CastleHP : UIType.BuildingHP);
+            }
         }
 
         private void GrantCoin(ConstructionModel model)

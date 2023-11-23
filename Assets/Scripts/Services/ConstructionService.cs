@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Code.Combat;
 using Code.Pools;
 using Code.ScriptableObjects;
 using UnityEngine;
 
 namespace Code.Construction
 {
-    public sealed class ConstructionService : IReactToDaytimeSwitch
+    public sealed class ConstructionService : IService
     {
         private readonly ConstructionSO _constructionSO;
         private readonly ConstructionCreator _creator;
@@ -21,13 +22,13 @@ namespace Code.Construction
 
         public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
         public event Action<Transform[], PrefabType> OnBuildingWithUnits;
-        public event Action<GameMode> OnGameModeChange;
 
         public void StartLevel(int lvlNumber)
             => CreatePresenters(_constructionSO.FindBuildingsOfLevel(lvlNumber));
 
         private void CreatePresenters(List<SingleBuildingData> buildings)
         {
+            _isNight = false;
             if (buildings == null)
                 return;
 
@@ -36,18 +37,11 @@ namespace Code.Construction
                 var presenter = _creator.CreatePresenter(buildings[i]);
                 presenter.OnViewTriggered += SendTriggerNotification;
                 presenter.OnRequestDestroy += DestroyPresenter;
-                OnGameModeChange += presenter.OnGameModeChange;
                 OnNotifyConnections += presenter.CheckOwnConnection;
                 if (buildings[i].PrefabType == PrefabType.Barracks)
                     ((SpawnConstructionPresenter)presenter).OnBuildingWithUnits
                          += SendUnitSpawnRequest;
             }
-        }
-
-        public void SwitchMode(GameMode mode)
-        {
-            _isNight = mode == GameMode.IsNight;
-            OnGameModeChange?.Invoke(mode);
         }
 
         public bool ReadyToBuild() // when Space key pressed
@@ -57,6 +51,8 @@ namespace Code.Construction
                 NotifyOnTrigger();
                 return true;
             }
+
+            _isNight = true;
             return false;
         }
 
@@ -88,7 +84,6 @@ namespace Code.Construction
 
         private void DestroyPresenter(ConstructionPresenter presenter)
         {
-            OnGameModeChange -= presenter.OnGameModeChange;
             OnNotifyConnections -= presenter.CheckOwnConnection;
             presenter.OnRequestDestroy -= DestroyPresenter;
             presenter.OnViewTriggered -= SendTriggerNotification;

@@ -37,7 +37,10 @@ namespace Code.Strategy
         {
              _isNight = mode == GameMode.IsNight;
             if(mode == GameMode.IsNight)
+            {
                 WaveLocator.ParticipateInCombat(PrefabType.Player, presenter.View.gameObject, presenter);
+                presenter.SetUpHPBar(UIType.PlayerHP);
+            }
         }
 
         private void Move(UnitModel model, UnitView view)

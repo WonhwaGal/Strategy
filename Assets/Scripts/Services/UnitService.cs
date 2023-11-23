@@ -1,5 +1,3 @@
-using System;
-using Code.Construction;
 using Code.ScriptableObjects;
 using Code.Pools;
 using static WaveSO;
@@ -8,7 +6,7 @@ using UnityEngine;
 
 namespace Code.Units
 {
-    public class UnitService : IReactToDaytimeSwitch
+    public class UnitService : IService
     {
         private readonly UnitSettingList _unitSetList;
         private readonly UnitCreator _unitCreator;
@@ -19,15 +17,10 @@ namespace Code.Units
             _unitCreator = new UnitCreator(new UnitMultiPool(prefabs));
         }
 
-        public event Action<GameMode> OnGameModeChange;
-
-        public void SwitchMode(GameMode mode) => OnGameModeChange?.Invoke(mode);
-
         public UnitPresenter CreateUnit(PrefabType type)
         {
             UnitPresenter presenter = _unitCreator.CreatePresenter(type, _unitSetList.FindUnit(type)); 
             presenter.OnBeingKilled += DestroyPresenter;
-            OnGameModeChange += presenter.OnGameModeChange;
             return presenter;
         }
 
@@ -62,7 +55,6 @@ namespace Code.Units
         {
             if (view != null)
                 _unitCreator.Despawn(view.PrefabType, (UnitView)view);
-            OnGameModeChange -= presenter.OnGameModeChange;
             presenter.OnBeingKilled -= DestroyPresenter;
             presenter.Dispose();
         }

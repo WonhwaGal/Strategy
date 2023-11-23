@@ -7,5 +7,6 @@ namespace Code.Units
         UnitView View { get; }
         UnitModel Model { get; }
         IStrategy Strategy { get; set; }
+        void SetUpHPBar(UIType uiType);
     }
 }

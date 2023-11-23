@@ -1,7 +1,6 @@
 using UnityEngine;
 using Code.Combat;
 using Code.Units;
-using Code.Construction;
 
 namespace Code.Strategy
 {
@@ -10,6 +9,7 @@ namespace Code.Strategy
         protected readonly CombatService _combatService;
         protected Transform _target;
         protected float _targetRadius;
+        protected float _currentInterval;
 
         public BaseInfantryStrategy(IUnitPresenter presenter = null)
         {
@@ -18,7 +18,11 @@ namespace Code.Strategy
                 Init(presenter);
         }
 
-        public void Init(IUnitPresenter presenter) => presenter.View.NavAgent.speed = presenter.Model.Speed;
+        public void Init(IUnitPresenter presenter)
+        {
+            presenter.View.NavAgent.speed = presenter.Model.Speed;
+            _currentInterval = presenter.Model.AttackInterval / 2;
+        }
 
         protected virtual void ReceiveTarget(IModel newTarget)
         {
@@ -28,7 +32,12 @@ namespace Code.Strategy
 
         public virtual void Execute(IUnitPresenter presenter, float delta) { }
 
-        public virtual void SwitchStrategy(IUnitPresenter presenter, GameMode mode) { }
+        public virtual void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
+        {
+            var type = presenter.Model.PrefabType;
+            if(mode == GameMode.IsNight)
+                WaveLocator.ParticipateInCombat(type, presenter.View.GameObject, presenter);
+        }
 
         protected abstract void Move(UnitView view, UnitModel model, float delta);
 

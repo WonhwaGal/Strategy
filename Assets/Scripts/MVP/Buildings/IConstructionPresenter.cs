@@ -1,5 +1,4 @@
 ﻿using Code.Strategy;
-using Code.Units;
 
 namespace Code.Construction
 {
@@ -8,5 +7,6 @@ namespace Code.Construction
         ConstructionView View { get; }
         ConstructionModel Model { get; }
         IStrategy Strategy { get; set; }
+        void SetUpHPBar(UIType uiType);
     }
 }

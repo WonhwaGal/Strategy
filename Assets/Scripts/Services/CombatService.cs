@@ -29,12 +29,11 @@ namespace Code.Combat
 
         public (IPresenter, bool) ReceiveClosestTarget(IModel model, bool onlyCastle = false)
         {
-            bool targetIsUnit = false;
             if (!onlyCastle)
             {
                 var mask = GetMask(model.PrefabType, allMasks: false, amongUnits: true);
                 var result = AttackHandler
-                    .FindClosestType(model, mask, WaveLocator.GetCollection(Constants.Allies));
+                    .FindClosestType(model, mask, GetOpponentList(mask, amongUnits: true));
 
                 if (result != null)
                     return (result, true);
@@ -42,8 +41,8 @@ namespace Code.Combat
 
             var buildingMask = onlyCastle ? _castleMask : GetMask(model.PrefabType, allMasks: false);
             var finalResult = AttackHandler
-                .FindClosestType(model, buildingMask, WaveLocator.GetCollection(Constants.Buildings));
-            return (finalResult, targetIsUnit);
+                .FindClosestType(model, buildingMask, GetOpponentList(buildingMask, amongUnits: false));
+            return (finalResult, false);
         }
 
         public void CheckForTargets(IModel model, AttackType attack)
@@ -75,6 +74,17 @@ namespace Code.Combat
                 return _playerMask | _allyMask;
             else
                 return _buildingMask | _castleMask;
+        }
+
+        private BaseWaveCollection<IPresenter> GetOpponentList(LayerMask targetMask, bool amongUnits)
+        {
+            if (targetMask == _enemyMask)
+                return WaveLocator.GetCollection(Constants.Enemies);
+
+            if (amongUnits)
+                return WaveLocator.GetCollection(Constants.Allies);
+            else
+                return WaveLocator.GetCollection(Constants.Buildings);
         }
 
         private ArrowView GetArrow()

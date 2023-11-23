@@ -13,8 +13,6 @@ namespace Code.UI
         private Camera _camera;
         private bool _isSetUp;
 
-        public event Action<HPBar> OnOwnerKilled;
-
         private void OnEnable() => _camera = Camera.main;
 
         public HPBar SetUpSlider(int maxValue, Transform owner)
@@ -37,7 +35,8 @@ namespace Code.UI
 
         public void SetHPValue(int value) => _hpSlider.value = value;
 
-        public void Despawn() => OnOwnerKilled?.Invoke(this);
+        public void Despawn() 
+            => ServiceLocator.Container.RequestFor<HPBarPool>().Despawn(UIType, this);
 
         private void FollowOwner()
         {

@@ -1,43 +1,45 @@
 using System;
+using Code.Combat;
 using Code.Strategy;
 using Code.UI;
 using Code.Units;
-using UnityEngine;
 
 namespace Code.Construction
 {
     public class ConstructionPresenter : IConstructionPresenter
-{
+    {
         protected readonly ConstructionView _view;
         protected readonly ConstructionModel _model;
         private IConstructionStrategy _strategy;
         protected HPBar _hpBar;
 
-        public ConstructionPresenter(ConstructionView view, 
-            ConstructionModel model, IConstructionStrategy strategy, HPBar hpBar)
+        public ConstructionPresenter(ConstructionView view,
+            ConstructionModel model, IConstructionStrategy strategy)
         {
             _view = view;
             _model = model;
             _strategy = strategy;
-            _hpBar = SetUpHPBar(hpBar);
+
             _model.OnKilled += RuinBuilding;
             _view.OnUpdate += Update;
             _view.OnModeChange += UpgradeStage;
             _view.OnTriggerAction += HandleTrigger;
             _view.OnViewDestroyed += Destroy;
+            ServiceLocator.Container.RequestFor<LevelService>()
+                .OnChangingGameMode += OnGameModeChange;
             if (_model.AutoVisible)
                 _view.ShowCurrentStage(1);
         }
 
         ConstructionView IConstructionPresenter.View => _view;
         ConstructionModel IConstructionPresenter.Model => _model;
-        IStrategy IConstructionPresenter.Strategy 
-        { 
-            get => _strategy; 
-            set 
-            { 
-                _strategy = (IConstructionStrategy)value; 
-            } 
+        IStrategy IConstructionPresenter.Strategy
+        {
+            get => _strategy;
+            set
+            {
+                _strategy = (IConstructionStrategy)value;
+            }
         }
 
 
@@ -45,7 +47,6 @@ namespace Code.Construction
         public event Action<IPresenter, IUnitView> OnBeingKilled;
         public event Action<ConstructionPresenter> OnRequestDestroy;
 
-        public HPBar SetUpHPBar(HPBar hpBar) => hpBar.SetUpSlider(_model.MaxHP, _model.Transform);
         public void OnGameModeChange(GameMode mode) => _strategy.SwitchStrategy(this, mode);
 
         public void CheckOwnConnection(IConstructionModel model, BuildActionType action)
@@ -69,6 +70,14 @@ namespace Code.Construction
             _hpBar.SetHPValue(newValue);
         }
 
+        public void SetUpHPBar(UIType uiType)
+        {
+            var hpPool = ServiceLocator.Container.RequestFor<HPBarPool>();
+            _hpBar = hpPool.Spawn(uiType);
+            hpPool.OnSpawned(_hpBar);
+            _hpBar.SetUpSlider(_model.MaxHP, _model.Transform);
+        }
+
         public void RuinBuilding()
         {
             _model.IsDestroyed = true;
@@ -83,12 +92,15 @@ namespace Code.Construction
         public void Destroy() => OnRequestDestroy?.Invoke(this);
         public void Dispose()
         {
-            _hpBar.Despawn();
+            if (_hpBar != null)
+                _hpBar.Despawn();
             _model.OnKilled -= RuinBuilding;
             _view.OnUpdate -= Update;
             _view.OnModeChange -= UpgradeStage;
             _view.OnTriggerAction -= HandleTrigger;
             _model.Dispose();
+            ServiceLocator.Container.RequestFor<LevelService>()
+                .OnChangingGameMode -= OnGameModeChange;
             GC.SuppressFinalize(this);
         }
     }

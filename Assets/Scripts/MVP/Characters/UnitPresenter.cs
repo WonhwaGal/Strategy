@@ -1,4 +1,5 @@
 using System;
+using Code.Combat;
 using Code.Strategy;
 using Code.UI;
 using UnityEngine;
@@ -12,17 +13,18 @@ namespace Code.Units
         protected IUnitStrategy _strategy;
         protected HPBar _hpBar;
 
-        public UnitPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy, HPBar hpBar)
+        public UnitPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy)
         {
             _view = view;
             _model = model;
             _strategy = moveStrategy;
-            _hpBar = SetUpHPBar(hpBar);
 
             _model.OnKilled += Die;
             _view.OnViewDestroyed += Die;
             _view.OnUpdate += Update;
             _view.OnReceiveDamage += ReceiveDamage;
+            ServiceLocator.Container.RequestFor<LevelService>()
+                .OnChangingGameMode += OnGameModeChange;
         }
         UnitView IUnitPresenter.View => _view;
         UnitModel IUnitPresenter.Model => _model;
@@ -32,7 +34,7 @@ namespace Code.Units
         public event Action<IPresenter, IUnitView> OnBeingKilled;
 
         public void PlaceUnit(Vector3 pos) => _view.transform.position = pos;
-        public HPBar SetUpHPBar(HPBar hpBar) => hpBar.SetUpSlider(_model.HP, _model.Transform);
+
         public void OnGameModeChange(GameMode mode) => _strategy.SwitchStrategy(this, mode);
 
         public void ReceiveDamage(int damage)
@@ -41,18 +43,29 @@ namespace Code.Units
             _hpBar.SetHPValue(_model.HP -= damage);
         }
 
+        public void SetUpHPBar(UIType uiType)
+        {
+            var hpPool = ServiceLocator.Container.RequestFor<HPBarPool>();
+            _hpBar = hpPool.Spawn(uiType);
+            hpPool.OnSpawned(_hpBar);
+            _hpBar.SetUpSlider(_model.HP, _model.Transform);
+        }
+
         protected void Update(float deltaTime) => _strategy.Execute(this, deltaTime);
 
         protected void Die() => OnBeingKilled?.Invoke(this, _view);
 
         public virtual void Dispose()
         {
-            _hpBar.Despawn();
+            if (_hpBar != null)
+                _hpBar.Despawn();
             _model.OnKilled -= Die;
             _view.OnViewDestroyed -= Die;
             _view.OnUpdate -= Update;
             _view.OnReceiveDamage -= ReceiveDamage;
             _model.Dispose();
+            ServiceLocator.Container.RequestFor<LevelService>()
+                .OnChangingGameMode -= OnGameModeChange;
             GC.SuppressFinalize(this);
         }
     }

@@ -7,18 +7,16 @@ namespace Code.UI
 {
     public class UIService : IService
     {
-        private readonly HPBarPool _hpPool;
         private UpgradePanel _upgradePanel;
         private PricePanel _pricePanel;
 
         public event Action OnChooseUpgrade;
 
-        public UIService(UnsortedUIList unsorted, HPBarList hpList)
+        public UIService(UnsortedUIList unsorted)
         {
             var canvasPrefab = (GameCanvas)unsorted.FindPrefab(UIType.GameCanvas);
             var canvas = GameObject.Instantiate<GameCanvas>(canvasPrefab);
             SetUpPanels(canvas);
-            _hpPool = new HPBarPool(hpList, canvas.PoolRoot);
         }
 
         private void SetUpPanels(GameCanvas canvas)
@@ -54,20 +52,6 @@ namespace Code.UI
                     _pricePanel.Price.text = model.PriceList[model.CurrentStage].ToString();
                     break;
             }
-        }
-
-        public HPBar SpawnHPBar(UIType type)
-        {
-            var result = _hpPool.Spawn(type);
-            _hpPool.OnSpawned(result);
-            result.OnOwnerKilled += DespawnHPBar;
-            return result;
-        }
-
-        public void DespawnHPBar(HPBar hpbar)
-        {
-            _hpPool.Despawn(hpbar.UIType, hpbar);
-            hpbar.OnOwnerKilled -= DespawnHPBar;
         }
     }
 }

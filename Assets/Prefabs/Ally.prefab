@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7432608381448773010}
   - component: {fileID: 2818183599193853017}
   - component: {fileID: 2146573753361290130}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,8 +96,8 @@ GameObject:
   - component: {fileID: 6393258279016263079}
   - component: {fileID: 6393258279016263076}
   - component: {fileID: 6393258279016263077}
-  - component: {fileID: 3618199051992366707}
-  m_Layer: 6
+  - component: {fileID: -8900406791285651414}
+  m_Layer: 8
   m_Name: Ally
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ NavMeshAgent:
   m_BaseOffset: 0.8
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3618199051992366707
+--- !u!114 &-8900406791285651414
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6393258279016263083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be30b9d6aefa599479483612ab4415d5, type: 3}
+  m_Script: {fileID: 11500000, guid: ef0705a79bf3acf4682081a967dede1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabType: 26

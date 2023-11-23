@@ -1,6 +1,5 @@
 using Code.Pools;
 using Code.Strategy;
-using Code.UI;
 using static UnitSettingList;
 
 namespace Code.Units
@@ -8,13 +7,8 @@ namespace Code.Units
     public class UnitCreator
     {
         private readonly UnitMultiPool _multiPool;
-        private readonly UIService _uiService;
 
-        public UnitCreator(UnitMultiPool pool)
-        {
-            _multiPool = pool;
-            _uiService = ServiceLocator.Container.RequestFor<UIService>();
-        }
+        public UnitCreator(UnitMultiPool pool) => _multiPool = pool;
 
         public UnitPresenter CreatePresenter(PrefabType type, UnitSettings settings)
         {
@@ -31,10 +25,10 @@ namespace Code.Units
             return unitType switch
             {
                 PrefabType.Player => 
-                new PlayerPresenter(view, model, strategy, _uiService.SpawnHPBar(UIType.PlayerHP)),
+                new PlayerPresenter(view, model, strategy),
                 PrefabType.Enemy => 
-                new EnemyPresenter(view, model, strategy, _uiService.SpawnHPBar(UIType.EnemyHP)),
-                _ => new AllyPresenter(view, model, strategy, _uiService.SpawnHPBar(UIType.PlayerHP))
+                new EnemyPresenter(view, model, strategy),
+                _ => new AllyPresenter(view, model, strategy)
             };
         }
 

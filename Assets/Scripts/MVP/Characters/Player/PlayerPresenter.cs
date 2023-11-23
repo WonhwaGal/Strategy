@@ -5,8 +5,8 @@ namespace Code.Units
 {
     public class PlayerPresenter : UnitPresenter
     {
-        public PlayerPresenter(UnitView view, UnitModel model, IUnitStrategy strategy, HPBar hpBar)
-            : base(view, model, strategy, hpBar)
+        public PlayerPresenter(UnitView view, UnitModel model, IUnitStrategy strategy)
+            : base(view, model, strategy)
         { }
 
         public override void Dispose()

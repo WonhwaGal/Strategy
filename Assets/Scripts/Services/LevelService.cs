@@ -11,7 +11,7 @@ namespace Code.Combat
         private readonly IInputService _input;
         private readonly ConstructionService _construction;
         private readonly WaveSO _wavesData;
-        private bool _isNight;
+        private int _level = 1;
         private int _waveTurn = 1;
 
         public LevelService(WaveSO wavesData)
@@ -20,23 +20,49 @@ namespace Code.Combat
             _construction = ServiceLocator.Container.RequestFor<ConstructionService>();
             WaveLocator.OnWaveEnd += CheckNextWave;
             _input = ServiceLocator.Container.RequestFor<IInputService>();
-            _input.OnPressSpace += OnSpacePressed;
-            _input.OnPressCtrl += OnLeftCtrlPressed;
+            SubscribeToSpaceKey(isNight: false);
         }
 
-        public int Level { get; private set; } = 1;
+        public int Level
+        {
+            get => _level;
+            private set
+            {
+                if (value > _level)
+                    _waveTurn = 1;
+                _level = value;
+            }
+        }
 
         public event Action<LevelWaveData, int> OnCreatingWaves;
         public event Action<GameMode> OnChangingGameMode;
 
+        private void SubscribeToSpaceKey(bool isNight)
+        {
+            if (!isNight)
+            {
+                _input.OnPressSpace += OnSpacePressed;
+                _input.OnPressCtrl += OnLeftCtrlPressed;
+            }
+            else
+            {
+                _input.OnPressSpace -= OnSpacePressed;
+                _input.OnPressCtrl -= OnLeftCtrlPressed;
+            }
+        }
+
         private void OnSpacePressed()
         {
-            if (_isNight)
-                return;
-
-            _isNight = !_construction.ReadyToBuild();
-            if (_isNight)
+            if (!_construction.ReadyToBuild())
                 InvokeWave();
+        }
+
+        private void InvokeWave()
+        {
+            SubscribeToSpaceKey(isNight: true);
+            OnCreatingWaves?.Invoke(_wavesData.FindLevelWaves(Level), _waveTurn);
+            OnChangingGameMode?.Invoke(GameMode.IsNight);
+            _waveTurn++;
         }
 
         private void OnLeftCtrlPressed(bool startControl)
@@ -45,17 +71,14 @@ namespace Code.Combat
             OnChangingGameMode?.Invoke(mode);
         }
 
-        private void InvokeWave()
-        {
-            OnCreatingWaves?.Invoke(_wavesData.FindLevelWaves(Level), _waveTurn);
-            OnChangingGameMode?.Invoke(GameMode.IsNight);
-            _waveTurn++;
-        }
+
 
         private void CheckNextWave(bool isVictory)
         {
-            if (isVictory == false)
+            if (!isVictory)
+            {
                 SwitchToDay(isVictory);
+            }
             else
             {
                 if (_waveTurn > _wavesData.FindLevelWaves(Level).WavesCount())
@@ -67,7 +90,7 @@ namespace Code.Combat
 
         public void SwitchToDay(bool isVictory)
         {
-            _isNight = false;
+            SubscribeToSpaceKey(isNight: false);
             if (isVictory)
             {
                 Debug.Log("Level is won");
@@ -84,6 +107,7 @@ namespace Code.Combat
 
         public void Dispose()
         {
+            WaveLocator.OnWaveEnd -= CheckNextWave;
             _input.OnPressSpace -= OnSpacePressed;
             _input.OnPressCtrl -= OnLeftCtrlPressed;
         }

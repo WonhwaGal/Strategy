@@ -5,7 +5,6 @@ namespace Code.Strategy
 {
     public sealed class EnemyInfantryStrategy : BaseInfantryStrategy
     {
-        private float _currentInterval = 0;
         private bool _isTargetingCastle;
 
         public EnemyInfantryStrategy(IUnitPresenter presenter = null) : base(presenter)
@@ -44,9 +43,9 @@ namespace Code.Strategy
 
         public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
-            var type = presenter.Model.PrefabType;
+            base.SwitchStrategy(presenter, mode);
             if (mode == GameMode.IsNight)
-                WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
+                presenter.SetUpHPBar(UIType.EnemyHP);
         }
 
         protected override void OnFindTarget(UnitModel model, IPresenter presenter, bool isUnit)
