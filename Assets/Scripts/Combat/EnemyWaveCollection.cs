@@ -10,7 +10,7 @@ namespace Code.Combat
 
         protected override void OnRemoveFromCollection()
         {
-            if (_participants.Count == 0)
+            if (_participants.Count == 0 && !_viewsAreDestroyed)
                 EndNight(isVictory: true);
         }
 
@@ -18,6 +18,7 @@ namespace Code.Combat
         {
             RemoveFromCollection(view.GameObject);
             presenter.OnBeingKilled -= OnEnemyKilled;
+            _viewsAreDestroyed = destroyView;
         }
     }
 }

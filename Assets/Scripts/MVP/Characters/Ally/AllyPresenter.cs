@@ -13,7 +13,7 @@ namespace Code.Units
         public override void PlaceUnit(Vector3 pos)
         {
             base.PlaceUnit(pos);
-            ((AllyView)_view).OrderedPosition = _view.transform.position;
+            ((AllyUnit)_view).OrderedPosition = _view.transform.position;
             _strategy.Init(this);
         }
     }

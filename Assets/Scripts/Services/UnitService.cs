@@ -62,7 +62,7 @@ namespace Code.Units
             {
                 _unitCreator.Despawn(view.PrefabType, (UnitView)view);
                 if (view.PrefabType == PrefabType.Ally)
-                    SpawnAlly(view.PrefabType, ((AllyView)view).OrderedPosition, false);
+                    SpawnAlly(view.PrefabType, ((AllyUnit)view).OrderedPosition, false);
             }
 
             presenter.OnBeingKilled -= DestroyPresenter;

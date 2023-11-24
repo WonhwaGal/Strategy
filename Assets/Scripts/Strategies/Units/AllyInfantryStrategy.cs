@@ -1,15 +1,27 @@
 ﻿using Code.Units;
+using UnityEngine;
 
 namespace Code.Strategy
 {
     public sealed class AllyInfantryStrategy : BaseInfantryStrategy
     {
+        private readonly bool _isStatic;
+
         public AllyInfantryStrategy(IUnitPresenter presenter = null) : base(presenter)
         {
+            if (presenter != null)
+                _isStatic = ((AllyUnit)presenter.View).IsStaticInCombat;
         }
 
         public override void Execute(IUnitPresenter presenter, float delta)
-            => Move(presenter.View, presenter.Model, delta);
+        {
+            if (_isStatic)
+                presenter.View.transform.LookAt(_target);
+            else
+                Move(presenter.View, presenter.Model, delta);
+
+            Await(presenter.Model, delta);
+        }
 
         public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
@@ -25,8 +37,6 @@ namespace Code.Strategy
         {
             if (_target != null)
                 view.NavAgent.SetDestination(_target.position);
-
-            Await(model, delta);
         }
 
         protected override void Await(UnitModel model, float delta)

@@ -7,6 +7,7 @@ namespace Code.Combat
     public abstract class BaseWaveCollection<T> : IDisposable where T : IPresenter
     {
         protected Dictionary<GameObject, T> _participants = new();
+        protected bool _viewsAreDestroyed;
 
         public event Action<bool> OnWaveOver;
 

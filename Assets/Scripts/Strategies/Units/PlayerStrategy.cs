@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Code.Input;
 using Code.Units;
 using Code.Combat;
 
 namespace Code.Strategy
 {
-    public class PlayerStrategy : IUnitStrategy
+    public class PlayerStrategy : IUnitStrategy, IDisposable
     {
         private readonly IInputService _input;
         private readonly CombatService _combatService;
@@ -35,14 +36,20 @@ namespace Code.Strategy
 
         public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
-            if(mode == GameMode.IsNight)
+            if (mode == GameMode.IsNight)
             {
                 WaveLocator.ParticipateInCombat(PrefabType.Player, presenter.View.gameObject, presenter);
                 presenter.SetUpHPBar(UIType.PlayerHP);
             }
             else
             {
-                presenter.HPBar.gameObject.SetActive(false);
+                if (mode == GameMode.IsUnitControl)
+                {
+                    var area = ((PlayerUnit)presenter.View).ControlUnitArea;
+                    area.SetActive(!area.activeSelf);
+                }
+                if (presenter.HPBar != null)
+                    presenter.HPBar.gameObject.SetActive(false);
                 _isNight = false;
             }
         }

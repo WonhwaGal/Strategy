@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Code.Combat;
 using Code.Pools;
 using Code.ScriptableObjects;
 using UnityEngine;
