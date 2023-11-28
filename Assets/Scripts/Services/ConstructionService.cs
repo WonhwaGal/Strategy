@@ -10,7 +10,7 @@ namespace Code.Construction
     {
         private readonly ConstructionSO _constructionSO;
         private readonly ConstructionCreator _creator;
-        private IConstructionModel _choosenModel;
+        private IConstructionModel _chosenModel;
         private bool _isNight;
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
@@ -45,7 +45,7 @@ namespace Code.Construction
 
         public bool ReadyToBuild() // when Space key pressed
         {
-            if (_choosenModel != null && _choosenModel.CurrentStage < _choosenModel.TotalStages)
+            if (_chosenModel != null && _chosenModel.CurrentStage < _chosenModel.TotalStages)
             {
                 NotifyOnTrigger();
                 return true;
@@ -57,25 +57,25 @@ namespace Code.Construction
 
         public void Upgrade()
         {
-            if (_choosenModel != null)
-                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+            if (_chosenModel != null)
+                SendTriggerNotification(_chosenModel, BuildActionType.Build);
         }
 
         private void NotifyOnTrigger()
         {
-            if (_choosenModel.CurrentStage == 0)
-                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+            if (_chosenModel.CurrentStage == 0)
+                SendTriggerNotification(_chosenModel, BuildActionType.Build);
             else
-                SendTriggerNotification(_choosenModel, BuildActionType.Upgrade);
+                SendTriggerNotification(_chosenModel, BuildActionType.Upgrade);
         }
 
         private void SendTriggerNotification(IConstructionModel model, BuildActionType action)
         {
-            if (_isNight)
+            if (_isNight || model.CurrentStage >= model.TotalStages - 1 && action != BuildActionType.Hide)
                 return;
 
             OnNotifyConnections?.Invoke(model, action);
-            _choosenModel = action == BuildActionType.PutAway ? null : model;
+            _chosenModel = action == BuildActionType.Hide ? null : model;
         }
 
         private void SendUnitSpawnRequest(Transform[] spawnInfo) 

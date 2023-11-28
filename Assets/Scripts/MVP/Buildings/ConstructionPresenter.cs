@@ -72,8 +72,8 @@ namespace Code.Construction
 
         public void SetUpHPBar(UIType uiType)
         {
-            var hpPool = ServiceLocator.Container.RequestFor<HPBarPool>();
-            _hpBar = hpPool.Spawn(uiType);
+            var hpPool = ServiceLocator.Container.RequestFor<FollowUIPool>();
+            _hpBar = (HPBar)hpPool.Spawn(uiType);
             hpPool.OnSpawned(_hpBar);
             _hpBar.SetUpSlider(_model.MaxHP, _model.Transform);
         }

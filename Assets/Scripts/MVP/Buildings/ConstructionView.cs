@@ -32,7 +32,7 @@ namespace Code.Construction
         private void OnTriggerExit(Collider other)
         {
             if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
-                OnTriggerAction?.Invoke(BuildActionType.PutAway);
+                OnTriggerAction?.Invoke(BuildActionType.Hide);
         }
 
         public void React(BuildActionType action)

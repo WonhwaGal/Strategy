@@ -3,6 +3,7 @@ using UnityEngine;
 using Code.Input;
 using Code.Units;
 using Code.Combat;
+using Code.UI;
 
 namespace Code.Strategy
 {
@@ -12,14 +13,14 @@ namespace Code.Strategy
         private readonly CombatService _combatService;
         private Vector3 _targetPos;
         private float _currentInterval = 0;
-        private bool _abilityActive;
+        private RechargePanel _rechargePanel;
+        private bool _activateAbility;
         private bool _isNight;
 
         public PlayerStrategy()
         {
             _input = ServiceLocator.Container.RequestFor<IInputService>();
             _combatService = ServiceLocator.Container.RequestFor<CombatService>();
-            _input.OnPressSpace += ActivateAbility;
         }
 
         public void Init(IUnitPresenter presenter) { }
@@ -38,20 +39,19 @@ namespace Code.Strategy
         {
             if (mode == GameMode.IsNight)
             {
-                WaveLocator.ParticipateInCombat(PrefabType.Player, presenter.View.gameObject, presenter);
-                presenter.SetUpHPBar(UIType.PlayerHP);
+                PrepareForCombat(presenter);
+                return;
             }
-            else
+
+            if (mode == GameMode.IsUnitControl)
             {
-                if (mode == GameMode.IsUnitControl)
-                {
-                    var area = ((PlayerUnit)presenter.View).ControlUnitArea;
-                    area.SetActive(!area.activeSelf);
-                }
-                if (presenter.HPBar != null)
-                    presenter.HPBar.gameObject.SetActive(false);
-                _isNight = false;
+                var area = ((PlayerUnit)presenter.View).ControlUnitArea;
+                area.SetActive(!area.activeSelf);
             }
+            if (presenter.HPBar != null)
+                presenter.HPBar.gameObject.SetActive(false);
+            _isNight = false;
+            _input.OnPressSpace -= ActivateAbility;
         }
 
         private void Move(UnitModel model, UnitView view)
@@ -71,19 +71,36 @@ namespace Code.Strategy
             }
         }
 
-        private void ActivateAbility() => _abilityActive = _isNight;
+        private void ActivateAbility()
+        {
+            if (_isNight)
+                _activateAbility = true;
+        }
 
         private void UseAbility(UnitModel model)
         {
-            if (!_abilityActive)
+            if (!_rechargePanel.IsReady || !_activateAbility)
+            {
+                _activateAbility = false;
                 return;
+            }
 
+            Debug.Log("sword attack");
             Attack(model, AttackType.AreaSword);
-            _abilityActive = false;
+            _rechargePanel.IsReady = false;
         }
 
         private void Attack(IModel model, AttackType attack) =>
             _combatService.CheckForTargets(model, attack);
+
+        private void PrepareForCombat(IUnitPresenter presenter)
+        {
+            _isNight = true;
+            WaveLocator.ParticipateInCombat(PrefabType.Player, presenter.View.gameObject, presenter);
+            presenter.SetUpHPBar(UIType.PlayerHP);
+            _rechargePanel = ((PlayerPresenter)presenter).SetUpRechargePanel();
+            _input.OnPressSpace += ActivateAbility;
+        }
 
         public void Dispose() => _input.OnPressSpace -= ActivateAbility;
     }

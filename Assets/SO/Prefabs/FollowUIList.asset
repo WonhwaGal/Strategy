@@ -9,22 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed441697bf935c45aa0e8e1bf68d0ea, type: 3}
-  m_Name: HPBarList
+  m_Script: {fileID: 11500000, guid: dbcf228b4d894d549bd4aa95553eab8a, type: 3}
+  m_Name: FollowUIList
   m_EditorClassIdentifier: 
   _prefabs:
   - Name: Player HP
     Type: 25
     Prefab: {fileID: 4436009892875377738, guid: 2a5f783128ca27a48a510e62ccf678eb, type: 3}
-  - Name: Enemy HP
-    Type: 30
-    Prefab: {fileID: 4436009892875377738, guid: ecc215f6aee03b84e8fde19dd4ceed8b, type: 3}
   - Name: Castle HP
     Type: 1
     Prefab: {fileID: 4436009892875377738, guid: 350b5ec503f476741ae7a7707c3c30ca, type: 3}
   - Name: Building HP
     Type: 2
     Prefab: {fileID: 4436009892875377738, guid: ccf278d6863e989459dacf54103ab4ce, type: 3}
+  - Name: Enemy HP
+    Type: 30
+    Prefab: {fileID: 4436009892875377738, guid: ecc215f6aee03b84e8fde19dd4ceed8b, type: 3}
   - Name: Ally HP
     Type: 26
     Prefab: {fileID: 4436009892875377738, guid: 542e0d057c5e79e4caa78770cd1f5685, type: 3}
+  - Name: Player Recharge
+    Type: 27
+    Prefab: {fileID: 8749330095252790684, guid: 823b4d91afb658a4e947442baa3589be, type: 3}

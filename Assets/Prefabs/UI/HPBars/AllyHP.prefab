@@ -294,9 +294,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabType: 60
-  _uiType: 25
-  _hpSlider: {fileID: 8790840448145968258}
+  _uiType: 26
   _verticalShift: 20
+  _hpSlider: {fileID: 8790840448145968258}
 --- !u!1 &5574561522924474164
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public enum UIType
     BuildingHP = 2,
     PlayerHP = 25,
     AllyHP = 26,
+    PlayerRecharge = 27,
     EnemyHP = 30,
     GameCanvas = 50,
     UpgradePanel = 51,

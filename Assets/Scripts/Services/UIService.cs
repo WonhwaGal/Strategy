@@ -1,57 +1,36 @@
 using System;
-using Code.Construction;
-using Code.ScriptableObjects;
 using UnityEngine;
+using Code.MVC;
+using Code.ScriptableObjects;
 
 namespace Code.UI
 {
-    public class UIService : IService
+    public class UIService : IService, IDisposable
     {
-        private UpgradePanel _upgradePanel;
-        private PricePanel _pricePanel;
-
-        public event Action OnChooseUpgrade;
+        private readonly PriceController _priceController;
+        private readonly UpgradeController _upgradeController;
 
         public UIService(UnsortedUIList unsorted)
         {
+            GameCanvas = SetUpCanvas(unsorted);
+            _priceController = new();
+            ((IController)_priceController).AddView(GameCanvas.PricePanel);
+            _upgradeController = new();
+            ((IController)_upgradeController).AddView(GameCanvas.UpgradePanel);
+        }
+
+        public GameCanvas GameCanvas { get; private set; }
+
+        public GameCanvas SetUpCanvas(UnsortedUIList unsorted)
+        {
             var canvasPrefab = (GameCanvas)unsorted.FindPrefab(UIType.GameCanvas);
-            var canvas = GameObject.Instantiate<GameCanvas>(canvasPrefab);
-            SetUpPanels(canvas);
+            return GameObject.Instantiate<GameCanvas>(canvasPrefab);
         }
 
-        private void SetUpPanels(GameCanvas canvas)
+        public void Dispose()
         {
-            _upgradePanel = canvas.UpgradePanel;
-            _pricePanel = canvas.PricePanel;
-            _upgradePanel.gameObject.SetActive(false);
-            _pricePanel.gameObject.SetActive(false);
-            _upgradePanel.BuyButton.onClick.AddListener(() =>
-            {
-                _upgradePanel.gameObject.SetActive(false);
-                OnChooseUpgrade?.Invoke();
-            });
-        }
-
-        public void ShowPanel(IConstructionModel model, BuildActionType action)
-        {
-            _pricePanel.gameObject.SetActive(false);
-            _upgradePanel.gameObject.SetActive(false);
-
-            switch (action)
-            {
-                case BuildActionType.Upgrade:
-                    _upgradePanel.gameObject.SetActive(true);
-                    //fill panel with options
-                    break;
-                case BuildActionType.Build:
-                    return;
-                default:
-                    if (model.CurrentStage >= model.TotalStages - 1)
-                        return;
-                    _pricePanel.gameObject.SetActive(action == BuildActionType.Show);
-                    _pricePanel.Price.text = model.PriceList[model.CurrentStage].ToString();
-                    break;
-            }
+            _priceController.Dispose();
+            _upgradeController.Dispose();
         }
     }
 }

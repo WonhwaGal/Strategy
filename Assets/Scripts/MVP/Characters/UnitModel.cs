@@ -37,7 +37,7 @@ namespace Code.Units
         public float DamageRadius { get; private set; }
         public float LongRadius { get; private set; }
         public float AttackInterval { get; private set; }
-        public int Damage { get; private set; }  // which DAMAGE is this?
+        public int Damage { get; private set; }
 
         public event Action<bool> OnKilled;
 

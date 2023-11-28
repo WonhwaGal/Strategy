@@ -6,12 +6,11 @@ using Code.UI;
 public class Launcher : MonoBehaviour
 {
     [SerializeField] private RuinList _ruinsList;
-    [SerializeField] private HPBarList _hpBarList;
-    [SerializeField] private UIPoolRoot _uiPoolRoot;
+    [SerializeField] private FollowUIList _hpBarList;
 
     void Start()
     {
         ServiceLocator.Container.Register(new RuinMultiPool(_ruinsList));
-        ServiceLocator.Container.Register(new HPBarPool(_hpBarList, _uiPoolRoot));
+        ServiceLocator.Container.Register(new FollowUIPool(_hpBarList));
     }
 }

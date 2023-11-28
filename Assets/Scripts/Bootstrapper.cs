@@ -19,7 +19,6 @@ namespace Code.SceneLoaders
         [SerializeField] private WaveSO _wavesList;
         [SerializeField] private UnsortedUIList _unsortedUIList;
 
-
         private const string GameScene = "GameScene";
 
         private UIService _uiService;
@@ -48,10 +47,10 @@ namespace Code.SceneLoaders
         {
             ServiceLocator.Container.Register<IInputService>(new KeyboardInput());
             ServiceLocator.Container.Register(new CombatService(_weaponList));
-            _uiService = ServiceLocator.Container.RegisterAndAssign(new UIService(_unsortedUIList));
-            _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _constructionService = ServiceLocator.Container.
                 RegisterAndAssign(new ConstructionService(_constructionSO, _buildingPrefabs));
+            _uiService = ServiceLocator.Container.RegisterAndAssign(new UIService(_unsortedUIList));
+            _unitService = ServiceLocator.Container.RegisterAndAssign(new UnitService(_unitSetList, _unitPrefabs));
             _levelService = ServiceLocator.Container.RegisterAndAssign(new LevelService(_wavesList));
             Subsribe();
         }
@@ -59,18 +58,15 @@ namespace Code.SceneLoaders
         private void Subsribe()
         {
             _levelService.OnCreatingWaves += _unitService.CreateWave;
-            _constructionService.OnNotifyConnections += _uiService.ShowPanel;
             _constructionService.OnBuildingWithUnits += _unitService.SpawnAllies;
-            _uiService.OnChooseUpgrade += _constructionService.Upgrade;
         }
 
         private void OnDestroy()
         {
             _levelService.OnCreatingWaves -= _unitService.CreateWave;
-            _constructionService.OnNotifyConnections -= _uiService.ShowPanel;
             _constructionService.OnBuildingWithUnits -= _unitService.SpawnAllies;
-            _uiService.OnChooseUpgrade -= _constructionService.Upgrade;
             _levelService.Dispose();
+            _uiService.Dispose();
         }
     }
 }

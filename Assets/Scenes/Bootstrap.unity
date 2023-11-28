@@ -258,9 +258,6 @@ MonoBehaviour:
   _weaponList: {fileID: 11400000, guid: 4b71754f61488ad46b068b12cfa21bc5, type: 2}
   _wavesList: {fileID: 11400000, guid: 6a11192e50937e94ca46fc57b9da77b1, type: 2}
   _unsortedUIList: {fileID: 11400000, guid: a1255f1c92e8119498736fc88976eff0, type: 2}
-  _hpBarList: {fileID: 11400000, guid: 8172f79df93e59c43b91172ebb009c79, type: 2}
-  Canvas: {fileID: 1993215190}
-  _resources: {fileID: 11400000, guid: 4d91619429557d046b3e353011d6abe2, type: 2}
 --- !u!1 &1470217830
 GameObject:
   m_ObjectHideFlags: 0
