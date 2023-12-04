@@ -34,6 +34,7 @@ namespace Code.Pools
         {
             if (prefab == null)
                 return;
+            prefab.gameObject.transform.position = Vector3.zero;
             prefab.gameObject.SetActive(false);
             _inactives.Push(prefab);
         }

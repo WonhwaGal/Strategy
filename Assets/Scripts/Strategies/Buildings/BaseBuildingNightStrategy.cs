@@ -1,12 +1,13 @@
 ﻿using Code.Construction;
 using Code.Pools;
+using UnityEngine;
 
 namespace Code.Strategy
 {
     public class BaseBuildingNightStrategy : IConstructionStrategy
     {
         private readonly RuinMultiPool _ruinsPool;
-        private RuinView _ruins;
+        protected RuinView _ruins;
         protected bool _isDestroyed;
 
         public BaseBuildingNightStrategy(IConstructionPresenter presenter)
@@ -25,6 +26,8 @@ namespace Code.Strategy
                 WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
             else
                 presenter.View.gameObject.SetActive(false);
+            presenter.Model.OnKilled += ConfirmDestruction;
+            presenter.SetUpHPBar();
         }
 
         public void SwitchStrategy(IConstructionPresenter presenter, GameMode mode)
@@ -32,17 +35,22 @@ namespace Code.Strategy
             if (mode == GameMode.IsDay)
             {
                 if (_ruins != null)
-                    _ruinsPool.Despawn(PrefabType.CommonRuin, _ruins);
+                    _ruinsPool.Despawn(_ruins.PrefabType, _ruins);
+
                 presenter.Strategy = new DayBuildingStrategy(presenter);
+                presenter.HPBar.gameObject.SetActive(false);
             }
         }
 
         protected void SetUpRuins(IConstructionPresenter presenter)
         {
-            _isDestroyed = true;
-            _ruins = _ruinsPool.Spawn(PrefabType.CommonRuin);
+            _ruins = _ruinsPool.Spawn(presenter.Model.PrefabType);
             _ruinsPool.OnSpawned(_ruins, presenter.View);
+            _ruins.SetStage(presenter.Model.CurrentStage);
             presenter.View.gameObject.SetActive(false);
+            presenter.Model.IsDestroyed = true;
         }
+
+        private void ConfirmDestruction() => _isDestroyed = true;
     }
 }

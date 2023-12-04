@@ -28,19 +28,19 @@ namespace Code.Units
             get => _hp;
             set
             {
-                _hp = value;
-                if (_hp <= 0)
+                if(_hp > 0 && value <= 0)
                     OnKilled?.Invoke();
+                _hp = value;
             }
         }
         public float Speed { get; set; }
         public float DamageRadius { get; private set; }
         public float LongRadius { get; private set; }
         public float AttackInterval { get; private set; }
-        public int Damage { get; private set; }  // which DAMAGE is this?
+        public int Damage { get; private set; }
 
         public event Action OnKilled;
 
-        public void Dispose() { }
+        public void Dispose() => OnKilled = null;
     }
 }

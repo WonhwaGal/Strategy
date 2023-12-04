@@ -5,7 +5,6 @@ namespace Code.Strategy
 {
     public sealed class EnemyInfantryStrategy : BaseInfantryStrategy
     {
-        private float _currentInterval = 0;
         private bool _isTargetingCastle;
 
         public EnemyInfantryStrategy(IUnitPresenter presenter = null) : base(presenter)
@@ -18,14 +17,27 @@ namespace Code.Strategy
         }
 
         public override void Execute(IUnitPresenter presenter, float delta)
-            => Move(presenter.View, presenter.Model, delta);
+        {
+            if (_stopActions)
+            {
+                presenter.View.NavAgent.isStopped = true;
+                return;
+            }
+
+            Move(presenter.View, presenter.Model, delta);
+        }
 
         protected override void Move(UnitView view, UnitModel model, float delta)
         {
             if (_target == null)
                 ReceiveTarget(_combatService.Castle);
 
-            view.NavAgent.SetDestination(_target.position);
+            if (!IsTargetCloseToAttack(view.transform.position))
+                view.NavAgent.SetDestination(_target.position);
+            else
+                view.NavAgent.destination = view.transform.position;
+
+            _animator.AnimateMovement(view.NavAgent.hasPath);
             Await(model, delta);
         }
 
@@ -34,7 +46,7 @@ namespace Code.Strategy
             _currentInterval += delta;
             if (_currentInterval >= model.AttackInterval)
             {
-                if (_isTargetingCastle && CheckAttackConditions(model.Transform.position))
+                if (_isTargetingCastle && IsTargetCloseToAttack(model.Transform.position))
                     SearchForNewOpponent(model, onlyCastle: true);
                 else
                     SearchForNewOpponent(model);
@@ -42,21 +54,17 @@ namespace Code.Strategy
             }
         }
 
-        public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
-        {
-            var type = presenter.Model.PrefabType;
-            if (mode == GameMode.IsNight)
-                WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
-        }
-
         protected override void OnFindTarget(UnitModel model, IPresenter presenter, bool isUnit)
         {
             IModel targetModel = isUnit ?
-        ((IUnitPresenter)presenter).Model : ((IConstructionPresenter)presenter).Model;
+                ((IUnitPresenter)presenter).Model : ((IConstructionPresenter)presenter).Model;
 
             ReceiveTarget(targetModel);
-            if (CheckAttackConditions(model.Transform.position))
+            if (IsTargetCloseToAttack(model.Transform.position))
+            {
                 Attack(presenter, model.Damage);
+                _animator.AnimateAttack();
+            }
         }
     }
 }

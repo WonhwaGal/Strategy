@@ -11,11 +11,12 @@ namespace Code.Combat
         protected override void OnRemoveFromCollection()
         {
             if (_participants.Count == 0)
-                EndNight(isVictory: true);
+                EndNight(isVictory: !_viewsAreDestroyed);
         }
 
-        private void OnEnemyKilled(IPresenter presenter, IUnitView view)
+        private void OnEnemyKilled(IPresenter presenter, IUnitView view, bool destroyView)
         {
+            _viewsAreDestroyed = destroyView;
             RemoveFromCollection(view.GameObject);
             presenter.OnBeingKilled -= OnEnemyKilled;
         }

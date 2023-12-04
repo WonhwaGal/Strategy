@@ -1,21 +1,14 @@
 using Code.Pools;
 using Code.ScriptableObjects;
 using Code.Strategy;
-using Code.UI;
-using UnityEngine;
 
 namespace Code.Construction
 {
     public sealed class ConstructionCreator
     {
         private readonly ConstructionMultiPool _multiPool;
-        private readonly UIService _uiService;
 
-        public ConstructionCreator(ConstructionMultiPool pool)
-        {
-            _multiPool = pool;
-            _uiService = ServiceLocator.Container.RequestFor<UIService>();
-        }
+        public ConstructionCreator(ConstructionMultiPool pool) => _multiPool = pool;
 
         public ConstructionPresenter CreatePresenter(SingleBuildingData buildingData)
         {
@@ -27,21 +20,11 @@ namespace Code.Construction
 
             ConstructionPresenter presenter;
             if (buildingData.PrefabType == PrefabType.Barracks)
-                presenter = new SpawnConstructionPresenter(buildingView, model, strategy, GetBarByType(model.PrefabType));
+                presenter = new SpawnConstructionPresenter(buildingView, model, strategy);
             else
-                presenter = new ConstructionPresenter(buildingView, model, strategy, GetBarByType(model.PrefabType));
+                presenter = new ConstructionPresenter(buildingView, model, strategy);
             strategy.Init(presenter);
-
             return presenter;
-        }
-
-        private HPBar GetBarByType(PrefabType constructionType)
-        {
-            return constructionType switch
-            {
-                PrefabType.Castle => _uiService.SpawnHPBar(UIType.CastleHP),
-                _ => _uiService.SpawnHPBar(UIType.BuildingHP),
-            };
         }
     }
 }

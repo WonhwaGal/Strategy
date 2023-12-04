@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbcf228b4d894d549bd4aa95553eab8a, type: 3}
+  m_Name: FollowUIList
+  m_EditorClassIdentifier: 
+  _prefabs:
+  - Name: Player HP
+    Type: 25
+    Prefab: {fileID: 4436009892875377738, guid: 2a5f783128ca27a48a510e62ccf678eb, type: 3}
+  - Name: Castle HP
+    Type: 1
+    Prefab: {fileID: 1894386373229853468, guid: 2d073406c48f4d140a12de9dfc8882a1, type: 3}
+  - Name: Building HP
+    Type: 2
+    Prefab: {fileID: 5649274822750983879, guid: d4223f2cf5320134d99957bbfa232949, type: 3}
+  - Name: Enemy HP
+    Type: 30
+    Prefab: {fileID: 4632843139056245391, guid: f6fb7e3d081d5274eb906d04d5751822, type: 3}
+  - Name: Ally HP
+    Type: 26
+    Prefab: {fileID: 513258544447371191, guid: 746a3d80cfbebc847a080a4654c53538, type: 3}
+  - Name: Player Recharge
+    Type: 27
+    Prefab: {fileID: 8749330095252790684, guid: 823b4d91afb658a4e947442baa3589be, type: 3}

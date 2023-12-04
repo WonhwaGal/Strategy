@@ -1,101 +1,72 @@
 using Code.Units;
+using UnityEngine;
 
 namespace Code.Strategy
 {
-    public class DayAllyStrategy : IUnitStrategy
+    public class DayAllyStrategy : BaseAllyDayStrategy
     {
-        public DayAllyStrategy(IUnitPresenter presenter = null)
-        {
-            if (presenter != null)
-                Init(presenter);
-        }
+        private Vector3 _orderedPosition;
+        private const float PermittedShift = 2.0f;
+        private const float MinShift = 1.0f;
+        private const float MaxShift = 2.0f;
+        private Vector3 _randomShift;
+        private bool _shouldReturn;
 
-        public void Execute(IUnitPresenter presenter, float delta) { }
-
-        public void Init(IUnitPresenter presenter)
-            => presenter.View.NavAgent.speed = presenter.Model.Speed;
-
-        public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
-        {
-            if (mode == GameMode.IsNight)
-                presenter.Strategy = new AllyInfantryStrategy(presenter);
-            else if (mode == GameMode.IsUnitControl)
-                presenter.Strategy = new UnitControlStrategy(presenter);
-        }
-    }
-
-    public sealed class AllyInfantryStrategy : BaseInfantryStrategy
-    {
-        private float _currentInterval = 0;
-
-        public AllyInfantryStrategy(IUnitPresenter presenter = null)
-        {
-            WaveLocator.ParticipateInCombat(presenter.Model.PrefabType, presenter.View.gameObject, presenter);
-            if (presenter != null)
-                Init(presenter);
-        }
+        public DayAllyStrategy(IUnitPresenter presenter = null) : base(presenter) { }
 
         public override void Execute(IUnitPresenter presenter, float delta)
-            => Move(presenter.View, presenter.Model, delta);
+        {
+            Move(presenter);
+            _animator.AnimateMovement(presenter.View.NavAgent.hasPath);
+        }
+
+        public override void Init(IUnitPresenter presenter)
+        {
+            base.Init(presenter);
+
+            var allyView = ((AllyUnit)presenter.View);
+            _orderedPosition = allyView.OrderedPosition;
+            _isUnderControl = allyView.UnderPlayerControl;
+
+            if (_isUnderControl)
+            {
+                _leader = allyView.Leader;
+                var randomValue = Random.Range(MinShift, MaxShift);
+                _randomShift = new (randomValue, 0, randomValue);
+            }
+            IsLocatedFar(allyView);
+        }
 
         public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
             base.SwitchStrategy(presenter, mode);
-            if (mode == GameMode.IsDay)
-                presenter.Strategy = new DayAllyStrategy(presenter);
+            if (mode == GameMode.IsUnitControl)
+                presenter.Strategy = new UnitControlStrategy(presenter);
+            else if(mode == GameMode.IsDay)
+                presenter.View.GameObject.SetActive(true);
         }
 
-        protected override void Move(UnitView view, UnitModel model, float delta)
+        private bool IsLocatedFar(UnitView view)
         {
-            if (_target == null)
-                SearchForNewOpponent(model);
+            _shouldReturn = false;
+            if ((view.transform.position - _orderedPosition).magnitude > PermittedShift)
+                _shouldReturn = true;
 
-            view.NavAgent.SetDestination(_target.position);
-            Await(model, delta);
+            return _shouldReturn;
         }
 
-        protected override void Await(UnitModel model, float delta)
+        private void Move(IUnitPresenter presenter)
         {
-            _currentInterval += delta;
-            if (_currentInterval >= model.AttackInterval)
+            var agent = presenter.View.NavAgent;
+            if (_isUnderControl)
             {
-                SearchForNewOpponent(model);
-                _currentInterval = 0;
+                agent.SetDestination(_leader.position + _randomShift);
             }
-        }
-
-        protected override void OnFindTarget(UnitModel model, IPresenter presenter, bool isUnit)
-        {
-            ReceiveTarget(((IUnitPresenter)presenter).Model);
-            if (CheckAttackConditions(model.Transform.position))
-                Attack(presenter, model.Damage);
-        }
-    }
-
-    public sealed class UnitControlStrategy : IUnitStrategy
-    {
-        public UnitControlStrategy(IUnitPresenter presenter = null)
-        {
-            if (presenter != null)
-                Init(presenter);
-        }
-
-        public void Execute(IUnitPresenter presenter, float delta)
-        {
-
-        }
-
-        public void Init(IUnitPresenter presenter)
-        {
-
-        }
-
-        public void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
-        {
-            if (mode == GameMode.IsNight)
-                presenter.Strategy = new EnemyInfantryStrategy(presenter);
-            else if (mode == GameMode.IsDay)
-                presenter.Strategy = new DayAllyStrategy(presenter);
+            else if (_shouldReturn)
+            {
+                IsLocatedFar(presenter.View);
+                agent.SetDestination(_orderedPosition);
+            }
         }
     }
 }

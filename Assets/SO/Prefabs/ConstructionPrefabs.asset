@@ -22,7 +22,7 @@ MonoBehaviour:
   - Name: Tower
     Type: 3
     Prefab: {fileID: 2690569823107108208, guid: 8ca99b6fa6ac03e48875c940d7bea59a, type: 3}
-  - Name: Mill
+  - Name: Farm
     Type: 4
     Prefab: {fileID: 2690569823107108208, guid: 3afe6214d5701574da460b3121ed355f, type: 3}
   - Name: Barracks

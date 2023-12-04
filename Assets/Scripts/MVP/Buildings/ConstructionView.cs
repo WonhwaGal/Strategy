@@ -10,15 +10,17 @@ namespace Code.Construction
         [SerializeField] private PrefabType _prefabType;
         [SerializeField] private GameObject[] _previews;
         [SerializeField] private GameObject[] _viewStages;
+        [SerializeField] private UIType _hpBarType;
         private int _currentStage = -1;
 
         public PrefabType PrefabType => _prefabType;
+        public UIType HPBarType => _hpBarType;
         public GameObject GameObject => gameObject;
 
         public event Action<BuildActionType> OnTriggerAction;
         public event Action<int> OnModeChange;
         public event Action<float> OnUpdate;
-        public event Action OnViewDestroyed;
+        public event Action<bool> OnViewDestroyed;
 
         private void OnEnable() => ShowCurrentStage();
         private void Update() => OnUpdate?.Invoke(Time.deltaTime);
@@ -32,7 +34,7 @@ namespace Code.Construction
         private void OnTriggerExit(Collider other)
         {
             if (other.GetComponent<PlayerUnit>() && _currentStage >= 0)
-                OnTriggerAction?.Invoke(BuildActionType.PutAway);
+                OnTriggerAction?.Invoke(BuildActionType.Hide);
         }
 
         public void React(BuildActionType action)
@@ -64,6 +66,6 @@ namespace Code.Construction
             }
         }
 
-        private void OnDestroy() => OnViewDestroyed?.Invoke();
+        private void OnDestroy() => OnViewDestroyed?.Invoke(true);
     }
 }

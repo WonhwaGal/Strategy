@@ -6,11 +6,12 @@ using UnityEngine;
 
 namespace Code.Construction
 {
-    public sealed class ConstructionService : IReactToDaytimeSwitch
+    public sealed class ConstructionService : IService
     {
         private readonly ConstructionSO _constructionSO;
         private readonly ConstructionCreator _creator;
-        private IConstructionModel _choosenModel;
+        private IConstructionModel _chosenModel;
+        private bool _castleWasBuilt;
         private bool _isNight;
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
@@ -21,13 +22,13 @@ namespace Code.Construction
 
         public event Action<IConstructionModel, BuildActionType> OnNotifyConnections;
         public event Action<Transform[], PrefabType> OnBuildingWithUnits;
-        public event Action<GameMode> OnGameModeChange;
 
         public void StartLevel(int lvlNumber)
             => CreatePresenters(_constructionSO.FindBuildingsOfLevel(lvlNumber));
 
         private void CreatePresenters(List<SingleBuildingData> buildings)
         {
+            _isNight = false;
             if (buildings == null)
                 return;
 
@@ -36,7 +37,6 @@ namespace Code.Construction
                 var presenter = _creator.CreatePresenter(buildings[i]);
                 presenter.OnViewTriggered += SendTriggerNotification;
                 presenter.OnRequestDestroy += DestroyPresenter;
-                OnGameModeChange += presenter.OnGameModeChange;
                 OnNotifyConnections += presenter.CheckOwnConnection;
                 if (buildings[i].PrefabType == PrefabType.Barracks)
                     ((SpawnConstructionPresenter)presenter).OnBuildingWithUnits
@@ -44,43 +44,44 @@ namespace Code.Construction
             }
         }
 
-        public void SwitchMode(GameMode mode)
-        {
-            _isNight = mode == GameMode.IsNight;
-            OnGameModeChange?.Invoke(mode);
-        }
-
         public bool ReadyToBuild() // when Space key pressed
         {
-            if (_choosenModel != null && _choosenModel.CurrentStage < _choosenModel.TotalStages)
+            if (_chosenModel != null && _chosenModel.CurrentStage < _chosenModel.TotalStages)
             {
                 NotifyOnTrigger();
                 return true;
             }
+            if (!_castleWasBuilt)
+                return true;
+
+            _isNight = true;
             return false;
         }
 
         public void Upgrade()
         {
-            if (_choosenModel != null)
-                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+            if (_chosenModel != null)
+                SendTriggerNotification(_chosenModel, BuildActionType.Build);
         }
 
         private void NotifyOnTrigger()
         {
-            if (_choosenModel.CurrentStage == 0)
-                SendTriggerNotification(_choosenModel, BuildActionType.Build);
+            if (_chosenModel.CurrentStage == 0)
+                SendTriggerNotification(_chosenModel, BuildActionType.Build);
             else
-                SendTriggerNotification(_choosenModel, BuildActionType.Upgrade);
+                SendTriggerNotification(_chosenModel, BuildActionType.Upgrade);
+
+            if (_chosenModel.PrefabType == PrefabType.Castle)
+                _castleWasBuilt = true;
         }
 
         private void SendTriggerNotification(IConstructionModel model, BuildActionType action)
         {
-            if (_isNight)
+            if (_isNight || model.CurrentStage >= model.TotalStages - 1 && action != BuildActionType.Hide)
                 return;
 
             OnNotifyConnections?.Invoke(model, action);
-            _choosenModel = action == BuildActionType.PutAway ? null : model;
+            _chosenModel = action == BuildActionType.Hide ? null : model;
         }
 
         private void SendUnitSpawnRequest(Transform[] spawnInfo) 
@@ -88,7 +89,6 @@ namespace Code.Construction
 
         private void DestroyPresenter(ConstructionPresenter presenter)
         {
-            OnGameModeChange -= presenter.OnGameModeChange;
             OnNotifyConnections -= presenter.CheckOwnConnection;
             presenter.OnRequestDestroy -= DestroyPresenter;
             presenter.OnViewTriggered -= SendTriggerNotification;

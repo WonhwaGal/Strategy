@@ -8,7 +8,7 @@ namespace Code.Construction
     public sealed class SpawnConstructionPresenter : ConstructionPresenter
     {
         public SpawnConstructionPresenter(ConstructionView view, ConstructionModel model, 
-            IConstructionStrategy strategy, HPBar hpBar) : base(view, model, strategy, hpBar)
+            IConstructionStrategy strategy) : base(view, model, strategy)
         {
         }
 

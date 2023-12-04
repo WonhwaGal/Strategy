@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: BaracksCommon
   m_EditorClassIdentifier: 
   Defense: 50
-  TotalStages: 2
+  TotalStages: 3
   IsForCombat: 0
-  DamageRadius: 3
+  DamageRadius: 4
   AttackRadius: 0
   AttackInterval: 0
   <AutoUpgrades>k__BackingField: 01000000
-  <PriceList>k__BackingField: 03000000000000000000000000000000
+  <PriceList>k__BackingField: 03000000080000000000000000000000

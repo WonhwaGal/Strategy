@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: CastleCommon
   m_EditorClassIdentifier: 
   Defense: 100
-  TotalStages: 3
+  TotalStages: 4
   IsForCombat: 1
-  DamageRadius: 5
-  AttackRadius: 50
+  DamageRadius: 5.5
+  AttackRadius: 30
   AttackInterval: 4
   <AutoUpgrades>k__BackingField: 01000000
-  <PriceList>k__BackingField: 05000000070000000700000007000000
+  <PriceList>k__BackingField: 05000000070000000c00000007000000

@@ -7,11 +7,14 @@ namespace Code.Combat
     public abstract class BaseWaveCollection<T> : IDisposable where T : IPresenter
     {
         protected Dictionary<GameObject, T> _participants = new();
+        protected bool _viewsAreDestroyed;
 
         public event Action<bool> OnWaveOver;
 
         public void AddToCollection(GameObject gameObj, T presenter)
         {
+            if (_participants.ContainsKey(gameObj))
+                return;
             _participants.Add(gameObj, presenter);
             OnAddToCollection(presenter);
         }
