@@ -8,10 +8,7 @@ namespace Code.Strategy
 
         public override void Execute(IConstructionPresenter presenter, float delta)
         {
-            if (_isDestroyed)
-                return;
-
-            if (presenter.Model.IsDestroyed)
+            if (_isDestroyed && _ruins == null)
                 SetUpRuins(presenter);
         }
     }

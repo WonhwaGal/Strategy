@@ -11,6 +11,7 @@ namespace Code.Construction
         private readonly ConstructionSO _constructionSO;
         private readonly ConstructionCreator _creator;
         private IConstructionModel _chosenModel;
+        private bool _castleWasBuilt;
         private bool _isNight;
 
         public ConstructionService(ConstructionSO constructionSO, ConstructionPrefabs prefabs)
@@ -50,6 +51,8 @@ namespace Code.Construction
                 NotifyOnTrigger();
                 return true;
             }
+            if (!_castleWasBuilt)
+                return true;
 
             _isNight = true;
             return false;
@@ -67,6 +70,9 @@ namespace Code.Construction
                 SendTriggerNotification(_chosenModel, BuildActionType.Build);
             else
                 SendTriggerNotification(_chosenModel, BuildActionType.Upgrade);
+
+            if (_chosenModel.PrefabType == PrefabType.Castle)
+                _castleWasBuilt = true;
         }
 
         private void SendTriggerNotification(IConstructionModel model, BuildActionType action)

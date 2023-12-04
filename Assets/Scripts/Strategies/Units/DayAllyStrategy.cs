@@ -6,48 +6,44 @@ namespace Code.Strategy
     public class DayAllyStrategy : BaseAllyDayStrategy
     {
         private Vector3 _orderedPosition;
-        private const float PermittedShift = 0.5f;
+        private const float PermittedShift = 2.0f;
+        private const float MinShift = 1.0f;
+        private const float MaxShift = 2.0f;
+        private Vector3 _randomShift;
         private bool _shouldReturn;
 
-        public DayAllyStrategy(IUnitPresenter presenter = null)
-        {
-            if (presenter != null)
-                Init(presenter);
-        }
+        public DayAllyStrategy(IUnitPresenter presenter = null) : base(presenter) { }
 
         public override void Execute(IUnitPresenter presenter, float delta)
         {
-            if (_shouldReturn)
-                presenter.View.NavAgent.SetDestination(_orderedPosition);
-
-            if (_isUnderControl)
-                presenter.View.NavAgent.SetDestination(_leader.position);
+            Move(presenter);
+            _animator.AnimateMovement(presenter.View.NavAgent.hasPath);
         }
 
         public override void Init(IUnitPresenter presenter)
         {
             base.Init(presenter);
+
             var allyView = ((AllyUnit)presenter.View);
-            allyView.OnGetUnderControl += GetUnderControl;
+            _orderedPosition = allyView.OrderedPosition;
             _isUnderControl = allyView.UnderPlayerControl;
 
             if (_isUnderControl)
+            {
                 _leader = allyView.Leader;
-            if (allyView.OrderedPosition != Vector3.zero)
-                _orderedPosition = allyView.OrderedPosition;
-
+                var randomValue = Random.Range(MinShift, MaxShift);
+                _randomShift = new (randomValue, 0, randomValue);
+            }
             IsLocatedFar(allyView);
         }
 
         public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
             base.SwitchStrategy(presenter, mode);
-
-            if (mode != GameMode.IsDay)
-                ((AllyUnit)presenter.View).OnGetUnderControl -= GetUnderControl;
-
             if (mode == GameMode.IsUnitControl)
                 presenter.Strategy = new UnitControlStrategy(presenter);
+            else if(mode == GameMode.IsDay)
+                presenter.View.GameObject.SetActive(true);
         }
 
         private bool IsLocatedFar(UnitView view)
@@ -57,6 +53,20 @@ namespace Code.Strategy
                 _shouldReturn = true;
 
             return _shouldReturn;
+        }
+
+        private void Move(IUnitPresenter presenter)
+        {
+            var agent = presenter.View.NavAgent;
+            if (_isUnderControl)
+            {
+                agent.SetDestination(_leader.position + _randomShift);
+            }
+            else if (_shouldReturn)
+            {
+                IsLocatedFar(presenter.View);
+                agent.SetDestination(_orderedPosition);
+            }
         }
     }
 }

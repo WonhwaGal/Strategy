@@ -13,6 +13,18 @@ MonoBehaviour:
   m_Name: RuinList
   m_EditorClassIdentifier: 
   _prefabs:
-  - Name: Common ruins
-    Type: 52
-    Prefab: {fileID: -4646329623471639227, guid: 0d7e747929d022c4989df5f6ed403937, type: 3}
+  - Name: Castle ruins
+    Type: 1
+    Prefab: {fileID: 3896854593230412889, guid: 73b70ee91de90214382fc2e00d5c25e7, type: 3}
+  - Name: House ruins
+    Type: 2
+    Prefab: {fileID: 4701748407837620055, guid: 8e064592fcda7e642af0d0857dc0bc87, type: 3}
+  - Name: Tower ruins
+    Type: 3
+    Prefab: {fileID: 1700019166416263797, guid: 3a9963bb078947a45a8a4583e4276dda, type: 3}
+  - Name: Baracks ruins
+    Type: 6
+    Prefab: {fileID: 1170500957632781857, guid: 484bb949fa858d94e9afd8aba22c2297, type: 3}
+  - Name: Farm ruins
+    Type: 4
+    Prefab: {fileID: 3867686901377997508, guid: e30aba1b28b619c45a73a1dfde50970d, type: 3}

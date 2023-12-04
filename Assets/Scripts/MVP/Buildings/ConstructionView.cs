@@ -10,9 +10,11 @@ namespace Code.Construction
         [SerializeField] private PrefabType _prefabType;
         [SerializeField] private GameObject[] _previews;
         [SerializeField] private GameObject[] _viewStages;
+        [SerializeField] private UIType _hpBarType;
         private int _currentStage = -1;
 
         public PrefabType PrefabType => _prefabType;
+        public UIType HPBarType => _hpBarType;
         public GameObject GameObject => gameObject;
 
         public event Action<BuildActionType> OnTriggerAction;

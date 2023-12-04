@@ -9,11 +9,15 @@ namespace Code.Units
     {
         [SerializeField] private PrefabType _prefabType;
         [SerializeField] private NavMeshAgent _agent;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private UIType _hpBarType;
 
         public NavMeshAgent NavAgent => _agent;
+        public Animator Animator => _animator;
         public PrefabType PrefabType => _prefabType;
         public GameObject GameObject => gameObject;
         public bool HasPresenter { get; set; }
+        public UIType HPBarType => _hpBarType;
 
         public event Action<float> OnUpdate;
         public event Action<int> OnReceiveDamage;

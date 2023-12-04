@@ -45,10 +45,7 @@ namespace Code.Units
 
         public event Action<Transform> OnGetUnderControl;
 
-        private void Start()
-        {
-            _staticCircle.SetActive(false);
-        }
+        private void Start() => _staticCircle.SetActive(false);
 
         private void OnTriggerEnter(Collider other)
         {

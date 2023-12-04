@@ -16,24 +16,24 @@ MonoBehaviour:
   - Name: Player
     PrefabType: 25
     HP: 100
-    Speed: 4
-    DamageRadius: 2
+    Speed: 6
+    DamageRadius: 3
     LongRangeRadius: 15
     AttackInterval: 1.5
-    Damage: 25
+    Damage: 20
   - Name: Enemy
     PrefabType: 30
-    HP: 50
-    Speed: 1.5
+    HP: 100
+    Speed: 2
     DamageRadius: 2
     LongRangeRadius: 10
-    AttackInterval: 4
+    AttackInterval: 3
     Damage: 5
   - Name: Ally
     PrefabType: 26
     HP: 50
-    Speed: 1.5
+    Speed: 2.5
     DamageRadius: 2
     LongRangeRadius: 10
-    AttackInterval: 4
-    Damage: 10
+    AttackInterval: 3
+    Damage: 7

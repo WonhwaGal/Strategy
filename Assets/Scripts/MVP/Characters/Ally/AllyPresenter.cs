@@ -10,9 +10,9 @@ namespace Code.Units
         {
         }
 
-        public override void PlaceUnit(Vector3 pos)
+        public override void PlaceUnit(Vector3 pos, Quaternion rot)
         {
-            base.PlaceUnit(pos);
+            base.PlaceUnit(pos, rot);
             ((AllyUnit)_view).OrderedPosition = _view.transform.position;
             _strategy.Init(this);
         }

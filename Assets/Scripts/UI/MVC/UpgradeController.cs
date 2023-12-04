@@ -7,7 +7,11 @@ namespace Code.MVC
     {
         private bool _viewIsAssigned;
 
-        public UpgradeController() : base() => Model.OnUpgradeBuilding += Show;
+        public UpgradeController() : base()
+        {
+            Model.OnUpgradeBuilding += Show;
+            Model.OnCancelUpgrade += Hide;
+        }
 
         protected override void Show()
         {
@@ -22,6 +26,8 @@ namespace Code.MVC
         {
             if(isDestroyed)
                 Dispose();
+            else
+                View.gameObject.SetActive(false);
         }
 
         private void AssignView()
@@ -33,6 +39,7 @@ namespace Code.MVC
         public void Dispose()
         {
             Model.OnUpgradeBuilding -= Show;
+            Model.OnCancelUpgrade -= Hide;
             Model.Dispose();
         }
     }

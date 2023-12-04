@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4855202, g: 0.7169812, b: 0.4288359, a: 1}
+  m_Color: {r: 1, g: 0.8714005, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabType: 60
   _uiType: 27
-  _verticalShift: 40
+  _verticalShift: 60
   _rechargeImage: {fileID: 7046204814068339453}
   _timerCircle: {fileID: 1675109009343019983}
 --- !u!1 &7046204814068339453

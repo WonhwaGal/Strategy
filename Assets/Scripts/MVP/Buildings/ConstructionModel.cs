@@ -7,6 +7,7 @@ namespace Code.Construction
     public class ConstructionModel : IConstructionModel
     {
         private int _defense;
+        private bool _isDestroyed;
 
         public ConstructionModel(SingleBuildingData data)
         {
@@ -27,8 +28,17 @@ namespace Code.Construction
 
         public PrefabType PrefabType { get; private set; }
         public Transform Transform { get; private set; }
-        public bool IsDestroyed { get; set; }
-        public int MaxHP { get; private set; }
+        public bool IsDestroyed
+        {
+            get => _isDestroyed;
+            set
+            {
+                if(_isDestroyed && !value)
+                    Defense = MaxHP;
+
+                _isDestroyed = value;
+            }
+        }
         public int Defense
         {
             get => _defense;
@@ -36,11 +46,12 @@ namespace Code.Construction
             {
                 _defense = value;
                 if (_defense <= 0)
-                    OnKilled?.Invoke(false);
+                    OnKilled?.Invoke();
                 if(_defense > MaxHP)
                     _defense = MaxHP;
             }
         }
+        public int MaxHP { get; private set; }
         public bool IsForCombat { get; private set; }
         public float DamageRadius { get; private set; }
         public float LongRadius { get; private set; }
@@ -53,7 +64,7 @@ namespace Code.Construction
         public bool[] AutoUpgrades { get; set; }
         public int[] PriceList { get; set; }
 
-        public event Action<bool> OnKilled;
+        public event Action OnKilled;
 
         public void Dispose() { }
     }

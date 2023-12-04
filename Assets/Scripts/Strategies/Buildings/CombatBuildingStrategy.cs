@@ -16,14 +16,11 @@ namespace Code.Strategy
 
         public override void Execute(IConstructionPresenter presenter, float delta)
         {
-            if (_isDestroyed)
-                return;
+            if (_isDestroyed && _ruins == null)
+                SetUpRuins(presenter);
 
             if (presenter.Model.CurrentStage > 0)
                 CountDown(presenter.Model, delta);
-
-            if (presenter.Model.IsDestroyed)
-                SetUpRuins(presenter);
         }
 
         private void CountDown(ConstructionModel model, float delta)

@@ -8,13 +8,17 @@ namespace Code.Combat
     {
         private readonly static Collider[] _colliders = new Collider[25];
 
-        public static void ShootArrow(IModel model, LayerMask mask, ArrowView arrow)
+        public static bool ShootArrow(IModel model, LayerMask mask, ArrowView arrow)
         {
             var result = FindClosestOpponent(model, mask);
             if (result != null)
+            {
                 arrow.AssignTarget(model.Transform.position, result);
-            else
-                arrow.ReturnToPool();
+                return true;
+            }
+
+            arrow.ReturnToPool();
+            return false;
         }
 
         public static void SwordAreaAttack(IModel model, LayerMask mask, BaseWaveCollection<IPresenter> list)
@@ -36,7 +40,7 @@ namespace Code.Combat
 
             if (result != null)
                 return list.FindParticipant(result.gameObject);
-            else if(mask.value == LayerMask.GetMask(Constants.Buildings))
+            else if (mask.value == LayerMask.GetMask(Constants.Buildings))
                 return ((BuildingWaveCollection)list).FindCastle();
 
             return null;

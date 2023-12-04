@@ -1,5 +1,4 @@
 using Code.Strategy;
-using Code.UI;
 
 namespace Code.Units
 {
@@ -8,11 +7,6 @@ namespace Code.Units
         public EnemyPresenter(UnitView view, UnitModel model, IUnitStrategy moveStrategy) :
             base(view, model, moveStrategy)
         {
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
         }
     }
 }

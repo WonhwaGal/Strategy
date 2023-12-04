@@ -6,7 +6,7 @@ public enum PrefabType
     Castle = 1,
     House = 2,
     Tower = 3,
-    Mill = 4,
+    Farm = 4,
     Wall = 5,
     Barracks = 6,
     // for player's
@@ -17,6 +17,5 @@ public enum PrefabType
     // for other objects
     Arrow = 50,
     AreaSword = 51,
-    CommonRuin = 52,
     UI = 60
 }

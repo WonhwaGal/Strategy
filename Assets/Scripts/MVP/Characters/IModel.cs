@@ -10,6 +10,6 @@ namespace Code.Units
         float DamageRadius { get; }
         float LongRadius { get; }
 
-        event Action<bool> OnKilled;
+        event Action OnKilled;
     }
 }

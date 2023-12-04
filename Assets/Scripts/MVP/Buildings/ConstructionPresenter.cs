@@ -12,6 +12,7 @@ namespace Code.Construction
         protected readonly ConstructionModel _model;
         private IConstructionStrategy _strategy;
         protected HPBar _hpBar;
+        private bool _isResponsive = true;
 
         public ConstructionPresenter(ConstructionView view,
             ConstructionModel model, IConstructionStrategy strategy)
@@ -20,7 +21,6 @@ namespace Code.Construction
             _model = model;
             _strategy = strategy;
 
-            _model.OnKilled += RuinBuilding;
             _view.OnUpdate += Update;
             _view.OnModeChange += UpgradeStage;
             _view.OnTriggerAction += HandleTrigger;
@@ -31,6 +31,11 @@ namespace Code.Construction
                 _view.ShowCurrentStage(1);
         }
 
+        bool IConstructionPresenter.IsResponsive
+        {
+            get => _isResponsive;
+            set { _isResponsive = value; }
+        }
         ConstructionView IConstructionPresenter.View => _view;
         ConstructionModel IConstructionPresenter.Model => _model;
         IStrategy IConstructionPresenter.Strategy
@@ -70,11 +75,14 @@ namespace Code.Construction
             _hpBar.SetHPValue(newValue);
         }
 
-        public void SetUpHPBar(UIType uiType)
+        public void SetUpHPBar()
         {
-            var hpPool = ServiceLocator.Container.RequestFor<FollowUIPool>();
-            _hpBar = (HPBar)hpPool.Spawn(uiType);
-            hpPool.OnSpawned(_hpBar);
+            if(_hpBar == null)
+            {
+                var hpPool = ServiceLocator.Container.RequestFor<FollowUIPool>();
+                _hpBar = (HPBar)hpPool.Spawn(_view.HPBarType);
+                hpPool.OnSpawned(_hpBar);
+            }
             _hpBar.SetUpSlider(_model.MaxHP, _model.Transform);
         }
 
@@ -84,9 +92,15 @@ namespace Code.Construction
             OnBeingKilled?.Invoke(this, _view, destroyView);
         }
 
+        private void HandleTrigger(BuildActionType action)
+        {
+            if (_isResponsive || action == BuildActionType.Hide)
+                OnViewTriggered?.Invoke(_model, action);
+        }
+
         private void Update(float delta) => _strategy.Execute(this, delta);
         private void UpgradeStage(int currentStage) => _model.CurrentStage = currentStage;
-        private void HandleTrigger(BuildActionType action) => OnViewTriggered?.Invoke(_model, action);
+
         protected virtual void OnReactToUpgrade(BuildActionType action, bool selfBuild) { }
 
         public void Destroy(bool destroyView) => OnRequestDestroy?.Invoke(this);
@@ -94,7 +108,6 @@ namespace Code.Construction
         {
             if (_hpBar != null)
                 _hpBar.Despawn();
-            _model.OnKilled -= RuinBuilding;
             _view.OnUpdate -= Update;
             _view.OnModeChange -= UpgradeStage;
             _view.OnTriggerAction -= HandleTrigger;

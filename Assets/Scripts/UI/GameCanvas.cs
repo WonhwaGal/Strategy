@@ -11,5 +11,11 @@ namespace Code.UI
         public UpgradePanel UpgradePanel => _upgradePanel;
         public PricePanel PricePanel => _pricePanel;
         public UIPoolRoot PoolRoot => _poolRoot;
+
+        private void Start()
+        {
+            _upgradePanel.gameObject.SetActive(false);
+            _pricePanel.gameObject.SetActive(false);
+        }
     }
 }

@@ -35,28 +35,26 @@ namespace Code.Strategy
             {
                 presenter.Strategy = _isCombatType ?
                     new CombatBuildingStrategy(presenter) : new PassiveNightStrategy(presenter);
-                var isCastle = presenter.Model.PrefabType == PrefabType.Castle;
-                presenter.SetUpHPBar(isCastle ? UIType.CastleHP : UIType.BuildingHP);
+                presenter.SetUpHPBar();
+            }
+            else if(mode == GameMode.IsUnitControl)
+            {
+                presenter.IsResponsive = !presenter.IsResponsive;
             }
         }
 
         private void GrantCoin(ConstructionModel model)
         {
-            if (model.PrefabType == PrefabType.House || model.PrefabType == PrefabType.Mill)
+            if (model.PrefabType == PrefabType.House || model.PrefabType == PrefabType.Farm)
                 Debug.Log(model.CurrentStage + " coins granted");
         }
 
         private void CheckForRecover(ConstructionModel model, ConstructionView view)
         {
             if (model.IsDestroyed)
-            {
-                view.ShowCurrentStage();
                 model.IsDestroyed = false;
-            }
             else
-            {
                 GrantCoin(model);
-            }
         }
     }
 }

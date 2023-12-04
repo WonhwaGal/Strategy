@@ -9,6 +9,6 @@ namespace Code.Units
         UnitModel Model { get; }
         IStrategy Strategy { get; set; }
         HPBar HPBar { get; }
-        void SetUpHPBar(UIType uiType);
+        void SetUpHPBar();
     }
 }

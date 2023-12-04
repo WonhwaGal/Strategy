@@ -10,15 +10,15 @@ namespace Code.Combat
 
         protected override void OnRemoveFromCollection()
         {
-            if (_participants.Count == 0 && !_viewsAreDestroyed)
-                EndNight(isVictory: true);
+            if (_participants.Count == 0)
+                EndNight(isVictory: !_viewsAreDestroyed);
         }
 
         private void OnEnemyKilled(IPresenter presenter, IUnitView view, bool destroyView)
         {
+            _viewsAreDestroyed = destroyView;
             RemoveFromCollection(view.GameObject);
             presenter.OnBeingKilled -= OnEnemyKilled;
-            _viewsAreDestroyed = destroyView;
         }
     }
 }

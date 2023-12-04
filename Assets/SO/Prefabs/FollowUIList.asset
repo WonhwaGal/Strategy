@@ -18,16 +18,16 @@ MonoBehaviour:
     Prefab: {fileID: 4436009892875377738, guid: 2a5f783128ca27a48a510e62ccf678eb, type: 3}
   - Name: Castle HP
     Type: 1
-    Prefab: {fileID: 4436009892875377738, guid: 350b5ec503f476741ae7a7707c3c30ca, type: 3}
+    Prefab: {fileID: 1894386373229853468, guid: 2d073406c48f4d140a12de9dfc8882a1, type: 3}
   - Name: Building HP
     Type: 2
-    Prefab: {fileID: 4436009892875377738, guid: ccf278d6863e989459dacf54103ab4ce, type: 3}
+    Prefab: {fileID: 5649274822750983879, guid: d4223f2cf5320134d99957bbfa232949, type: 3}
   - Name: Enemy HP
     Type: 30
-    Prefab: {fileID: 4436009892875377738, guid: ecc215f6aee03b84e8fde19dd4ceed8b, type: 3}
+    Prefab: {fileID: 4632843139056245391, guid: f6fb7e3d081d5274eb906d04d5751822, type: 3}
   - Name: Ally HP
     Type: 26
-    Prefab: {fileID: 4436009892875377738, guid: 542e0d057c5e79e4caa78770cd1f5685, type: 3}
+    Prefab: {fileID: 513258544447371191, guid: 746a3d80cfbebc847a080a4654c53538, type: 3}
   - Name: Player Recharge
     Type: 27
     Prefab: {fileID: 8749330095252790684, guid: 823b4d91afb658a4e947442baa3589be, type: 3}

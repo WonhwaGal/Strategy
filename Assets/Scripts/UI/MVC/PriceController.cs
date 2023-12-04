@@ -19,6 +19,7 @@ namespace Code.UI
         protected override void Show()
         {
             View.gameObject.SetActive(true);
+            View.TypeName.text = Model.CurrentType;
             View.Price.text = Model.CurrentPrice.ToString();
         }
 

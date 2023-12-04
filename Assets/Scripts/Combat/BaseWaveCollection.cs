@@ -13,6 +13,8 @@ namespace Code.Combat
 
         public void AddToCollection(GameObject gameObj, T presenter)
         {
+            if (_participants.ContainsKey(gameObj))
+                return;
             _participants.Add(gameObj, presenter);
             OnAddToCollection(presenter);
         }

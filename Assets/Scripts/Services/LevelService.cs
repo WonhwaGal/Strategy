@@ -60,7 +60,9 @@ namespace Code.Combat
         private void InvokeWave()
         {
             SubscribeToSpaceKey(isNight: true);
-            OnCreatingWaves?.Invoke(_wavesData.FindLevelWaves(Level), _waveTurn);
+            var waveInfo = _wavesData.FindLevelWaves(Level);
+            if (waveInfo != null)
+                OnCreatingWaves?.Invoke(waveInfo, _waveTurn);
             OnChangingGameMode?.Invoke(GameMode.IsNight);
             _waveTurn++;
         }

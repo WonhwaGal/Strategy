@@ -45,19 +45,19 @@ namespace Code.Combat
             return (finalResult, false);
         }
 
-        public void CheckForTargets(IModel model, AttackType attack)
+        public bool CheckForTargets(IModel model, AttackType attack)
         {
             var mask = GetMask(model.PrefabType, true);
 
             switch (attack)
             {
                 case AttackType.Arrow:
-                    AttackHandler.ShootArrow(model, mask, GetArrow());
-                    break;
+                    return AttackHandler.ShootArrow(model, mask, GetArrow());
                 case AttackType.AreaSword:
                     AttackHandler.SwordAreaAttack(model, mask, WaveLocator.GetCollection(Constants.Enemies));
                     break;
             }
+            return false;
         }
 
         public void HitTarget(IPresenter target, int damage)

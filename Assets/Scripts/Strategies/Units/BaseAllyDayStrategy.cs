@@ -7,6 +7,13 @@ namespace Code.Strategy
     {
         protected Transform _leader;
         protected bool _isUnderControl;
+        protected UnitAnimator _animator;
+
+        public BaseAllyDayStrategy(IUnitPresenter presenter = null)
+        {
+            if (presenter != null)
+                Init(presenter);
+        }
 
         public abstract void Execute(IUnitPresenter presenter, float delta);
 
@@ -14,26 +21,16 @@ namespace Code.Strategy
         {
             var allyView = ((AllyUnit)presenter.View);
             allyView.GameObject.SetActive(true);
+
             allyView.NavAgent.speed = presenter.Model.Speed;
+            _animator = new UnitAnimator(allyView.Animator);
         }
 
 
         public virtual void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
-            var type = presenter.Model.PrefabType;
-            presenter.View.GameObject.SetActive(true);
             if (mode == GameMode.IsNight)
-            {
-                WaveLocator.ParticipateInCombat(type, presenter.View.gameObject, presenter);
                 presenter.Strategy = new AllyInfantryStrategy(presenter);
-                presenter.SetUpHPBar(UIType.AllyHP);
-            }
-        }
-
-        protected void GetUnderControl(Transform leader)
-        {
-            _leader = leader;
-            _isUnderControl = true;
         }
     }
 }

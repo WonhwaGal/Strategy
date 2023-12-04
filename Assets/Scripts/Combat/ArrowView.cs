@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Code.Pools;
 
 namespace Code.Combat
 {
@@ -16,6 +15,7 @@ namespace Code.Combat
         private float _parabolaWidthMultiplier;
         private float _totalDist;
         private float _currentDist;
+        private bool _targetLost;
 
         public event Action<ArrowView> OnReachTarget;
 
@@ -29,8 +29,11 @@ namespace Code.Combat
         {
             if (_target == null || !_target.gameObject.activeSelf)
             {
-                if (_lastTargetPos == Vector3.zero)
-                    return;
+                if (!_targetLost)
+                {
+                    _targetLost = true;
+                    _lastTargetPos += _lastTargetPos - transform.position;
+                }
                 MoveInTrajectory();
             }
             else
@@ -42,7 +45,7 @@ namespace Code.Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_totalDist != 0 && (!_target.gameObject.activeSelf || _target == null))
+            if (_totalDist != 0 && _targetLost)
                 ReturnToPool();
         }
 
@@ -57,8 +60,8 @@ namespace Code.Combat
 
         public void AssignTarget(Vector3 origin, Transform target)
         {
+            _targetLost = false;
             _target = target;
-            _lastTargetPos = _target.position;
             _origin = origin;
             transform.position = _origin;
 

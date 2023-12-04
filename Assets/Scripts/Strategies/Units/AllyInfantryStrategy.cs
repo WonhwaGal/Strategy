@@ -1,5 +1,4 @@
 ﻿using Code.Units;
-using UnityEngine;
 
 namespace Code.Strategy
 {
@@ -15,6 +14,12 @@ namespace Code.Strategy
 
         public override void Execute(IUnitPresenter presenter, float delta)
         {
+            if (_stopActions)
+            {
+                presenter.View.NavAgent.isStopped = true;
+                return;
+            }
+
             if (_isStatic)
                 presenter.View.transform.LookAt(_target);
             else
@@ -25,18 +30,21 @@ namespace Code.Strategy
 
         public override void SwitchStrategy(IUnitPresenter presenter, GameMode mode)
         {
-            base.SwitchStrategy(presenter, mode);
-            if (mode == GameMode.IsDay)
-            {
+            if (mode == GameMode.IsNight)
+                WaveLocator.ParticipateInCombat(
+                    presenter.Model.PrefabType, presenter.View.GameObject, presenter);
+            else if(presenter.HPBar != null)
                 presenter.HPBar.gameObject.SetActive(false);
+
+            if (mode == GameMode.IsDay)
                 presenter.Strategy = new DayAllyStrategy(presenter);
-            }
         }
 
         protected override void Move(UnitView view, UnitModel model, float delta)
         {
             if (_target != null)
                 view.NavAgent.SetDestination(_target.position);
+            _animator.AnimateMovement(view.NavAgent.hasPath);
         }
 
         protected override void Await(UnitModel model, float delta)
@@ -52,8 +60,11 @@ namespace Code.Strategy
         protected override void OnFindTarget(UnitModel model, IPresenter presenter, bool isUnit)
         {
             ReceiveTarget(((IUnitPresenter)presenter).Model);
-            if (CheckAttackConditions(model.Transform.position))
+            if (IsTargetCloseToAttack(model.Transform.position))
+            {
                 Attack(presenter, model.Damage);
+                _animator.AnimateAttack();
+            }
         }
     }
 }
