@@ -1,6 +1,6 @@
 ## [Strategy project (GameDev)](https://github.com/WonhwaGal/Strategy/)
 #### November 2023
-<img align="right" width="30%" src="https://github.com/WonhwaGal/Welcome/blob/WelcomeMain/Assets/ReadMeContent/StrategyImg.png">
+<img align="right" width="40%" src="https://github.com/WonhwaGal/Welcome/blob/WelcomeMain/Assets/ReadMeContent/StrategyImg.png">
 It is a playable prototype of a classic strategy game. <br>
 The main focus was on recreating the core mechanics while implementing different patterns.<br>
 
@@ -11,4 +11,4 @@ The main focus was on recreating the core mechanics while implementing different
 <br>
 <img align="center" width="60%" src="https://github.com/WonhwaGal/Welcome/blob/WelcomeMain/Assets/ReadMeContent/StrategyGif.gif">
 <img align="left" width="45%" src="/ReadMeContent/12.png">
-<img align="right" width="45%" src="/ReadMeContent/StrategyBanner.png">
+<img align="right" width="48%" src="/ReadMeContent/StrategyBanner.png">
